@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión - SevenBets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+        }
+
+        .title-font {
+            font-family: "Rajdhani", sans-serif;
+        }
+
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 30s linear infinite;
+        }
+
+        @keyframes marquee {
+            from {
+            transform: translateX(0%);
+            }
+
+            to {
+            transform: translateX(-100%);
+            }
+        }
+        </style>
+</head>
+
+<body class="bg-white text-[#111111]">
+
+    <nav class="bg-[#111111]">
+        <div class="max-w-7xl mx-auto h-20 flex items-center px-10 justify-center">
+            <img src="../images/logo.png" alt="Logo" class="h-14" />
+        </div>
+    </nav>
+
+    <div class="bg-[#05AC2E] text-white py-1.5 marquee">
+        <span class="font-medium text-sm tracking-wide">
+            Competí con tus amigos • Armá tu Prode • Demostrá cuánto sabés de fútbol • Sumá puntos cada fecha • Viví el torneo de otra manera • Competí con tus amigos • Armá tu Prode • Demostrá cuánto sabés de fútbol • Sumá puntos cada fecha •
+        </span>
+
+    </div>
+    <main class="flex justify-center items-center px-6 py-20 bg-[#FCFCFC]">
+        <div class="w-full max-w-md border border-gray-200 rounded-[3px] p-10 bg-white shadow-sm">
+            <div class="mb-8 text-center">
+                <p class="uppercase tracking-[2px] text-[#0AB529] text-xs font-semibold">Bienvenido/a de nuevo</p>
+
+                <h2 class="title-font text-4xl font-bold mt-2 uppercase">Iniciar sesión</h2>
+
+                <p class="text-gray-500 mt-3 text-sm">Accedé a tu cuenta para comenzar a competir.</p>
+            </div>
+
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label class="block mb-2 text-sm font-medium">Email</label>
+
+            <input type="email" placeholder="correo@ejemplo.com" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
+
+            </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium">Contraseña</label>
+
+                <input type="password" placeholder="••••••••" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
+            </div>
+
+            <button type="submit" class="w-full h-12 rounded-[3px] bg-[#111111] text-white font-semibold text-sm hover:bg-[#0AB529] transition-all duration-300">INGRESAR</button>
+        </form>
+
+            <div class="mt-8 text-center text-sm text-gray-600">¿Todavía no tenés cuenta?
+                <a href="register.html" class="font-semibold text-[#0AB529] hover:underline">Registrate</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="mt-10 p-10 text-center flex items-center justify-center text-gray-400 text-sm gap-2 bg-[#111111]">
+        <img src="../images/logo-nombre.png" alt="Logo" class="h-3"/> <p>| Hacé que cada partido cuente.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById("loginForm");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+        console.log("Login");
+    });
+    </script>
+
+    </body>
+</html>
