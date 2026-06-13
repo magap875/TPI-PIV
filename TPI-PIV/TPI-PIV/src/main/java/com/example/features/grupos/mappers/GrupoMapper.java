@@ -6,12 +6,14 @@ import com.example.features.grupos.models.Grupo;
 
 public class GrupoMapper {
 
+    private GrupoMapper() {
+    }
+
     public static Grupo toEntity(GrupoRequestDTO dto) {
 
         Grupo grupo = new Grupo();
 
         grupo.setNombre(dto.nombre());
-        grupo.setCodigoInvitacion(dto.codigoInvitacion());
 
         return grupo;
     }

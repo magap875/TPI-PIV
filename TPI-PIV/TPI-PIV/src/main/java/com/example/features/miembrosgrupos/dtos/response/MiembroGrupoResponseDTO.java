@@ -1,6 +1,6 @@
 package com.example.features.miembrosgrupos.dtos.response;
-
 import java.time.LocalDateTime;
+
 
 public record MiembroGrupoResponseDTO(
 

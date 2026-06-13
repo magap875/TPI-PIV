@@ -1,11 +1,10 @@
 package com.example.features.miembrosgrupos.models;
 
-import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-
 import com.example.features.grupos.models.Grupo;
 import com.example.features.users.models.Usuario;
+import jakarta.persistence.*;
 
 @Entity
 @Getter
