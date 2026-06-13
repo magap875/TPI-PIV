@@ -1,7 +1,7 @@
-package com.example.features.miembrosGrupos.mappers;
+package com.example.features.miembrosgrupos.mappers;
 
-import com.example.features.miembrosGrupos.dtos.response.MiembroGrupoResponseDTO;
-import com.example.features.miembrosGrupos.models.MiembroGrupo;
+import com.example.features.miembrosgrupos.dtos.response.MiembroGrupoResponseDTO;
+import com.example.features.miembrosgrupos.models.MiembroGrupo;
 
 public class MiembroGrupoMapper {
 
@@ -13,7 +13,6 @@ public class MiembroGrupoMapper {
                 miembro.getUsuario().getNombre(),
                 miembro.getGrupo().getId(),
                 miembro.getGrupo().getNombre(),
-                miembro.getFechaIngreso()
-        );
+                miembro.getFechaIngreso());
     }
 }
