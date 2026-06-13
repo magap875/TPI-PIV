@@ -1,4 +1,4 @@
-package com.example.features.miembrosGrupos.models;
+package com.example.features.miembrosgrupos.models;
 
 import jakarta.persistence.*;
 import lombok.*;

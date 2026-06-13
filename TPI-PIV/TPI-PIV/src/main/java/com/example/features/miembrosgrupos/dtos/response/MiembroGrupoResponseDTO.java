@@ -1,18 +1,18 @@
-package com.example.features.miembrosGrupos.dtos.response;
+package com.example.features.miembrosgrupos.dtos.response;
 
 import java.time.LocalDateTime;
 
 public record MiembroGrupoResponseDTO(
 
-        Long id,
+                Long id,
 
-        Long usuarioId,
-        String usuarioNombre,
+                Long usuarioId,
+                String usuarioNombre,
 
-        Long grupoId,
-        String grupoNombre,
+                Long grupoId,
+                String grupoNombre,
 
-        LocalDateTime fechaIngreso
+                LocalDateTime fechaIngreso
 
 ) {
 }
