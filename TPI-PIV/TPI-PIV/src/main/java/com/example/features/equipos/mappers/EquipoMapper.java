@@ -1,12 +1,12 @@
 package com.example.features.equipos.mappers;
 
-import com.example.features.equipos.dtos.request.EquipoRequestDTO;
+import com.example.features.equipos.dtos.request.EquipoCreateDTO;
 import com.example.features.equipos.dtos.response.EquipoResponseDTO;
 import com.example.features.equipos.models.Equipo;
 
 public class EquipoMapper {
 
-    public static Equipo toEntity(EquipoRequestDTO dto) {
+    public static Equipo toEntity(EquipoCreateDTO dto) {
 
         Equipo equipo = new Equipo();
 

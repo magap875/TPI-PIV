@@ -3,7 +3,8 @@ package com.example;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import com.example.config.jwt.JwtProperties;
+
+import com.example.config.security.jwt.JwtProperties;
 
 @EnableConfigurationProperties(JwtProperties.class)
 @SpringBootApplication

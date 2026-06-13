@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.config.BaseResponse;
+
+import com.example.config.response.BaseResponse;
 import com.example.features.users.dtos.request.UsuarioUpdateDTO;
 import com.example.features.users.dtos.response.UsuarioResponseDTO;
 import com.example.features.users.services.interfaces.IUsuarioService;
@@ -16,7 +17,7 @@ import com.example.features.users.services.interfaces.IUsuarioService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
 

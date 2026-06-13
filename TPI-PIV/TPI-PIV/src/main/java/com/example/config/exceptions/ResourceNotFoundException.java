@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 

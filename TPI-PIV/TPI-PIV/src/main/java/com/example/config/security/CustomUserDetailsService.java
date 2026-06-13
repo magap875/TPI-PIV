@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.security;
 
 import java.util.List;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.users.models.Usuario;
 import com.example.features.users.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
