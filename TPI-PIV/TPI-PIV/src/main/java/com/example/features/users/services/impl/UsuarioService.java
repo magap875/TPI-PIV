@@ -3,7 +3,7 @@ package com.example.features.users.services.impl;
 import org.springframework.stereotype.Service;
 
 import com.example.features.users.services.interfaces.IUsuarioService;
-import com.example.config.ResourceNotFoundException;
+import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.users.dtos.request.UsuarioUpdateDTO;
 import com.example.features.users.dtos.response.UsuarioResponseDTO;
 import com.example.features.users.mappers.UsuarioMapper;

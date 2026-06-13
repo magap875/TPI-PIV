@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.exceptions;
 
 import java.time.LocalDateTime;
 import java.util.Map;
