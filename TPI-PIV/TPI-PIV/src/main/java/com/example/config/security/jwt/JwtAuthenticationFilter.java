@@ -1,4 +1,4 @@
-package com.example.config.jwt;
+package com.example.config.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.config.CustomUserDetailsService;
+import com.example.config.security.CustomUserDetailsService;
 
 import java.io.IOException;
 

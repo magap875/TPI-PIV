@@ -1,7 +1,7 @@
-package com.example.features.miembrosgrupos.mappers;
+package com.example.features.miembrosGrupos.mappers;
 
-import com.example.features.miembrosgrupos.dtos.response.MiembroGrupoResponseDTO;
-import com.example.features.miembrosgrupos.models.MiembroGrupo;
+import com.example.features.miembrosGrupos.dtos.response.MiembroGrupoResponseDTO;
+import com.example.features.miembrosGrupos.models.MiembroGrupo;
 
 public class MiembroGrupoMapper {
 

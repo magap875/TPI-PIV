@@ -6,7 +6,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.config.jwt.JwtService;
+
+import com.example.config.security.jwt.JwtService;
 import com.example.features.auth.dto.request.LoginRequestDTO;
 import com.example.features.auth.dto.response.AuthResponseDTO;
 import com.example.features.auth.services.interfaces.IAuthService;

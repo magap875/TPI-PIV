@@ -1,4 +1,4 @@
-package com.example.features.miembrosgrupos.dtos.response;
+package com.example.features.miembrosGrupos.dtos.response;
 
 import java.time.LocalDateTime;
 

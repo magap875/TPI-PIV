@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;
 
-import com.example.features.miembrosgrupos.models.MiembroGrupo;
+import com.example.features.miembrosGrupos.models.MiembroGrupo;
 
 @Entity
 @Getter

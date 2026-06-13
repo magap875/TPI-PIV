@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.features.auth.services.interfaces.*;
 import com.example.features.users.dtos.request.UsuarioRegisterDTO;
-import com.example.config.BaseResponse;
+import com.example.config.response.BaseResponse;
 import com.example.features.auth.dto.request.LoginRequestDTO;
 import com.example.features.auth.dto.request.RefreshRequestDTO;
 import com.example.features.auth.dto.response.AuthResponseDTO;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthController {
 

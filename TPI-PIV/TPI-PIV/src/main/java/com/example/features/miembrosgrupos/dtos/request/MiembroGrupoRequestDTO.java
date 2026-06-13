@@ -1,4 +1,4 @@
-package com.example.features.miembrosgrupos.dtos.request;
+package com.example.features.miembrosGrupos.dtos.request;
 
 import jakarta.validation.constraints.*;
 
