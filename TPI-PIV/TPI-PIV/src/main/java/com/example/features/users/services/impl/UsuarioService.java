@@ -1,27 +1,25 @@
 package com.example.features.users.services.impl;
 
-import org.springframework.stereotype.Service;
-
-import com.example.features.users.services.interfaces.IUsuarioService;
 import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.users.dtos.request.UsuarioUpdateDTO;
 import com.example.features.users.dtos.response.UsuarioResponseDTO;
 import com.example.features.users.mappers.UsuarioMapper;
 import com.example.features.users.models.Usuario;
 import com.example.features.users.repositories.UsuarioRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.features.users.services.interfaces.IUsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioService implements IUsuarioService {
 
+public class UsuarioService implements IUsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UsuarioResponseDTO getPerfil(String email) {
-
+    public UsuarioResponseDTO getPerfil(String email){
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
@@ -29,8 +27,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO actualizarPerfil(String email, UsuarioUpdateDTO dto) {
-
+    public UsuarioResponseDTO actualizarPerfil(String email, UsuarioUpdateDTO dto){
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
@@ -43,13 +40,11 @@ public class UsuarioService implements IUsuarioService {
         }
 
         usuarioRepository.save(usuario);
-
         return UsuarioMapper.toResponseDTO(usuario);
     }
 
     @Override
-    public void eliminarCuenta(String email) {
-
+    public void eliminarCuenta(String email){
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 

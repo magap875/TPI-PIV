@@ -6,11 +6,8 @@ import com.example.features.users.models.Rol;
 import com.example.features.users.models.Usuario;
 
 public class UsuarioMapper {
-
     public static Usuario toEntity(UsuarioRegisterDTO dto) {
-
         Usuario usuario = new Usuario();
-
         usuario.setNombre(dto.nombre());
         usuario.setEmail(dto.email());
         usuario.setContraseña(dto.contraseña());
@@ -20,7 +17,6 @@ public class UsuarioMapper {
     }
 
     public static UsuarioResponseDTO toResponseDTO(Usuario usuario) {
-
         return new UsuarioResponseDTO(
                 usuario.getId(),
                 usuario.getNombre(),

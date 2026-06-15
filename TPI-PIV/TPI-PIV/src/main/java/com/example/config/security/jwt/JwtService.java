@@ -3,28 +3,23 @@ package com.example.config.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Service
-public class JwtService {
+@AllArgsConstructor
 
+public class JwtService {
     private final JwtProperties properties;
 
-    public JwtService(JwtProperties properties) {
-        this.properties = properties;
-    }
-
-    // ---------------- KEY ----------------
-
+    // key de firma para generar y validar tokens
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(properties.secret().getBytes());
     }
 
-    // ---------------- ACCESS TOKEN ----------------
-
+    // generacion del access token
     public String generarToken(String email) {
         return Jwts.builder()
                 .subject(email)
@@ -34,8 +29,7 @@ public class JwtService {
                 .compact();
     }
 
-    // ---------------- REFRESH TOKEN ----------------
-
+    // generacion del refresh token
     public String generarRefreshToken(String email) {
         return Jwts.builder()
                 .subject(email)
@@ -45,14 +39,12 @@ public class JwtService {
                 .compact();
     }
 
-    // ---------------- EXTRAER ----------------
-
+    // extraer email del token
     public String extraerEmail(String token) {
         return obtenerClaims(token).getSubject();
     }
 
-    // ---------------- VALIDAR ----------------
-
+    // validacion de token (firma y expiracion)
     public boolean esValido(String token) {
         try {
             return obtenerClaims(token)
@@ -63,8 +55,7 @@ public class JwtService {
         }
     }
 
-    // ---------------- PARSER MODERNO ----------------
-
+    // parser
     private Claims obtenerClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())

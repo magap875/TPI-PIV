@@ -37,8 +37,7 @@ public class SecurityConfig {
                                         "/api/auth/**",
                                         "/api/equipos/**",
                                         "/api/partidos/**",
-                                        "/api/fechas/**",
-                                        "/api/rankings/**"
+                                        "/api/fechas/**"
                                 ).permitAll()
 
                                 // los demas tienen q tener autenticación

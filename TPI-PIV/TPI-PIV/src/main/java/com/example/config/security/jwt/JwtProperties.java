@@ -7,4 +7,4 @@ public record JwtProperties(
         String secret,
         long accessExpirationMs,
         long refreshExpirationMs
-) {}
+){}
