@@ -20,9 +20,11 @@ public class Partido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private LocalDateTime fechaHorarioInicio;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EstadoPartido estado;
 
     @ManyToOne
@@ -38,6 +40,7 @@ public class Partido {
     private Integer golesVisitante;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ResultadoTendencia resultadoTendencia;
 
     @ManyToOne

@@ -18,39 +18,25 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
+
 public class AuthController {
+        private final IAuthService authService;
 
-    private final IAuthService authService;
+        @PostMapping("/register")
+        public ResponseEntity<BaseResponse<Void>> register(@Valid @RequestBody UsuarioRegisterDTO request){
+                authService.register(request);
+                return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponse.ok(null, "Usuario registrado correctamente"));
+        }
 
-    @PostMapping("/register")
-    public ResponseEntity<BaseResponse<Void>> register(
-            @Valid @RequestBody UsuarioRegisterDTO request
-    ) {
-        authService.register(request);
+        @PostMapping("/login")
+        public ResponseEntity<BaseResponse<AuthResponseDTO>> login(@Valid @RequestBody LoginRequestDTO request){
+                AuthResponseDTO response = authService.login(request);
+                return ResponseEntity.ok(BaseResponse.ok(response, "Login exitoso."));
+        }
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(BaseResponse.ok(null, "Usuario registrado correctamente"));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<BaseResponse<AuthResponseDTO>> login(
-            @Valid @RequestBody LoginRequestDTO request
-    ) {
-        AuthResponseDTO response = authService.login(request);
-
-        return ResponseEntity.ok(
-                BaseResponse.ok(response, "Login exitoso")
-        );
-    }
-
-    @PostMapping("/refresh")
-    public ResponseEntity<BaseResponse<AuthResponseDTO>> refresh(
-            @Valid @RequestBody RefreshRequestDTO request
-    ) {
-        AuthResponseDTO response = authService.refresh(request.refreshToken());
-
-        return ResponseEntity.ok(
-                BaseResponse.ok(response, "Token renovado correctamente")
-        );
-    }
+        @PostMapping("/refresh")
+        public ResponseEntity<BaseResponse<AuthResponseDTO>> refresh(@Valid @RequestBody RefreshRequestDTO request){
+                AuthResponseDTO response = authService.refresh(request.refreshToken());
+                return ResponseEntity.ok(BaseResponse.ok(response, "Token renovado correctamente"));
+        }
 }

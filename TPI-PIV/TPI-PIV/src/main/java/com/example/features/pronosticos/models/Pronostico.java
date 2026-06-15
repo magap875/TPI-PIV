@@ -3,7 +3,6 @@ package com.example.features.pronosticos.models;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-
 import com.example.features.partidos.models.Partido;
 import com.example.features.users.models.Usuario;
 
@@ -12,8 +11,8 @@ import com.example.features.users.models.Usuario;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pronostico {
 
+public class Pronostico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,4 +32,7 @@ public class Pronostico {
     @ManyToOne
     @JoinColumn(name = "partido_id", nullable = false)
     private Partido partido;
+
+    @Enumerated(EnumType.STRING)
+    private ResultadoTendencia resultadoTendencia;
 }

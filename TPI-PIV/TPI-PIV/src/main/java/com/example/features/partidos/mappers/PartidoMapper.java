@@ -4,9 +4,7 @@ import com.example.features.partidos.dtos.response.PartidoResponseDTO;
 import com.example.features.partidos.models.Partido;
 
 public class PartidoMapper {
-
     public static PartidoResponseDTO toResponseDTO(Partido partido) {
-
         return new PartidoResponseDTO(
                 partido.getId(),
                 partido.getFechaHorarioInicio(),
