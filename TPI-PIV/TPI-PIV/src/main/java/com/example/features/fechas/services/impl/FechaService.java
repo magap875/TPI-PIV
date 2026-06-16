@@ -56,12 +56,23 @@ public class FechaService implements IFechaService {
         return FechaMapper.toResponseDTO(fecha);
     }
 
+    // No se pueden modificar los datos de una fecha si no está en estado PROGRAMADA
+    // o si tiene partidos asociados
     @Override
     public FechaResponseDTO actualizar(Long id, FechaUpdateDTO dto) {
         Fecha fecha = fechaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Fecha no encontrada"));
 
+        if (fecha.getEstado() != EstadoFecha.PROGRAMADA) {
+            throw new BadRequestException("Solo se puede modificar una fecha PROGRAMADA");
+        }
+
+        if (!fecha.getPartidos().isEmpty()) {
+            throw new BadRequestException("No se puede modificar una fecha con partidos asociados");
+        }
+
         fecha.setNombre(dto.nombre());
+
         Fecha updated = fechaRepository.save(fecha);
 
         return FechaMapper.toResponseDTO(updated);
@@ -74,6 +85,10 @@ public class FechaService implements IFechaService {
 
         if (!fecha.getPartidos().isEmpty()) {
             throw new BadRequestException("No se puede eliminar una fecha con partidos asociados");
+        }
+
+        if (fecha.getEstado() != EstadoFecha.PROGRAMADA) {
+            throw new BadRequestException("Solo se puede eliminar una fecha PROGRAMADA");
         }
 
         fechaRepository.delete(fecha);
