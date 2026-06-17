@@ -32,16 +32,6 @@ public class SecurityConfig {
                         )
                         .authorizeHttpRequests(auth -> auth
 
-                        // frontend
-                        .requestMatchers(
-                                "/",
-                                "/index.html",
-                                "/html/**",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**"
-                        ).permitAll()
-
                         // api
                         .requestMatchers(
                                 "/api/auth/**",
