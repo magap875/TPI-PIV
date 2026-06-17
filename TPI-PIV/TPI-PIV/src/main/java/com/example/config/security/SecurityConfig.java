@@ -32,16 +32,26 @@ public class SecurityConfig {
                         )
                         .authorizeHttpRequests(auth -> auth
 
-                                // endpoints publicos
-                                .requestMatchers(
-                                        "/api/auth/**",
-                                        "/api/equipos/**",
-                                        "/api/partidos/**",
-                                        "/api/fechas/**"
-                                ).permitAll()
+                        // frontend
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/html/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**"
+                        ).permitAll()
 
-                                // los demas tienen q tener autenticación
-                                .anyRequest().authenticated()
+                        // api
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/equipos/**",
+                                "/api/partidos/**",
+                                "/api/fechas/**"
+                        ).permitAll()
+
+                        // lo demás requiere autenticación
+                        .anyRequest().authenticated()
                         )
                         .addFilterBefore(
                                 jwtFilter,

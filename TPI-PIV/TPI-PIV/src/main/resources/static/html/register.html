@@ -4,14 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrarse - SevenBets</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" type="image/png" href="../images/favicon.png">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
-
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/alertas.css"/>
 
     <style>
         body {
@@ -75,19 +73,19 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium">Nombre</label>
 
-                    <input type="text" placeholder="Tu nombre" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
+                    <input id="nombre" type="text" placeholder="Tu nombre" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
                 </div>
 
                 <div>
                     <label class="block mb-2 text-sm font-medium">Email</label>
 
-                    <input type="email" placeholder="correo@ejemplo.com" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
+                    <input id="email" type="email" placeholder="correo@ejemplo.com" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
                 </div>
 
                 <div>
                     <label class="block mb-2 text-sm font-medium">Contraseña</label>
 
-                    <input type="password" placeholder="••••••••" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
+                    <input id="contrasena"type="password" placeholder="••••••••" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
                 </div>
 
                 <button type="submit" class="w-full h-12 rounded-[3px] bg-[#05AC2E] text-white font-semibold text-sm hover:bg-[#111111] transition-all duration-300">
@@ -105,15 +103,7 @@
         <img src="../images/logo-nombre.png" alt="Logo" class="h-3"/><p>| Viví cada fecha como nunca.</p>
     </footer>
 
-    <script>
-        const form = document.getElementById("registerForm");
-
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-
-            console.log("Registro");
-        });
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/register.js" defer></script>
 </body>
 </html>

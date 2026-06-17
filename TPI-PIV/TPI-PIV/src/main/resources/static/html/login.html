@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" href="../images/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/alertas.css"/>
 
     <style>
         body {
@@ -69,14 +70,12 @@
         <form id="loginForm" class="space-y-5">
             <div>
                 <label class="block mb-2 text-sm font-medium">Email</label>
-
-            <input type="email" placeholder="correo@ejemplo.com" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
+                <input id="email" type="email" placeholder="correo@ejemplo.com" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
 
             </div>
                 <div>
                     <label class="block mb-2 text-sm font-medium">Contraseña</label>
-
-                <input type="password" placeholder="••••••••" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
+                    <input id="contrasena" type="password" placeholder="••••••••" class="w-full h-12 px-4 border border-gray-300 rounded-[3px] outline-none focus:border-[#0AB529] transition"/>
             </div>
 
             <button type="submit" class="w-full h-12 rounded-[3px] bg-[#111111] text-white font-semibold text-sm hover:bg-[#0AB529] transition-all duration-300">INGRESAR</button>
@@ -93,15 +92,8 @@
         <img src="../images/logo-nombre.png" alt="Logo" class="h-3"/> <p>| Hacé que cada partido cuente.</p>
     </footer>
 
-    <script>
-        const form = document.getElementById("loginForm");
-
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-
-        console.log("Login");
-    });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/login.js"></script>
 
     </body>
 </html>

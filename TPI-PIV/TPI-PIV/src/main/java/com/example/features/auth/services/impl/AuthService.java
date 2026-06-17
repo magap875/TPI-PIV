@@ -6,6 +6,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.example.config.exceptions.BadRequestException;
+import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.config.security.jwt.JwtService;
 import com.example.features.auth.dto.request.LoginRequestDTO;
 import com.example.features.auth.dto.response.AuthResponseDTO;
@@ -26,7 +29,7 @@ public class AuthService implements IAuthService{
 
     public void register(UsuarioRegisterDTO dto){
         if (usuarioRepository.existsByEmail(dto.email())) {
-            throw new RuntimeException("Email ya registrado");
+            throw new BadRequestException("Email ya registrado");
         }
 
         Usuario usuario = new Usuario();
@@ -52,19 +55,19 @@ public class AuthService implements IAuthService{
         String refreshToken = jwtService.generarRefreshToken(email);
         return new AuthResponseDTO(accessToken, refreshToken);
     } catch (BadCredentialsException e) {
-        throw new RuntimeException("Credenciales inválidas");
+        throw new BadRequestException("Credenciales inválidas");
         }
     }
 
     @Override
     public AuthResponseDTO refresh(String refreshToken) {
         if (!jwtService.esValido(refreshToken)) {
-            throw new RuntimeException("Refresh token inválido o expirado");
+            throw new BadRequestException("Refresh token inválido o expirado");
         }
 
         String email = jwtService.extraerEmail(refreshToken);
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         String newAccessToken = jwtService.generarToken(usuario.getEmail());
         String newRefreshToken = jwtService.generarRefreshToken(usuario.getEmail());

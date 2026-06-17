@@ -1,0 +1,93 @@
+.swal2-popup {
+    background: #161616 !important;
+    border: 1px solid #222 !important;
+    border-radius: 3px !important;
+    color: #e5e7eb !important;
+    font-family: "Inter", sans-serif !important;
+    box-shadow: 0 0 40px rgba(5, 172, 46, 0.08) !important;
+    padding: 2rem 1.75rem !important;
+    position: relative !important;
+}
+
+.swal2-popup::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #05AC2E 0%, #0AB52933 100%);
+    border-radius: 2px 2px 0 0;
+}
+
+.swal2-title {
+    font-family: "Rajdhani", sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 1.5rem !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    color: #ffffff !important;
+}
+
+.swal2-html-container {
+    font-size: 0.875rem !important;
+    color: #9ca3af !important;
+    line-height: 1.6 !important;
+}
+
+.swal2-confirm {
+    font-family: "Rajdhani", sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 3px !important;
+    background: #05AC2E !important;
+    color: #fff !important;
+    transition: background 0.3s, color 0.3s !important;
+}
+.swal2-confirm:hover {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+.swal2-cancel {
+    font-family: "Rajdhani", sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 3px !important;
+    background: transparent !important;
+    border: 1px solid #2a2a2a !important;
+    color: #9ca3af !important;
+    transition: border-color 0.2s, color 0.2s !important;
+}
+.swal2-cancel:hover {
+    border-color: #05AC2E !important;
+    color: #ffffff !important;
+}
+
+/* Icono success */
+.swal2-icon.swal2-success {
+    border-color: #05AC2E !important;
+    color: #05AC2E !important;
+}
+.swal2-icon.swal2-success .swal2-success-line-tip,
+.swal2-icon.swal2-success .swal2-success-line-long {
+    background-color: #05AC2E !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring {
+    border-color: #05AC2E44 !important;
+}
+
+/* Icono error */
+.swal2-icon.swal2-error {
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+}
+.swal2-icon.swal2-error .swal2-x-mark-line-left,
+.swal2-icon.swal2-error .swal2-x-mark-line-right {
+    background-color: #ef4444 !important;
+}

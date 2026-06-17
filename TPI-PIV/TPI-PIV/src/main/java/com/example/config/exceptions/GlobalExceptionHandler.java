@@ -116,4 +116,17 @@ public class GlobalExceptionHandler {
 
                 return ResponseEntity.status(status).body(error);
         }
+
+        @ExceptionHandler(BadCredentialsCustomException.class)
+        public ResponseEntity<ErrorResponseDTO> handleBadCredentialsCustom(
+                BadCredentialsCustomException ex,
+                HttpServletRequest request
+        ) {
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                ex.getMessage(),
+                request,
+                null
+        );
+        }
 }
