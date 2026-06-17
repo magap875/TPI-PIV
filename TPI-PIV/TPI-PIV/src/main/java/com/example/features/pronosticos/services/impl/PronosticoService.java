@@ -28,7 +28,7 @@ public class PronosticoService implements IPronosticoService {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public PronosticoResponseDTO crearOActualizar(String username, Long partidoId, PronosticoRequestDTO dto){
+    public PronosticoResponseDTO crearOActualizar(String username, Long partidoId, PronosticoRequestDTO dto) {
         Partido partido = partidoRepository.findById(partidoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
 
@@ -59,9 +59,9 @@ public class PronosticoService implements IPronosticoService {
             pronostico.setFechaCreacion(LocalDateTime.now());
         }
 
-        if (dto.golesLocalPronosticados() > dto.golesVisitantePronosticados()){
+        if (dto.golesLocalPronosticados() > dto.golesVisitantePronosticados()) {
             pronostico.setResultadoTendencia(ResultadoTendencia.LOCAL);
-        } else if (dto.golesLocalPronosticados() < dto.golesVisitantePronosticados()){
+        } else if (dto.golesLocalPronosticados() < dto.golesVisitantePronosticados()) {
             pronostico.setResultadoTendencia(ResultadoTendencia.VISITANTE);
         } else {
             pronostico.setResultadoTendencia(ResultadoTendencia.EMPATE);
@@ -72,7 +72,7 @@ public class PronosticoService implements IPronosticoService {
     }
 
     @Override
-    public List<PronosticoResponseDTO> listarPorUsuario(Long usuarioId){
+    public List<PronosticoResponseDTO> listarPorUsuario(Long usuarioId) {
         return pronosticoRepository.findByUsuarioId(usuarioId)
                 .stream()
                 .map(PronosticoMapper::toResponseDTO)
@@ -80,7 +80,7 @@ public class PronosticoService implements IPronosticoService {
     }
 
     @Override
-    public List<PronosticoResponseDTO> listarPorUsuarioEmail(String email){
+    public List<PronosticoResponseDTO> listarPorUsuarioEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
@@ -90,8 +90,19 @@ public class PronosticoService implements IPronosticoService {
                 .toList();
     }
 
+    //No se pueden ver los pronósticos de un partido hasta 30 minutos antes del inicio del mismo
     @Override
-    public List<PronosticoResponseDTO> listarPorPartido(Long partidoId){
+    public List<PronosticoResponseDTO> listarPorPartido(Long partidoId) {
+
+        Partido partido = partidoRepository.findById(partidoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
+
+        LocalDateTime limite = partido.getFechaHorarioInicio().minusMinutes(30);
+
+        if (LocalDateTime.now().isBefore(limite)) {
+            throw new BadRequestException("Todavía no se pueden ver los pronósticos de este partido");
+        }
+
         return pronosticoRepository.findByPartidoId(partidoId)
                 .stream()
                 .map(PronosticoMapper::toResponseDTO)
