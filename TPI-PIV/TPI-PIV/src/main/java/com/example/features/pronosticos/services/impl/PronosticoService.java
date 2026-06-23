@@ -72,7 +72,7 @@ public class PronosticoService implements IPronosticoService {
     }
 
     @Override
-    public List<PronosticoResponseDTO> listarPorUsuario(Long usuarioId) {
+    public List<PronosticoResponseDTO> listarPorUsuario(Long usuarioId){
         return pronosticoRepository.findByUsuarioId(usuarioId)
                 .stream()
                 .map(PronosticoMapper::toResponseDTO)
@@ -80,7 +80,7 @@ public class PronosticoService implements IPronosticoService {
     }
 
     @Override
-    public List<PronosticoResponseDTO> listarPorUsuarioEmail(String email) {
+    public List<PronosticoResponseDTO> listarPorUsuarioEmail(String email){
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
@@ -90,10 +90,20 @@ public class PronosticoService implements IPronosticoService {
                 .toList();
     }
 
-    //No se pueden ver los pronósticos de un partido hasta 30 minutos antes del inicio del mismo
+    @Override
+    public PronosticoResponseDTO obtenerPorUsuarioYPartido(String username, Long partidoId){
+        Usuario usuario = usuarioRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        return pronosticoRepository
+                .findByUsuarioIdAndPartidoId(usuario.getId(), partidoId)
+                .map(PronosticoMapper::toResponseDTO)
+                .orElse(null);
+    }
+
+    // no se pueden ver los pronósticos de un partido hasta 30 minutos antes del inicio del mismo
     @Override
     public List<PronosticoResponseDTO> listarPorPartido(Long partidoId) {
-
         Partido partido = partidoRepository.findById(partidoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
 

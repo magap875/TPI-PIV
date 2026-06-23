@@ -1,4 +1,3 @@
-
 package com.example.features.equipos.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
