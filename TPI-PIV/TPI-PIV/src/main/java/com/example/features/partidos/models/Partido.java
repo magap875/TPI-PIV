@@ -15,7 +15,6 @@ import com.example.features.pronosticos.models.ResultadoTendencia;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Partido {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

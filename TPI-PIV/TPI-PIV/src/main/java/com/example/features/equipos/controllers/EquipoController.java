@@ -3,7 +3,6 @@ package com.example.features.equipos.controllers;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,7 +26,6 @@ public class EquipoController {
     private final EquipoService equipoService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EquipoResponseDTO> crear(@Valid @RequestBody EquipoCreateDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(equipoService.crear(dto));
     }
@@ -43,14 +41,12 @@ public class EquipoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         equipoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EquipoResponseDTO> actualizarEquipo(@PathVariable Long id, @RequestBody EquipoUpdateDTO dto) {
         return ResponseEntity.ok(equipoService.actualizarEquipo(id, dto));
     }

@@ -24,11 +24,22 @@ public class PronosticoController {
         );
     }
 
+    // pronosticos de usuario en partido específico
+    @GetMapping("/mi-pronostico/{partidoId}")
+    public ResponseEntity<PronosticoResponseDTO> obtenerMiPronostico(@PathVariable Long partidoId, Authentication authentication){
+        return ResponseEntity.ok(pronosticoService.obtenerPorUsuarioYPartido(authentication.getName(), partidoId));
+    }
+
     // listar pronósticos de un usuario en especifico
     @GetMapping("/usuario/{usuarioId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<PronosticoResponseDTO>> porUsuario(@PathVariable Long usuarioId){
         return ResponseEntity.ok(pronosticoService.listarPorUsuario(usuarioId));
+    }
+
+    @GetMapping("/mis-pronosticos")
+    public ResponseEntity<List<PronosticoResponseDTO>> misPronosticos(Authentication authentication){
+        return ResponseEntity.ok(pronosticoService.listarPorUsuarioEmail(authentication.getName()));
     }
 
     // listar pronósticos de un partido en especifico

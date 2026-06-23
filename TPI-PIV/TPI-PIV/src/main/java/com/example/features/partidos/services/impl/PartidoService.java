@@ -75,6 +75,14 @@ public class PartidoService implements IPartidoService {
     }
 
     @Override
+    public List<PartidoResponseDTO> listarPorEstado(EstadoPartido estado){
+        List<Partido> partidos = partidoRepository.findByEstado(estado);
+        return partidos.stream()
+                .map(PartidoMapper::toResponseDTO)
+                .toList();
+    }
+
+    @Override
     public PartidoResponseDTO actualizarPartido(Long id, PartidoUpdateDTO dto){
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
@@ -170,7 +178,6 @@ public class PartidoService implements IPartidoService {
         }
         partidoRepository.delete(partido);
     }
-
 
     // metodos helpers
     private void actualizarEstadoFecha(Fecha fecha){

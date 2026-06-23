@@ -3,7 +3,6 @@ package com.example.features.grupos.models;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;
-
 import com.example.features.miembrosgrupos.models.MiembroGrupo;
 
 @Entity
@@ -11,8 +10,8 @@ import com.example.features.miembrosgrupos.models.MiembroGrupo;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Grupo {
 
+public class Grupo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
