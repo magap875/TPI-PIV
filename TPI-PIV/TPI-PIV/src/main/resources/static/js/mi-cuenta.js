@@ -3,17 +3,44 @@ let misPronosticos = [];
 let filtroActual = "todas";
 let usuarioActualId = null;
 let usuarioActual = null;
+let rankingGlobal = [];
 
 function pluralizar(cantidad, singular, plural) {
     return cantidad === 1 ? singular : plural;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    cargarUsuarioActual();
+    mostrarSpinnerHeaderPerfil();
+
+    await cargarRankingGlobal();
+    await cargarUsuarioActual();
+
     await cargarPartidos();
     await cargarMisPronosticos();
     cargarMisGrupos();
 });
+
+function mostrarSpinner(contenedorId) {
+    const contenedor = document.getElementById(contenedorId);
+    if (!contenedor) return;
+
+    contenedor.innerHTML = `
+        <div class="col-span-full flex items-center justify-center py-8">
+            <div class="w-6 h-6 border-2 border-[#2a2a2a] border-t-[#05AC2E] rounded-full animate-spin"></div>
+        </div>
+    `;
+}
+
+
+function mostrarSpinnerHeaderPerfil() {
+    const nombreEl = document.getElementById("nombre-perfil");
+    const puntosEl = document.getElementById("puntos-perfil");
+    const apuestasEl = document.getElementById("apuestas-perfil");
+
+    if (nombreEl) nombreEl.textContent = "...";
+    if (puntosEl) puntosEl.textContent = "—";
+    if (apuestasEl) apuestasEl.textContent = "—";
+}
 
 async function cargarUsuarioActual() {
     const token = localStorage.getItem("accessToken");
@@ -21,11 +48,7 @@ async function cargarUsuarioActual() {
     if (!token) return;
 
     try {
-        const res = await fetch(`${API_URL}/api/usuarios/me`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await fetchConToken(`${API_URL}/api/usuarios/me`);
 
         if (!res.ok) throw new Error("Error al obtener usuario");
 
@@ -85,9 +108,14 @@ function actualizarHeaderPerfil(usuario) {
     const puntosEl = document.getElementById("puntos-perfil");
     if (puntosEl) puntosEl.textContent = usuario.puntosTotales ?? 0;
 
-    // ranking: pendiente de backend
-    // const rankingEl = document.getElementById("ranking-perfil");
-    // if (rankingEl) rankingEl.textContent = "-";
+    const posicion = rankingGlobal.findIndex(u => u.id === usuario.id);
+
+    const rankingEl = document.getElementById("ranking-perfil");
+    if (rankingEl) {
+        const posicion = rankingGlobal.findIndex(u => u.id === usuario.id);
+        rankingEl.textContent =
+            posicion !== -1 ? `#${posicion + 1}` : "-";
+    }
 }
 
 function actualizarApuestasPerfil() {
@@ -117,12 +145,10 @@ async function cargarMisPronosticos() {
 
     if (!token) return;
 
+    mostrarSpinner("mis-apuestas-container");
+
     try {
-        const res = await fetch(`${API_URL}/api/pronosticos/mis-pronosticos`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await fetchConToken(`${API_URL}/api/pronosticos/mis-pronosticos`);
 
         if (!res.ok) return;
 
@@ -364,8 +390,6 @@ function changeGoalMisApuesta(btn, equipo, delta) {
 }
 
 async function upsertMisApuesta(btn, partidoId) {
-    const token = localStorage.getItem("accessToken");
-
     const editor = btn.closest(".apuesta-editor");
 
     const local = Number(editor.getAttribute("data-goles-local")) || 0;
@@ -377,11 +401,10 @@ async function upsertMisApuesta(btn, partidoId) {
     };
 
     try {
-        const res = await fetch(`${API_URL}/api/pronosticos/${partidoId}`, {
+        const res = await fetchConToken(`${API_URL}/api/pronosticos/${partidoId}`, {
             method: "POST", // upsert
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(body)
         });
@@ -412,12 +435,10 @@ async function cargarMisGrupos() {
 
     if (!token) return;
 
+    mostrarSpinner("contenedor-grupos");
+
     try {
-        const res = await fetch(`${API_URL}/api/grupos/mis-grupos`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await fetchConToken(`${API_URL}/api/grupos/mis-grupos`);
 
         if (!res.ok) throw new Error("Error al obtener los grupos");
 
@@ -439,14 +460,8 @@ async function cargarMisGrupos() {
 }
 
 async function obtenerRankingGrupo(grupoId) {
-    const token = localStorage.getItem("accessToken");
-
     try {
-        const res = await fetch(`${API_URL}/api/grupos/${grupoId}/ranking`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await fetchConToken(`${API_URL}/api/grupos/${grupoId}/ranking`);
 
         if (!res.ok) return [];
 
@@ -593,13 +608,7 @@ async function toggleApuestasMiembro(filaId, usuarioId) {
         let pronosticos = cachePronosticosPorUsuario[usuarioId];
 
         if (!pronosticos) {
-            const token = localStorage.getItem("accessToken");
-
-            const res = await fetch(`${API_URL}/api/pronosticos/usuario/${usuarioId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const res = await fetchConToken(`${API_URL}/api/pronosticos/usuario/${usuarioId}`);
 
             if (!res.ok) throw new Error();
 
@@ -644,18 +653,30 @@ function renderApuestasMiembro(pronosticos) {
         if (exacto) badge = `<span class="badge-result badge-win">✔ Exac. (+3)</span>`;
         else if (tendencia) badge = `<span class="badge-result badge-win">✔ Tenden. (+1)</span>`;
 
-        return `
-            <div class="flex items-center justify-between gap-3 px-3 py-1.5 bg-[#0d0d0d] border border-[#1e1e1e] rounded-[3px]">
-                <span class="text-xs text-gray-400 truncate">
-                    ${partido.equipoLocal} vs ${partido.equipoVisitante}
-                </span>
+        const horaPartido = partido.fechaHorarioInicio
+            ? new Date(partido.fechaHorarioInicio).toLocaleString("es-AR", {
+                  day: "2-digit",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit"
+              })
+            : "";
 
-                <div class="flex items-center gap-3 shrink-0">
+        return `
+            <div class="flex flex-col gap-2 px-3 py-2.5 bg-[#0d0d0d] border border-[#1e1e1e] rounded-[3px]">
+                <div class="flex flex-col gap-0.5">
+                    <span class="title-font font-bold font-sm uppercase text-white">
+                        ${partido.equipoLocal} vs ${partido.equipoVisitante}
+                    </span>
+                    <span class="text-[10px] text-gray-600">
+                        ${partido.fechaNombre ?? ""}${partido.fechaNombre && horaPartido ? " · " : ""}${horaPartido}
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between gap-2">
                     <span class="text-xs text-gray-500">
                         Predijo ${p.golesLocalPronosticados}-${p.golesVisitantePronosticados}
-                    </span>
-                    <span class="text-xs text-gray-600">
-                        (${partido.golesLocal}-${partido.golesVisitante})
+                        <span class="text-gray-600">(${partido.golesLocal}-${partido.golesVisitante})</span>
                     </span>
                     ${badge}
                 </div>
@@ -671,8 +692,6 @@ function renderApuestasMiembro(pronosticos) {
 }
 
 async function salirDelGrupo(grupoId) {
-    const token = localStorage.getItem("accessToken");
-
     const confirmacion = await Swal.fire({
         icon: "warning",
         title: "¿Salir del grupo?",
@@ -685,11 +704,8 @@ async function salirDelGrupo(grupoId) {
     if (!confirmacion.isConfirmed) return;
 
     try {
-        const res = await fetch(`${API_URL}/api/grupos/${grupoId}/salir`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        const res = await fetchConToken(`${API_URL}/api/grupos/${grupoId}/salir`, {
+            method: "DELETE"
         });
 
         if (!res.ok) throw new Error();
@@ -735,14 +751,11 @@ async function abrirModalCrearGrupo() {
 }
 
 async function crearGrupo(nombre) {
-    const token = localStorage.getItem("accessToken");
-
     try {
-        const res = await fetch(`${API_URL}/api/grupos`, {
+        const res = await fetchConToken(`${API_URL}/api/grupos`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ nombre })
         });
@@ -801,14 +814,11 @@ async function abrirModalUnirseGrupo() {
 }
 
 async function unirseAGrupo(codigoInvitacion) {
-    const token = localStorage.getItem("accessToken");
-
     try {
-        const res = await fetch(`${API_URL}/api/grupos/unirse`, {
+        const res = await fetchConToken(`${API_URL}/api/grupos/unirse`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ codigoInvitacion })
         });
@@ -911,8 +921,6 @@ function salirDeModoEdicion() {
 }
 
 async function guardarDatosPerfil() {
-    const token = localStorage.getItem("accessToken");
-
     const inputNombre = document.getElementById("input-nombre");
     const inputPass = document.getElementById("input-pass");
 
@@ -936,11 +944,10 @@ async function guardarDatosPerfil() {
     if (passwordCambio) body.contraseña = nuevaPassword;
 
     try {
-        const res = await fetch(`${API_URL}/api/usuarios/me`, {
+        const res = await fetchConToken(`${API_URL}/api/usuarios/me`, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(body)
         });
@@ -974,4 +981,90 @@ async function guardarDatosPerfil() {
             text: err.message
         });
     }
+}
+
+async function cargarRankingGlobal() {
+    try {
+        const res = await fetch(`${API_URL}/api/rankings/global`);
+        const result = await res.json();
+
+        const ranking = result.data ?? result;
+
+        renderRankingGlobal(ranking);
+        rankingGlobal = ranking;
+        
+        if (usuarioActual) {
+            actualizarHeaderPerfil(usuarioActual);
+        }
+
+    } catch (e) {
+        console.error("Error cargando ranking global", e);
+    }
+}
+
+function renderRankingGlobal(ranking) {
+    const container = document.getElementById("ranking-global-container");
+    if (!container) return;
+
+    if (!ranking.length) {
+        container.innerHTML = `
+            <div class="px-5 py-4 text-center text-gray-500">
+                No hay datos de ranking.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = ranking.map((u, index) => {
+
+        const posicion = index + 1;
+
+        let medalla = "";
+        if (posicion === 1) medalla = "🥇";
+        else if (posicion === 2) medalla = "🥈";
+        else if (posicion === 3) medalla = "🥉";
+        else medalla = `#${posicion}`;
+
+        const esUsuario = u.id === usuarioActualId;
+
+        return `
+            <div class="grid grid-cols-12 items-center px-5 py-3 border-b border-[#1e1e1e] rank-row
+                ${esUsuario ? "bg-[#05AC2E0A] border-[#05AC2E22]" : ""}
+            ">
+
+                <span class="col-span-1 text-sm font-bold
+                    ${posicion === 1 ? "text-yellow-500" :
+                      posicion === 2 ? "text-gray-400" :
+                      posicion === 3 ? "text-[#cd7f32]" :
+                      "text-gray-600"}
+                ">
+                    ${medalla}
+                </span>
+
+                <div class="col-span-7 flex items-center gap-3">
+                    <div class="avatar"
+                        style="width:30px;height:30px;font-size:12px;
+                        ${esUsuario ? "" : "background:#1a1a1a; border-color:#333; color:#aaa;"}
+                        ">
+                        ${u.nombre.split(" ").map(n => n[0]).slice(0,2).join("").toUpperCase()}
+                    </div>
+
+                    <span class="text-sm ${esUsuario ? "text-white font-semibold" : "text-gray-400"}">
+                        ${u.nombre}
+                        ${esUsuario ? `<span class="section-badge ml-2">Tú</span>` : ""}
+                    </span>
+                </div>
+
+                <span class="col-span-2 text-center text-sm text-gray-400">
+                    ${u.cantidadResultadosExactos}
+                </span>
+
+                <span class="col-span-2 text-right font-bold text-sm
+                    ${esUsuario ? "text-[#05AC2E]" : "text-gray-400"}
+                ">
+                    ${u.puntosTotales} pts
+                </span>
+            </div>
+        `;
+    }).join("");
 }

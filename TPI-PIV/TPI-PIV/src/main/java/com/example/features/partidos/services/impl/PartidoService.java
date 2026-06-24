@@ -14,10 +14,10 @@ import com.example.features.partidos.dtos.response.PartidoResponseDTO;
 import com.example.features.partidos.mappers.PartidoMapper;
 import com.example.features.partidos.models.EstadoPartido;
 import com.example.features.partidos.models.Partido;
+import com.example.features.partidos.models.ResultadoTendencia;
 import com.example.features.partidos.repositories.PartidoRepository;
 import com.example.features.partidos.services.interfaces.IPartidoService;
 import com.example.features.pronosticos.models.Pronostico;
-import com.example.features.pronosticos.models.ResultadoTendencia;
 import com.example.features.users.models.Usuario;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -155,6 +155,8 @@ public class PartidoService implements IPartidoService {
         fechaRepository.save(fecha);
         calcularPuntos(saved);
 
+        System.out.println(partido.getResultadoTendencia());
+
         return PartidoMapper.toResponseDTO(saved);
     }
 
@@ -227,7 +229,7 @@ public class PartidoService implements IPartidoService {
             predicho = ResultadoTendencia.VISITANTE;
         } else {
             predicho = ResultadoTendencia.EMPATE;
-        }
+        }                
 
         return predicho == partido.getResultadoTendencia();
     }

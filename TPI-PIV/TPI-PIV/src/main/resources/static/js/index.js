@@ -4,8 +4,15 @@ let todasLasFechas = [];
 let fechaSeleccionada = null;
 let estadoSeleccionado = "POR_JUGARSE";
 let todosLosPartidos = [];
+let usuarioActualId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+        ocultarSeccionesPrivadas();
+    }
+
     await cargarTodosLosPartidos();
 
     cargarNavbar();
@@ -13,7 +20,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     initFiltroEstados();
     cargarPreviewGrupo();
     cargarPreviewApuestas();
+    cargarRankingGlobal();
 });
+
+function mostrarSpinner(contenedorId) {
+    const contenedor = document.getElementById(contenedorId);
+    if (!contenedor) return;
+
+    contenedor.innerHTML = `
+        <div class="flex items-center justify-center py-8 col-span-full">
+            <div class="w-6 h-6 border-2 border-[#2a2a2a] border-t-[#05AC2E] rounded-full animate-spin"></div>
+        </div>
+    `;
+}
+
+function ocultarSeccionesPrivadas() {
+    const previewGrupo = document.getElementById("preview-grupo");
+    const previewApuestas = document.getElementById("preview-apuestas");
+
+    if (previewGrupo) {
+        previewGrupo.innerHTML = `
+            <p class="text-sm text-gray-500">
+                Iniciá sesión para ver tus grupos.
+            </p>
+        `;
+    }
+
+    if (previewApuestas) {
+        previewApuestas.innerHTML = `
+            <p class="text-sm text-gray-500">
+                Iniciá sesión para ver tus apuestas.
+            </p>
+        `;
+    }
+}
 
 // navbar
 async function cargarNavbar() {
@@ -32,7 +72,11 @@ async function cargarNavbar() {
         if (!res.ok) throw new Error();
 
         const result = await res.json();
-        mostrarNavbarAutenticado(result.data);
+        const usuario = result.data;
+
+        usuarioActualId = usuario.id ?? null;
+
+        mostrarNavbarAutenticado(usuario);
 
     } catch {
         cerrarSesion();
@@ -77,6 +121,8 @@ function mostrarNavbarAutenticado(usuario) {
 
 // carga y render de fechas
 async function cargarFechas() {
+    mostrarSpinner("lista-fechas");
+
     try {
         const res = await fetch(`${API_URL}/api/fechas`);
         const result = await res.json();
@@ -141,6 +187,8 @@ function initFiltroEstados() {
 
 // carga de partidos
 async function cargarPartidos() {
+    mostrarSpinner("contenedor-partidos");
+
     try {
         let url = `${API_URL}/api/partidos/estado/${estadoSeleccionado}`;
 
@@ -203,7 +251,6 @@ async function renderPartidos(partidos=[]) {
             miPronostico = await obtenerMiPronostico(p.id);
         }
 
-        console.log(p.id, miPronostico);
         const golesLocal = miPronostico?.golesLocalPronosticados ?? 0;
         const golesVisitante = miPronostico?.golesVisitantePronosticados ?? 0;
         const textoBoton = miPronostico ? "Editar apuesta" : "Realizar apuesta";
@@ -356,8 +403,14 @@ function enviarApuesta(btn, partidoId) {
     if (!token) {
         Swal.fire({
             icon: "warning",
-            title: "Tenés que iniciar sesión para poder apostar."
+            title: "Tenés que iniciar sesión para poder apostar.",
+            confirmButtonText: "Iniciar sesión"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "../static/html/login.html";
+            }
         });
+
         return;
     }
 
@@ -402,7 +455,16 @@ function enviarApuesta(btn, partidoId) {
 async function cargarPreviewGrupo() {
     const token = localStorage.getItem("accessToken");
 
-    if (!token) return;
+    if (!token) {
+        document.getElementById("preview-grupo").innerHTML = `
+            <p class="text-sm text-gray-500">
+                Iniciá sesión para ver tus grupos.
+            </p>
+        `;
+        return;
+    }
+
+    mostrarSpinner("preview-grupo");
 
     try {
         const res = await fetch(`${API_URL}/api/grupos/mis-grupos`, {
@@ -470,7 +532,16 @@ function renderPreviewGrupo(grupo, ranking) {
 async function cargarPreviewApuestas() {
     const token = localStorage.getItem("accessToken");
 
-    if (!token) return;
+    if (!token) {
+        document.getElementById("preview-apuestas").innerHTML = `
+            <p class="text-sm text-gray-500">
+                Iniciá sesión para ver tus apuestas.
+            </p>
+        `;
+        return;
+    }
+
+    mostrarSpinner("preview-apuestas");
 
     try {
         const res = await fetch(`${API_URL}/api/pronosticos/mis-pronosticos`, {
@@ -540,3 +611,79 @@ async function cargarTodosLosPartidos() {
         console.error(e);
     }
 }
+
+
+async function cargarRankingGlobal() {
+    mostrarSpinner("ranking-global-lista");
+
+    try {
+        const res = await fetch(`${API_URL}/api/rankings/global`);
+
+        if (!res.ok) throw new Error();
+
+        const ranking = await res.json();
+
+        renderRankingGlobal(ranking);
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function renderRankingGlobal(ranking = []) {
+    const lista = document.getElementById("ranking-global-lista");
+
+    if (!lista) return;
+
+    if (!ranking.length) {
+        lista.innerHTML = `
+            <li class="text-gray-500 text-center text-xs py-2">
+                Todavía no hay ranking para mostrar.
+            </li>
+        `;
+        return;
+    }
+
+    const top3 = ranking.slice(0, 3);
+
+    const medalla = (index) => {
+        if (index === 0) return "🥇";
+        if (index === 1) return "🥈";
+        if (index === 2) return "🥉";
+        return "";
+    };
+
+    const filaHTML = (usuario, index, claseExtra = "") => {
+        const esUsuarioActual = usuario.id === usuarioActualId;
+
+        return `
+            <li class="flex items-center justify-between ${claseExtra} ${esUsuarioActual ? "text-white font-semibold" : ""}">
+                <span class="${esUsuarioActual ? "text-[#05AC2E]" : "text-gray-600"}">
+                    ${medalla(index) || `#${index + 1}`}
+                </span>
+                <span>${usuario.nombre}</span>
+                <span class="${esUsuarioActual ? "text-[#05AC2E]" : ""} font-bold text-xs">
+                    ${usuario.puntosTotales ?? 0} pts
+                </span>
+            </li>
+        `;
+    };
+
+    let html = top3.map((u, i) => filaHTML(u, i)).join("");
+
+    if (usuarioActualId) {
+        const posicionPropia = ranking.findIndex(u => u.id === usuarioActualId);
+        const estaEnTop3 = posicionPropia >= 0 && posicionPropia < 3;
+
+        if (!estaEnTop3 && posicionPropia >= 0) {
+            html += filaHTML(
+                ranking[posicionPropia],
+                posicionPropia,
+                "border-t border-[#222] pt-2 mt-2"
+            );
+        }
+    }
+
+    lista.innerHTML = html;
+}
+

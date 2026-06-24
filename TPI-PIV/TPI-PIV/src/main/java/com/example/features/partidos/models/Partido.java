@@ -7,7 +7,6 @@ import java.util.*;
 import com.example.features.equipos.models.Equipo;
 import com.example.features.fechas.models.Fecha;
 import com.example.features.pronosticos.models.Pronostico;
-import com.example.features.pronosticos.models.ResultadoTendencia;
 
 @Entity
 @Getter
@@ -39,7 +38,6 @@ public class Partido {
     private Integer golesVisitante;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ResultadoTendencia resultadoTendencia;
 
     @ManyToOne
