@@ -24,11 +24,13 @@ form.addEventListener("submit", async (event) => {
             });
             return;
         }
-
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+       
         Swal.fire({
             icon: "success",
             title: "¡Bienvenido a SevenBets!",
-            text:  "Iniciaste sesión correctamente.",
+            text: "Iniciaste sesión correctamente.",
             confirmButtonText: "Continuar"
         }).then(() => {
             window.location.href = "../index.html";
@@ -36,9 +38,9 @@ form.addEventListener("submit", async (event) => {
 
     } catch (error) {
         Swal.fire({
-            icon:  "error",
+            icon: "error",
             title: "Ups...",
-            text:  "Ocurrió un error inesperado."
+            text: "Ocurrió un error inesperado."
         });
     }
 });

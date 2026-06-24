@@ -27,7 +27,6 @@ public class EquipoController {
     private final EquipoService equipoService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EquipoResponseDTO> crear(@Valid @RequestBody EquipoCreateDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(equipoService.crear(dto));
     }
@@ -43,14 +42,13 @@ public class EquipoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         equipoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+
     public ResponseEntity<EquipoResponseDTO> actualizarEquipo(@PathVariable Long id, @RequestBody EquipoUpdateDTO dto) {
         return ResponseEntity.ok(equipoService.actualizarEquipo(id, dto));
     }

@@ -1,12 +1,12 @@
-package com.example.features.rankings.services.interfaces;
+// package com.example.features.rankings.services.interfaces;
 
-import java.util.List;
+// import java.util.List;
 
-import com.example.features.rankings.dtos.RankingResponseDTO;
+// import com.example.features.rankings.dtos.RankingResponseDTO;
 
-public interface IRankingService {
+// public interface IRankingService {
 
-    List<RankingResponseDTO> rankingGlobal();
+//     List<RankingResponseDTO> rankingGlobal();
 
-    List<RankingResponseDTO> rankingGrupo(Long grupoId);
-}
+//     List<RankingResponseDTO> rankingGrupo(Long grupoId);
+// }
