@@ -2,7 +2,7 @@ package com.example.features.partidos.dtos.response;
 
 import java.time.LocalDateTime;
 import com.example.features.partidos.models.EstadoPartido;
-import com.example.features.pronosticos.models.ResultadoTendencia;
+import com.example.features.partidos.models.ResultadoTendencia;
 
 public record PartidoResponseDTO(
         Long id,

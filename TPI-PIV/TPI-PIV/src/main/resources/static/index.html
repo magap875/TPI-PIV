@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/alertas.css" />
 
     <style>
         body { font-family: "Inter", sans-serif; }
@@ -151,11 +152,6 @@
 </head>
 
 <body class="bg-[#0E0E0E] text-white min-h-screen flex flex-col">
-
-    <!-- -------------------------------------------------------------------- -->
-    <!-- EL INICIA SESION O REGISTRARSE CAMBIA A MI CUENTA - CERRAR SESION -->
-    <!-- -------------------------------------------------------------------- -->
-
     <nav class="bg-[#111111] border-b border-[#222]">
         <div class="max-w-[1400px] mx-auto h-20 flex items-center justify-between px-6 md:px-10">
             <div class="title-font text-3xl font-bold tracking-wider text-white">
@@ -174,22 +170,21 @@
     <div class="bg-[#111111] border-b border-[#1a1a1a] overflow-hidden py-2">
         <div class="flex">
             <div class="ticker-track flex gap-10 whitespace-nowrap text-xs text-gray-500 font-medium">
-                <span>⚽ <span class="text-[#05AC2E]">FECHA 3</span> · Disponible</span>
+                <span>⚽ <span class="text-[#05AC2E]">Fechas</span> · Disponibles</span>
                 <span>🏆 <span class="text-white">Mundial 2026</span> · En curso</span>
                 <span class="text-[#05AC2E]">Apostá ahora y ganá</span>
-                <span>📅 Cierre de apuestas: <span class="text-white">lun. 10 jul. 19:00</span></span>
+                <span>📅 Cierre de apuestas: <span class="text-white">30 min. pre-partido</span></span>
                 <span>🥇 Ranking Global actualizado</span>
-                <span>⚽ <span class="text-[#05AC2E]">FECHA 3</span> · Disponible</span>
+                <span>⚽ <span class="text-[#05AC2E]">Fechas</span> · Disponibles</span>
                 <span>🏆 <span class="text-white">Mundial 2026</span> · En curso</span>
                 <span class="text-[#05AC2E]">Apostá ahora y ganá</span>
-                <span>📅 Cierre de apuestas: <span class="text-white">lun. 10 jul. 19:00</span></span>
+                <span>📅 Cierre de apuestas: <span class="text-white">30 min. pre-partido</span></span>
                 <span>🥇 Ranking Global actualizado</span>
             </div>
         </div>
     </div>
 
     <div class="max-w-[1400px] mx-auto w-full flex flex-1 gap-0 px-0 md:px-6 py-6 md:gap-5">
-
         <aside class="hidden lg:flex flex-col w-56 shrink-0">
             <div class="relative mb-5">
                 <input
@@ -203,17 +198,11 @@
             </div>
             <div>
                 <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-3">Partidos y Fechas</p>
-                <ul class="space-y-1 text-sm text-gray-400">
-                    <li class="sidebar-item active flex items-center gap-2 py-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#05AC2E] inline-block"></span>
-                        Fecha 1 · Mundial 2026
-                    </li>
-                </ul>
+                <ul id="lista-fechas" class="space-y-1 text-sm text-gray-400"></ul>
             </div>
         </aside>
 
         <main class="flex-1 min-w-0 flex flex-col gap-4">
-
             <div class="rounded-[3px] overflow-hidden border border-[#222] bg-[#111] mb-2" style="aspect-ratio: 16/7;">
                 <video
                     src="../static/images/video1.mp4"
@@ -227,348 +216,86 @@
 
             <div class="flex items-center justify-between mb-1">
                 <div class="flex items-center gap-3">
-                    <span class="section-badge">Fecha 1</span>
-                    <h1 class="title-font text-2xl font-bold uppercase tracking-wide">Mundial 2026</h1>
+                    <span id="fecha-badge" class="section-badge"></span>
+                    <h1 class="title-font text-2xl font-bold uppercase tracking-wide">
+                        Mundial 2026
+                    </h1>
                 </div>
-                <span class="text-xs text-gray-500">6 partidos disponibles</span>
+                <span id="partidos-count" class="text-xs text-gray-500"></span>
             </div>
 
-            <div class="match-card bg-[#161616] border border-[#222] rounded-[3px] overflow-hidden">
-                <div class="flex items-start gap-4 px-4 pt-4 pb-3">
-                    <div class="flex flex-col justify-center min-w-[130px]">
-                        <p class="text-[10px] text-gray-500 mb-1.5 font-medium">🌍 Mundial</p>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-lg">🇫🇷</span>
-                            <span class="title-font text-xl font-bold uppercase">Francia</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🇸🇳</span>
-                            <span class="title-font text-xl font-bold uppercase">Senegal</span>
-                        </div>
+            <div class="mb-4 flex items-center gap-3">
+                <span class="text-xs text-gray-500 uppercase tracking-widest">Filtrar por</span>
+                    <div id="estado-filtro" class="flex gap-2">
+                        <button
+                            class="estado-tab px-3 py-1 text-xs rounded-[3px] border border-[#222] bg-[#111] text-gray-400 hover:border-[#05AC2E] hover:text-white transition"
+                            data-estado="POR_JUGARSE">
+                            Por jugarse
+                        </button>
+                        <button
+                            class="estado-tab px-3 py-1 text-xs rounded-[3px] border border-[#222] bg-[#111] text-gray-400 hover:border-[#05AC2E] hover:text-white transition"
+                            data-estado="EN_JUEGO">
+                            En juego
+                        </button>
+                        <button
+                            class="estado-tab px-3 py-1 text-xs rounded-[3px] border border-[#222] bg-[#111] text-gray-400 hover:border-[#05AC2E] hover:text-white transition"
+                            data-estado="FINALIZADO">
+                            Finalizado
+                        </button>
                     </div>
-                    <div class="hidden sm:block w-px self-stretch bg-[#222] mx-2"></div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <p class="text-xs text-gray-500">¿Cuántos goles mete cada equipo?</p>
-                        <div class="flex flex-col gap-2">
-                            <div class="team-goal-row">
-                                <span class="text-base">🇫🇷</span>
-                                <span class="team-label">Francia</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                            <div class="team-goal-row">
-                                <span class="text-base">🇸🇳</span>
-                                <span class="team-label">Senegal</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="px-4 pb-3 flex justify-end">
-                    <button class="bg-[#05AC2E] hover:bg-white hover:text-[#111] text-white text-xs font-semibold px-5 py-2 rounded-[3px] transition-all duration-200 title-font uppercase tracking-wide">
-                        Realizar apuesta
-                    </button>
-                </div>
-                <div class="green-bar"></div>
             </div>
-
-            <div class="match-card bg-[#161616] border border-[#222] rounded-[3px] overflow-hidden">
-                <div class="flex items-start gap-4 px-4 pt-4 pb-3">
-                    <div class="flex flex-col justify-center min-w-[130px]">
-                        <p class="text-[10px] text-gray-500 mb-1.5 font-medium">🌍 Mundial</p>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-lg">🇦🇷</span>
-                            <span class="title-font text-xl font-bold uppercase">Argentina</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🇩🇿</span>
-                            <span class="title-font text-xl font-bold uppercase">Algeria</span>
-                        </div>
-                    </div>
-                    <div class="hidden sm:block w-px self-stretch bg-[#222] mx-2"></div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <p class="text-xs text-gray-500">¿Cuántos goles mete cada equipo?</p>
-                        <div class="flex flex-col gap-2">
-                            <div class="team-goal-row">
-                                <span class="text-base">🇦🇷</span>
-                                <span class="team-label">Argentina</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                            <div class="team-goal-row">
-                                <span class="text-base">🇩🇿</span>
-                                <span class="team-label">Algeria</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="px-4 pb-3 flex justify-end">
-                    <button class="bg-[#05AC2E] hover:bg-white hover:text-[#111] text-white text-xs font-semibold px-5 py-2 rounded-[3px] transition-all duration-200 title-font uppercase tracking-wide">
-                        Realizar apuesta
-                    </button>
-                </div>
-                <div class="green-bar"></div>
-            </div>
-
-            <div class="match-card bg-[#161616] border border-[#222] rounded-[3px] overflow-hidden">
-                <div class="flex items-start gap-4 px-4 pt-4 pb-3">
-                    <div class="flex flex-col justify-center min-w-[130px]">
-                        <p class="text-[10px] text-gray-500 mb-1.5 font-medium">🌍 Mundial</p>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-lg">🇪🇸</span>
-                            <span class="title-font text-xl font-bold uppercase">España</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🇨🇻</span>
-                            <span class="title-font text-xl font-bold uppercase">Cabo Verde</span>
-                        </div>
-                    </div>
-                    <div class="hidden sm:block w-px self-stretch bg-[#222] mx-2"></div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <p class="text-xs text-gray-500">¿Cuántos goles mete cada equipo?</p>
-                        <div class="flex flex-col gap-2">
-                            <div class="team-goal-row">
-                                <span class="text-base">🇪🇸</span>
-                                <span class="team-label">España</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                            <div class="team-goal-row">
-                                <span class="text-base">🇨🇻</span>
-                                <span class="team-label">Cabo Verde</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="px-4 pb-3 flex justify-end">
-                    <button class="bg-[#05AC2E] hover:bg-white hover:text-[#111] text-white text-xs font-semibold px-5 py-2 rounded-[3px] transition-all duration-200 title-font uppercase tracking-wide">
-                        Realizar apuesta
-                    </button>
-                </div>
-                <div class="green-bar"></div>
-            </div>
-
-            <div class="match-card bg-[#161616] border border-[#222] rounded-[3px] overflow-hidden">
-                <div class="flex items-start gap-4 px-4 pt-4 pb-3">
-                    <div class="flex flex-col justify-center min-w-[130px]">
-                        <p class="text-[10px] text-gray-500 mb-1.5 font-medium">🌍 Mundial</p>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-lg">🇧🇷</span>
-                            <span class="title-font text-xl font-bold uppercase">Brasil</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🇲🇦</span>
-                            <span class="title-font text-xl font-bold uppercase">Marruecos</span>
-                        </div>
-                    </div>
-                    <div class="hidden sm:block w-px self-stretch bg-[#222] mx-2"></div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <p class="text-xs text-gray-500">¿Cuántos goles mete cada equipo?</p>
-                        <div class="flex flex-col gap-2">
-                            <div class="team-goal-row">
-                                <span class="text-base">🇧🇷</span>
-                                <span class="team-label">Brasil</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                            <div class="team-goal-row">
-                                <span class="text-base">🇲🇦</span>
-                                <span class="team-label">Marruecos</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="px-4 pb-3 flex justify-end">
-                    <button class="bg-[#05AC2E] hover:bg-white hover:text-[#111] text-white text-xs font-semibold px-5 py-2 rounded-[3px] transition-all duration-200 title-font uppercase tracking-wide">
-                        Realizar apuesta
-                    </button>
-                </div>
-                <div class="green-bar"></div>
-            </div>
-
-            <div class="match-card bg-[#161616] border border-[#222] rounded-[3px] overflow-hidden">
-                <div class="flex items-start gap-4 px-4 pt-4 pb-3">
-                    <div class="flex flex-col justify-center min-w-[130px]">
-                        <p class="text-[10px] text-gray-500 mb-1.5 font-medium">🌍 Mundial</p>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-lg">🇩🇪</span>
-                            <span class="title-font text-xl font-bold uppercase">Alemania</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🇨🇼</span>
-                            <span class="title-font text-xl font-bold uppercase">Curazao</span>
-                        </div>
-                    </div>
-                    <div class="hidden sm:block w-px self-stretch bg-[#222] mx-2"></div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <p class="text-xs text-gray-500">¿Cuántos goles mete cada equipo?</p>
-                        <div class="flex flex-col gap-2">
-                            <div class="team-goal-row">
-                                <span class="text-base">🇩🇪</span>
-                                <span class="team-label">Alemania</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                            <div class="team-goal-row">
-                                <span class="text-base">🇨🇼</span>
-                                <span class="team-label">Curazao</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="px-4 pb-3 flex justify-end">
-                    <button class="bg-[#05AC2E] hover:bg-white hover:text-[#111] text-white text-xs font-semibold px-5 py-2 rounded-[3px] transition-all duration-200 title-font uppercase tracking-wide">
-                        Realizar apuesta
-                    </button>
-                </div>
-                <div class="green-bar"></div>
-            </div>
-
-            <div class="match-card bg-[#161616] border border-[#222] rounded-[3px] overflow-hidden">
-                <div class="flex items-start gap-4 px-4 pt-4 pb-3">
-                    <div class="flex flex-col justify-center min-w-[130px]">
-                        <p class="text-[10px] text-gray-500 mb-1.5 font-medium">🌍 Mundial</p>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-lg">🇶🇦</span>
-                            <span class="title-font text-xl font-bold uppercase">Qatar</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🇨🇭</span>
-                            <span class="title-font text-xl font-bold uppercase">Suiza</span>
-                        </div>
-                    </div>
-                    <div class="hidden sm:block w-px self-stretch bg-[#222] mx-2"></div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <p class="text-xs text-gray-500">¿Cuántos goles mete cada equipo?</p>
-                        <div class="flex flex-col gap-2">
-                            <div class="team-goal-row">
-                                <span class="text-base">🇶🇦</span>
-                                <span class="team-label">Qatar</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                            <div class="team-goal-row">
-                                <span class="text-base">🇨🇭</span>
-                                <span class="team-label">Suiza</span>
-                                <button class="goal-stepper" onclick="changeGoal(this, -1)">−</button>
-                                <div class="goal-display">0</div>
-                                <button class="goal-stepper" onclick="changeGoal(this, 1)">+</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="px-4 pb-3 flex justify-end">
-                    <button class="bg-[#05AC2E] hover:bg-white hover:text-[#111] text-white text-xs font-semibold px-5 py-2 rounded-[3px] transition-all duration-200 title-font uppercase tracking-wide">
-                        Realizar apuesta
-                    </button>
-                </div>
-                <div class="green-bar"></div>
-            </div>
-
+            <div id="contenedor-partidos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </main>
 
         <aside class="hidden xl:flex flex-col w-56 shrink-0 gap-5">
 
-            <div class="bg-[#161616] border border-[#222] rounded-[3px] p-4">
-                <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-3">Apuestas realizadas</p>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#05AC2E]"></span>
-                        Argentina <span class="ml-auto text-[#05AC2E] font-semibold text-xs">✔</span>
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-600">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#333]"></span>
-                        España vs Cabo Verde
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-600">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#333]"></span>
-                        Brasil vs Marruecos
-                    </li>
-                </ul>
-                <div class="mt-4 pt-3 border-t border-[#222] text-xs text-gray-600">
-                    3 / 6 partidos apostados
-                    <div class="mt-1.5 h-1 bg-[#222] rounded-full overflow-hidden">
-                        <div class="h-full bg-[#05AC2E] rounded-full" style="width: 50%"></div>
-                    </div>
-                </div>
+        <!-- Apuestas -->
+        <div class="bg-[#161616] border border-[#222] rounded-[3px] p-4">
+
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500">
+                    Mis apuestas
+                </p>
+
+                <a
+                    href="./html/mi-cuenta.html#pronosticos"
+                    class="text-[10px] text-[#05AC2E] hover:underline"
+                >
+                    Ver todas
+                </a>
             </div>
 
-            <div class="bg-[#161616] border border-[#222] rounded-[3px] p-4">
-                <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-3">Mi Grupo</p>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li class="flex items-center justify-between">
-                        <span>🥇 Rodrigo</span>
-                        <span class="text-[#05AC2E] font-bold text-xs">48 pts</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                        <span>🥈 Vos</span>
-                        <span class="text-white font-bold text-xs">41 pts</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                        <span>🥉 Mati</span>
-                        <span class="text-gray-500 text-xs">36 pts</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                        <span class="text-gray-600">Lucas</span>
-                        <span class="text-gray-600 text-xs">29 pts</span>
-                    </li>
-                </ul>
-                <button class="mt-4 w-full py-2 text-xs font-semibold text-red-400 border border-red-900 rounded-[3px] hover:bg-red-900/20 transition">
-                    Salir del grupo
-                </button>
+            <div id="preview-apuestas">
+    
             </div>
 
-            <div class="bg-[#161616] border border-[#222] rounded-[3px] p-4">
-                <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-3">Ranking Global</p>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li class="flex items-center justify-between">
-                        <span class="text-gray-600">#1</span>
-                        <span>NachoB</span>
-                        <span class="text-[#05AC2E] font-bold text-xs">112 pts</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                        <span class="text-gray-600">#2</span>
-                        <span>Tomi_10</span>
-                        <span class="text-xs">108 pts</span>
-                    </li>
-                    <li class="flex items-center justify-between">
-                        <span class="text-gray-600">#3</span>
-                        <span>LaGenia</span>
-                        <span class="text-xs">101 pts</span>
-                    </li>
-                    <li class="flex items-center justify-between border-t border-[#222] pt-2 mt-2">
-                        <span class="text-gray-600">#47</span>
-                        <span class="text-white">Vos</span>
-                        <span class="text-xs">41 pts</span>
-                    </li>
-                </ul>
+        </div>
+
+        <!-- Grupo -->
+        <div class="bg-[#161616] border border-[#222] rounded-[3px] p-4">
+
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500">
+                    Mis grupos
+                </p>
+
+                <a href="./html/mi-cuenta.html#grupos" class="text-[10px] text-[#05AC2E] hover:underline">Ver todos</a>
             </div>
+
+            <div id="preview-grupo">
+            </div>
+        </div>
+
+
+        <div class="bg-[#161616] border border-[#222] rounded-[3px] p-4">
+            <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-3">Ranking Global</p>
+            <ul id="ranking-global-lista" class="space-y-2 text-sm text-gray-400">
+            </ul>
+            <a href="./html/mi-cuenta.html" class="block text-center text-[10px] font-bold tracking-wide text-[#05AC2E] hover:text-white transition border-t border-[#222] mt-3 pt-3">
+                Ver más
+            </a>
+
+        </div>
 
             <div class="rounded-[3px] overflow-hidden border border-[#222] cursor-pointer group relative" style="position: sticky; top: 16px;">
                 <span class="absolute top-1.5 left-1.5 z-10 text-[9px] font-bold uppercase tracking-wider bg-black/60 text-gray-400 px-1.5 py-0.5 rounded-sm">Publicidad</span>
@@ -603,6 +330,9 @@
             }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../static/js/api.js" defer></script>
+    <script src="./js/index.js" defer></script>
 
 </body>
 </html>

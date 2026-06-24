@@ -5,21 +5,17 @@ import com.example.features.grupos.dtos.response.GrupoResponseDTO;
 import com.example.features.grupos.models.Grupo;
 
 public class GrupoMapper {
-
-    private GrupoMapper() {
+    private GrupoMapper(){
     }
 
     public static Grupo toEntity(GrupoRequestDTO dto) {
-
         Grupo grupo = new Grupo();
-
         grupo.setNombre(dto.nombre());
 
         return grupo;
     }
 
     public static GrupoResponseDTO toResponseDTO(Grupo grupo) {
-
         return new GrupoResponseDTO(
                 grupo.getId(),
                 grupo.getNombre(),

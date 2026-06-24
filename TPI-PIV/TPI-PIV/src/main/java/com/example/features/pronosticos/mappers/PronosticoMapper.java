@@ -12,8 +12,8 @@ public class PronosticoMapper {
                 p.getPartido().getId(),
                 p.getGolesLocalPronosticados(),
                 p.getGolesVisitantePronosticados(),
-                p.getResultadoTendencia(),
                 p.getPuntosObtenidos(),
+                p.getResultadoTendencia(),
                 p.getFechaCreacion()
         );
     }

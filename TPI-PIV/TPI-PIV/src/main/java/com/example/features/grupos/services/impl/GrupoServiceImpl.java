@@ -2,7 +2,7 @@ package com.example.features.grupos.services.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.grupos.dtos.request.GrupoRequestDTO;
 import com.example.features.grupos.dtos.response.GrupoResponseDTO;
 import com.example.features.grupos.mappers.GrupoMapper;
@@ -25,16 +25,14 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class GrupoServiceImpl implements IGrupoService {
-
     private final GrupoRepository grupoRepository;
     private final UsuarioRepository usuarioRepository;
     private final MiembroGrupoRepository miembroGrupoRepository;
 
     @Override
     public GrupoResponseDTO crearGrupo(GrupoRequestDTO dto, String emailUsuarioAutenticado) {
-
         Usuario usuarioCreador = usuarioRepository.findByEmail(emailUsuarioAutenticado)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         Grupo grupo = new Grupo();
         grupo.setNombre(dto.nombre());
@@ -46,7 +44,6 @@ public class GrupoServiceImpl implements IGrupoService {
         miembro.setUsuario(usuarioCreador);
         miembro.setGrupo(grupoGuardado);
         miembro.setFechaIngreso(LocalDateTime.now());
-
         miembroGrupoRepository.save(miembro);
 
         return GrupoMapper.toResponseDTO(grupoGuardado);
@@ -54,19 +51,18 @@ public class GrupoServiceImpl implements IGrupoService {
 
     @Override
     public MiembroGrupoResponseDTO unirseAGrupo(UnirseGrupoRequestDTO dto, String emailUsuarioAutenticado) {
-
         Usuario usuario = usuarioRepository.findByEmail(emailUsuarioAutenticado)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         Grupo grupo = grupoRepository.findByCodigoInvitacion(dto.codigoInvitacion())
-                .orElseThrow(() -> new RuntimeException("Código de invitación inválido"));
+                .orElseThrow(() -> new ResourceNotFoundException("Código de invitación inválido"));
 
         boolean yaEsMiembro = miembroGrupoRepository.existsByUsuarioIdAndGrupoId(
                 usuario.getId(),
                 grupo.getId());
 
         if (yaEsMiembro) {
-            throw new RuntimeException("El usuario ya pertenece a este grupo");
+            throw new ResourceNotFoundException("El usuario ya pertenece a este grupo");
         }
 
         MiembroGrupo miembro = new MiembroGrupo();
@@ -89,18 +85,16 @@ public class GrupoServiceImpl implements IGrupoService {
 
     @Override
     public GrupoResponseDTO obtenerGrupoPorId(Long id) {
-
         Grupo grupo = grupoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Grupo no encontrado"));
 
         return GrupoMapper.toResponseDTO(grupo);
     }
 
     @Override
     public List<MiembroGrupoResponseDTO> listarMiembrosDelGrupo(Long grupoId) {
-
         if (!grupoRepository.existsById(grupoId)) {
-            throw new RuntimeException("Grupo no encontrado");
+            throw new ResourceNotFoundException("Grupo no encontrado");
         }
 
         return miembroGrupoRepository.findByGrupoId(grupoId)
@@ -111,9 +105,8 @@ public class GrupoServiceImpl implements IGrupoService {
 
     @Override
     public List<MiembroGrupoResponseDTO> listarGruposDelUsuario(String emailUsuarioAutenticado) {
-
         Usuario usuario = usuarioRepository.findByEmail(emailUsuarioAutenticado)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         return miembroGrupoRepository.findByUsuarioId(usuario.getId())
                 .stream()
@@ -123,9 +116,8 @@ public class GrupoServiceImpl implements IGrupoService {
 
     @Override
     public List<UsuarioResponseDTO> rankingGrupo(Long grupoId) {
-
         if (!grupoRepository.existsById(grupoId)) {
-            throw new RuntimeException("Grupo no encontrado");
+            throw new ResourceNotFoundException("Grupo no encontrado");
         }
 
         return miembroGrupoRepository.findByGrupoId(grupoId)
@@ -147,19 +139,17 @@ public class GrupoServiceImpl implements IGrupoService {
 
     @Override
     public void salirDelGrupo(Long grupoId,String emailUsuarioAutenticado) {
-
         Usuario usuario = usuarioRepository.findByEmail(emailUsuarioAutenticado)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         MiembroGrupo miembro = miembroGrupoRepository
                 .findByUsuarioIdAndGrupoId(usuario.getId(), grupoId)
-                .orElseThrow(() -> new RuntimeException("El usuario no pertenece a este grupo"));
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario no pertenece a este grupo"));
 
         miembroGrupoRepository.delete(miembro);
     }
 
     private String generarCodigoInvitacion() {
-
         String codigo;
 
         do {

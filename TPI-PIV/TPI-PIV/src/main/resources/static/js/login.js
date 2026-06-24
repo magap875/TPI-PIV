@@ -2,7 +2,6 @@ const form = document.getElementById("loginForm");
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
-
     const email = document.getElementById("email").value;
     const contrasena = document.getElementById("contrasena").value;
 
@@ -24,9 +23,7 @@ form.addEventListener("submit", async (event) => {
             });
             return;
         }
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("refreshToken", data.data.refreshToken);
-       
+
         Swal.fire({
             icon: "success",
             title: "¡Bienvenido a SevenBets!",

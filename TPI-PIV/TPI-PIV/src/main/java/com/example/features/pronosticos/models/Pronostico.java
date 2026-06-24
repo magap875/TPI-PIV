@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 import com.example.features.partidos.models.Partido;
+import com.example.features.partidos.models.ResultadoTendencia;
 import com.example.features.users.models.Usuario;
 
 @Entity

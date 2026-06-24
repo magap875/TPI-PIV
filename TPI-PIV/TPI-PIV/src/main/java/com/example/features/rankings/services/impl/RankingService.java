@@ -1,36 +1,62 @@
 // package com.example.features.rankings.services.impl;
 
-// import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import com.example.features.pronosticos.models.Pronostico;
+import com.example.features.pronosticos.repositories.PronosticoRepository;
+import com.example.features.rankings.dtos.RankingResponseDTO;
+import com.example.features.rankings.services.interfaces.IRankingService;
+import com.example.features.users.models.Usuario;
+import com.example.features.users.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
-// import org.springframework.stereotype.Service;
+@Service
+@RequiredArgsConstructor
 
-// import com.example.config.exceptions.ResourceNotFoundException;
-// import com.example.features.grupos.repositories.GrupoRepository;
-// import com.example.features.rankings.dtos.RankingResponseDTO;
-// import com.example.features.rankings.services.interfaces.IRankingService;
-// import com.example.features.users.repositories.UsuarioRepository;
+public class RankingService implements IRankingService {
+    private final UsuarioRepository usuarioRepository;
+    private final PronosticoRepository pronosticoRepository;
 
-// import java.util.List;
+    @Override
+    public List<RankingResponseDTO> obtenerRankingGlobal() {
 
-// @Service
-// @AllArgsConstructor
-// public class RankingService implements IRankingService {
+        Map<Long, LocalDateTime> primeraFechaPorUsuario =
+                pronosticoRepository.findAll()
+                        .stream()
+                        .collect(Collectors.groupingBy(
+                                p -> p.getUsuario().getId(),
+                                Collectors.mapping(
+                                        Pronostico::getFechaCreacion,
+                                        Collectors.minBy(LocalDateTime::compareTo)
+                                )
+                        ))
+                        .entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                e -> e.getValue().orElse(LocalDateTime.MAX)
+                        ));
 
-//     private final UsuarioRepository usuarioRepository;
-//     private final GrupoRepository grupoRepository;
-
-//     @Override
-//     public List<RankingResponseDTO> rankingGlobal() {
-//         return usuarioRepository.obtenerRankingGlobal();
-//     }
-
-//     @Override
-//     public List<RankingResponseDTO> rankingGrupo(Long grupoId) {
-
-//         if (!grupoRepository.existsById(grupoId)) {
-//             throw new ResourceNotFoundException("Grupo no encontrado");
-//         }
-
-//         return usuarioRepository.obtenerRankingGrupo(grupoId);
-//     }
-// }
+        return usuarioRepository.findAll()
+                .stream()
+                .sorted(
+                        Comparator
+                                .comparing(Usuario::getPuntosTotales).reversed()
+                                .thenComparing(Usuario::getCantidadResultadosExactos, Comparator.reverseOrder())
+                                .thenComparing(u ->
+                                        primeraFechaPorUsuario.getOrDefault(u.getId(), LocalDateTime.MAX)
+                                )
+                )
+                .map(u -> new RankingResponseDTO(
+                        u.getId(),
+                        u.getNombre(),
+                        u.getPuntosTotales(),
+                        u.getCantidadResultadosExactos()
+                ))
+                .toList();
+    }
+}

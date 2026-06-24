@@ -6,7 +6,6 @@ import com.example.features.fechas.models.EstadoFecha;
 import com.example.features.fechas.models.Fecha;
 
 public class FechaMapper {
-
     public static Fecha toEntity(FechaCreateDTO dto) {
         Fecha fecha = new Fecha();
         fecha.setNombre(dto.nombre());

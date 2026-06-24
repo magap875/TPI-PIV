@@ -5,6 +5,7 @@ import com.example.features.partidos.dtos.request.PartidoCreateDTO;
 import com.example.features.partidos.dtos.request.PartidoUpdateDTO;
 import com.example.features.partidos.dtos.request.PartidoResultadoDTO;
 import com.example.features.partidos.dtos.response.PartidoResponseDTO;
+import com.example.features.partidos.models.EstadoPartido;
 
 public interface IPartidoService {
     PartidoResponseDTO crearPartido(PartidoCreateDTO dto);
@@ -15,4 +16,5 @@ public interface IPartidoService {
     PartidoResponseDTO cargarResultado(Long id, PartidoResultadoDTO dto);
     PartidoResponseDTO buscarPorId(Long id);
     void eliminarPartido(Long id);
+    List<PartidoResponseDTO> listarPorEstado(EstadoPartido estado);
 }

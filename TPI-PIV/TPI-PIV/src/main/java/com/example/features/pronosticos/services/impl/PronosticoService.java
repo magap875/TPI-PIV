@@ -1,6 +1,7 @@
 package com.example.features.pronosticos.services.impl;
 
 import com.example.features.partidos.models.Partido;
+import com.example.features.partidos.models.ResultadoTendencia;
 import com.example.config.exceptions.BadRequestException;
 import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.partidos.models.EstadoPartido;
@@ -9,7 +10,6 @@ import com.example.features.pronosticos.dtos.request.PronosticoRequestDTO;
 import com.example.features.pronosticos.dtos.response.PronosticoResponseDTO;
 import com.example.features.pronosticos.mappers.PronosticoMapper;
 import com.example.features.pronosticos.models.Pronostico;
-import com.example.features.pronosticos.models.ResultadoTendencia;
 import com.example.features.pronosticos.repositories.PronosticoRepository;
 import com.example.features.pronosticos.services.interfaces.IPronosticoService;
 import com.example.features.users.models.Usuario;
@@ -59,9 +59,9 @@ public class PronosticoService implements IPronosticoService {
             pronostico.setFechaCreacion(LocalDateTime.now());
         }
 
-        if (dto.golesLocalPronosticados() > dto.golesVisitantePronosticados()) {
+        if (dto.golesLocalPronosticados() > dto.golesVisitantePronosticados()){
             pronostico.setResultadoTendencia(ResultadoTendencia.LOCAL);
-        } else if (dto.golesLocalPronosticados() < dto.golesVisitantePronosticados()) {
+        } else if (dto.golesLocalPronosticados() < dto.golesVisitantePronosticados()){
             pronostico.setResultadoTendencia(ResultadoTendencia.VISITANTE);
         } else {
             pronostico.setResultadoTendencia(ResultadoTendencia.EMPATE);
@@ -72,7 +72,7 @@ public class PronosticoService implements IPronosticoService {
     }
 
     @Override
-    public List<PronosticoResponseDTO> listarPorUsuario(Long usuarioId) {
+    public List<PronosticoResponseDTO> listarPorUsuario(Long usuarioId){
         return pronosticoRepository.findByUsuarioId(usuarioId)
                 .stream()
                 .map(PronosticoMapper::toResponseDTO)
@@ -80,7 +80,7 @@ public class PronosticoService implements IPronosticoService {
     }
 
     @Override
-    public List<PronosticoResponseDTO> listarPorUsuarioEmail(String email) {
+    public List<PronosticoResponseDTO> listarPorUsuarioEmail(String email){
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
@@ -90,10 +90,20 @@ public class PronosticoService implements IPronosticoService {
                 .toList();
     }
 
-    //No se pueden ver los pronósticos de un partido hasta 30 minutos antes del inicio del mismo
+    @Override
+    public PronosticoResponseDTO obtenerPorUsuarioYPartido(String username, Long partidoId){
+        Usuario usuario = usuarioRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        return pronosticoRepository
+                .findByUsuarioIdAndPartidoId(usuario.getId(), partidoId)
+                .map(PronosticoMapper::toResponseDTO)
+                .orElse(null);
+    }
+
+    // no se pueden ver los pronósticos de un partido hasta 30 minutos antes del inicio del mismo
     @Override
     public List<PronosticoResponseDTO> listarPorPartido(Long partidoId) {
-
         Partido partido = partidoRepository.findById(partidoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
 

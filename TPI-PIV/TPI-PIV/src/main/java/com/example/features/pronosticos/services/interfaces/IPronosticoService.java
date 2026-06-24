@@ -9,4 +9,5 @@ public interface IPronosticoService{
     List<PronosticoResponseDTO> listarPorUsuario(Long usuarioId);
     List<PronosticoResponseDTO> listarPorPartido(Long partidoId);
     List<PronosticoResponseDTO> listarPorUsuarioEmail(String email);
+    PronosticoResponseDTO obtenerPorUsuarioYPartido(String username, Long partidoId);
 }

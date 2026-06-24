@@ -17,6 +17,7 @@ import com.example.features.partidos.dtos.request.PartidoCreateDTO;
 import com.example.features.partidos.dtos.request.PartidoResultadoDTO;
 import com.example.features.partidos.dtos.request.PartidoUpdateDTO;
 import com.example.features.partidos.dtos.response.PartidoResponseDTO;
+import com.example.features.partidos.models.EstadoPartido;
 import com.example.features.partidos.services.interfaces.IPartidoService;
 import lombok.RequiredArgsConstructor;
 
@@ -49,6 +50,11 @@ public class PartidoController {
                 return ResponseEntity.ok(BaseResponse.ok(partidoService.actualizarPartido(id, dto), "Partido actualizado correctamente"));
         }
 
+        @GetMapping("/fecha/{fechaId}")
+        public ResponseEntity<BaseResponse<List<PartidoResponseDTO>>> listarPorFecha(@PathVariable Long fechaId) {
+                return ResponseEntity.ok(BaseResponse.ok(partidoService.listarPorFecha(fechaId),"Partidos obtenidos correctamente"));
+        }
+
         @PatchMapping("/{id}/en-juego")
         @PreAuthorize("hasRole('ADMIN')")
         public ResponseEntity<BaseResponse<PartidoResponseDTO>> cambiarEstado(@PathVariable Long id){
@@ -66,5 +72,10 @@ public class PartidoController {
         public ResponseEntity<BaseResponse<Void>> eliminar(@PathVariable Long id){
                 partidoService.eliminarPartido(id);
                 return ResponseEntity.ok(BaseResponse.ok(null, "Partido eliminado correctamente"));
+        }
+
+        @GetMapping("/estado/{estado}")
+        public ResponseEntity<BaseResponse<List<PartidoResponseDTO>>> listarPorEstado(@PathVariable EstadoPartido estado){
+                return ResponseEntity.ok(BaseResponse.ok(partidoService.listarPorEstado(estado),"Partidos filtrados correctamente"));
         }
 }
