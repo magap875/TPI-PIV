@@ -1,36 +1,32 @@
-package com.example.features.rankings.services.impl;
+// package com.example.features.rankings.services.impl;
 
-import lombok.AllArgsConstructor;
+// import lombok.AllArgsConstructor;
+// import org.springframework.stereotype.Service;
+// import com.example.config.exceptions.ResourceNotFoundException;
+// import com.example.features.grupos.repositories.GrupoRepository;
+// import com.example.features.rankings.dtos.RankingResponseDTO;
+// import com.example.features.rankings.services.interfaces.IRankingService;
+// import com.example.features.users.repositories.UsuarioRepository;
+// import java.util.List;
 
-import org.springframework.stereotype.Service;
+// @Service
+// @AllArgsConstructor
+// public class RankingService implements IRankingService {
+//     private final UsuarioRepository usuarioRepository;
+//     private final GrupoRepository grupoRepository;
 
-import com.example.config.exceptions.ResourceNotFoundException;
-import com.example.features.grupos.repositories.GrupoRepository;
-import com.example.features.rankings.dtos.RankingResponseDTO;
-import com.example.features.rankings.services.interfaces.IRankingService;
-import com.example.features.users.repositories.UsuarioRepository;
+//     @Override
+//     public List<RankingResponseDTO> rankingGlobal() {
+//         return usuarioRepository.obtenerRankingGlobal();
+//     }
 
-import java.util.List;
+//     @Override
+//     public List<RankingResponseDTO> rankingGrupo(Long grupoId) {
 
-@Service
-@AllArgsConstructor
-public class RankingService implements IRankingService {
+//         if (!grupoRepository.existsById(grupoId)) {
+//             throw new ResourceNotFoundException("Grupo no encontrado");
+//         }
 
-    private final UsuarioRepository usuarioRepository;
-    private final GrupoRepository grupoRepository;
-
-    @Override
-    public List<RankingResponseDTO> rankingGlobal() {
-        return usuarioRepository.obtenerRankingGlobal();
-    }
-
-    @Override
-    public List<RankingResponseDTO> rankingGrupo(Long grupoId) {
-
-        if (!grupoRepository.existsById(grupoId)) {
-            throw new ResourceNotFoundException("Grupo no encontrado");
-        }
-
-        return usuarioRepository.obtenerRankingGrupo(grupoId);
-    }
-}
+//         return usuarioRepository.obtenerRankingGrupo(grupoId);
+//     }
+// }
