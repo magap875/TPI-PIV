@@ -32,7 +32,6 @@ public class PronosticoController {
 
     // listar pronósticos de un usuario en especifico
     @GetMapping("/usuario/{usuarioId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<PronosticoResponseDTO>> porUsuario(@PathVariable Long usuarioId){
         return ResponseEntity.ok(pronosticoService.listarPorUsuario(usuarioId));
     }

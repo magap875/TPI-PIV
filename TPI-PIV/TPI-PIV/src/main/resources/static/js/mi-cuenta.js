@@ -4,7 +4,6 @@ let filtroActual = "todas";
 let usuarioActualId = null;
 let usuarioActual = null;
 
-// detallito para las cantidades
 function pluralizar(cantidad, singular, plural) {
     return cantidad === 1 ? singular : plural;
 }
@@ -16,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     cargarMisGrupos();
 });
 
-// carga el usuario autenticado una sola vez y actualiza navbar, header de perfil y el formulario de mis datos
 async function cargarUsuarioActual() {
     const token = localStorage.getItem("accessToken");
 
@@ -48,11 +46,9 @@ async function cargarUsuarioActual() {
 function actualizarNavbar(usuario) {
     const nombre = usuario.nombre ?? "Usuario";
 
-    // nombre
     const nombreEl = document.getElementById("nombre-usuario");
     if (nombreEl) nombreEl.textContent = nombre;
 
-    // iniciales
     const avatarEl = document.getElementById("avatar");
     if (avatarEl) {
         const iniciales = nombre
@@ -71,11 +67,9 @@ function actualizarHeaderPerfil(usuario) {
 
     const nombre = usuario.nombre ?? "Usuario";
 
-    // nombre
     const nombreEl = document.getElementById("nombre-perfil");
     if (nombreEl) nombreEl.textContent = nombre;
 
-    // iniciales en el avatar
     const avatarEl = document.getElementById("avatar-perfil");
     if (avatarEl) {
         const iniciales = nombre
@@ -92,6 +86,8 @@ function actualizarHeaderPerfil(usuario) {
     if (puntosEl) puntosEl.textContent = usuario.puntosTotales ?? 0;
 
     // ranking: pendiente de backend
+    // const rankingEl = document.getElementById("ranking-perfil");
+    // if (rankingEl) rankingEl.textContent = "-";
 }
 
 function actualizarApuestasPerfil() {
@@ -141,17 +137,18 @@ async function cargarMisPronosticos() {
 }
 
 function setTab(btn, filtro) {
+
     document.querySelectorAll(".tab-btn")
         .forEach(b => b.classList.remove("active"));
 
     btn.classList.add("active");
     filtroActual = filtro;
-
     renderMisPronosticos();
 }
 
 function renderMisPronosticos() {
     const container = document.getElementById("mis-apuestas-container");
+
     let pronosticos = [...misPronosticos];
 
     if (filtroActual === "acertadas") {
@@ -179,36 +176,77 @@ function renderMisPronosticos() {
 
     container.innerHTML = `
         <div class="card overflow-hidden">
+
             ${pronosticos.map((p, index) => {
 
-                const partido = todosLosPartidos.find(x => x.id === p.partidoId);
+                const partido = todosLosPartidos.find(
+                    x => x.id === p.partidoId
+                );
 
                 if (!partido) return "";
 
-                const pendiente = partido.estado === "POR_JUGARSE";
-                const exacto = p.puntosObtenidos === 3;
-                const tendencia = p.puntosObtenidos === 1;
+                const pendiente =
+                    partido.estado === "POR_JUGARSE";
+
+                const exacto =
+                    p.puntosObtenidos === 3;
+
+                const tendencia =
+                    p.puntosObtenidos === 1;
 
                 let badge = "";
                 let puntos = "";
 
                 if (pendiente) {
-                    badge = `<span class="badge-result badge-pending">Por jugar</span>`;
+                    badge = `
+                        <span class="badge-result badge-pending">
+                            Por jugar
+                        </span>
+                    `;
+
                     puntos = "";
                 } else if (exacto) {
-                    badge = `<span class="badge-result badge-win">✔ Exacto</span>`;
-                    puntos = `<p class="text-[#05AC2E] font-bold text-sm mt-1">+3 pts</p>`;
+                    badge = `
+                        <span class="badge-result badge-win">
+                            ✔ Exacto
+                        </span>
+                    `;
+
+                    puntos = `
+                        <p class="text-[#05AC2E] font-bold text-sm mt-1">
+                            +3 pts
+                        </p>
+                    `;
                 } else if (tendencia) {
-                    badge = `<span class="badge-result badge-win">✔ Ganador</span>`;
-                    puntos = `<p class="text-[#05AC2E] font-bold text-sm mt-1">+1 pt</p>`;
+                    badge = `
+                        <span class="badge-result badge-win">
+                            ✔ Ganador
+                        </span>
+                    `;
+
+                    puntos = `
+                        <p class="text-[#05AC2E] font-bold text-sm mt-1">
+                            +1 pt
+                        </p>
+                    `;
                 } else {
-                    badge = `<span class="badge-result">✖ Falló</span>`;
-                    puntos = `<p class="text-red-400 font-bold text-sm mt-1">0 pts</p>`;
+                    badge = `
+                        <span class="badge-result">
+                            ✖ Falló
+                        </span>
+                    `;
+
+                    puntos = `
+                        <p class="text-red-400 font-bold text-sm mt-1">
+                            0 pts
+                        </p>
+                    `;
                 }
 
                 return `
                     <div class="flex items-center gap-4 px-5 py-3.5
-                        ${index !== pronosticos.length - 1 ? "border-b border-[#1e1e1e]" : ""}">
+                        ${index !== pronosticos.length - 1 ? "border-b border-[#1e1e1e]" : ""}
+                    ">
 
                         <div class="flex flex-col gap-0.5 min-w-[220px]">
                             <div class="flex items-center gap-2">
@@ -267,7 +305,7 @@ function renderMisPronosticos() {
                                     </div>
 
                                     <button
-                                        class="bg-[#05AC2E] text-white text-xs font-bold px-3 py-1 rounded mt-0.5 self-center"
+                                        class="bg-[#05AC2E] w-full text-white text-xs font-bold px-3 py-1 rounded mt-0.5 self-center"
                                         onclick="upsertMisApuesta(this, ${p.partidoId})"
                                     >
                                         Actualizar apuesta
@@ -306,6 +344,7 @@ function renderMisPronosticos() {
             }).join("")}
 
             <div class="green-bar"></div>
+
         </div>
     `;
 }
@@ -380,7 +419,7 @@ async function cargarMisGrupos() {
             }
         });
 
-        if (!res.ok) throw new Error("Error al obtener mis grupos");
+        if (!res.ok) throw new Error("Error al obtener los grupos");
 
         const misGrupos = await res.json();
 
@@ -436,8 +475,12 @@ function renderMisGrupos(gruposConRanking) {
     contenedor.innerHTML = gruposConRanking.map(({ grupo, ranking }) => {
 
         const cantidadMiembros = ranking.length;
+        const codigoGrupo = grupo.codigoInvitacion;
+
         const filasRanking = ranking.map((usuario, index) => {
+
             const esUsuarioActual = usuario.id === usuarioActualId;
+            const filaId = `${grupo.grupoId}-${usuario.id}`;
 
             const iniciales = (usuario.nombre ?? "??")
                 .split(" ")
@@ -447,32 +490,45 @@ function renderMisGrupos(gruposConRanking) {
                 .toUpperCase();
 
             return `
-                <li class="rank-row flex items-center gap-3 px-2 py-1.5 rounded-[3px]
-                    ${esUsuarioActual ? "bg-[#05AC2E0A] border border-[#05AC2E22]" : ""}
-                ">
-                    <span class="text-xs w-5 text-center font-bold
-                        ${esUsuarioActual ? "text-[#05AC2E]" : "text-gray-600"}
-                    ">
-                        ${index + 1}
-                    </span>
+                <li>
+                    <div
+                        class="rank-row flex items-center gap-3 px-2 py-1.5 rounded-[3px] cursor-pointer
+                            ${esUsuarioActual ? "bg-[#05AC2E0A] border border-[#05AC2E22]" : ""}
+                        "
+                        onclick="toggleApuestasMiembro('${filaId}', ${usuario.id})"
+                    >
+                        <span class="text-xs w-5 text-center font-bold
+                            ${esUsuarioActual ? "text-[#05AC2E]" : "text-gray-600"}
+                        ">
+                            ${index + 1}
+                        </span>
 
-                    <div class="avatar" style="width:28px;height:28px;font-size:11px;
-                        ${esUsuarioActual ? "" : "background:#1a1a1a; border-color:#333; color:#666;"}
-                    ">
-                        ${iniciales}
+                        <div class="avatar" style="width:28px;height:28px;font-size:11px;
+                            ${esUsuarioActual ? "" : "background:#1a1a1a; border-color:#333; color:#666;"}
+                        ">
+                            ${iniciales}
+                        </div>
+
+                        <span class="text-sm flex-1
+                            ${esUsuarioActual ? "text-white font-semibold" : "text-gray-400"}
+                        ">
+                            ${usuario.nombre}
+                        </span>
+
+                        <span class="font-bold text-sm
+                            ${esUsuarioActual ? "text-white" : "text-gray-500"}
+                        ">
+                            ${usuario.puntosTotales ?? 0} pts
+                        </span>
+
+                        <svg id="chevron-${filaId}" class="w-3.5 h-3.5 text-gray-600 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </div>
 
-                    <span class="text-sm flex-1
-                        ${esUsuarioActual ? "text-white font-semibold" : "text-gray-400"}
-                    ">
-                        ${usuario.nombre}
-                    </span>
-
-                    <span class="font-bold text-sm
-                        ${esUsuarioActual ? "text-white" : "text-gray-500"}
-                    ">
-                        ${usuario.puntosTotales ?? 0} pts
-                    </span>
+                    <div id="apuestas-miembro-${filaId}" class="hidden px-2 pb-2 pt-1">
+                        <!-- se llena dinámicamente al abrir -->
+                    </div>
                 </li>
             `;
         }).join("");
@@ -484,8 +540,16 @@ function renderMisGrupos(gruposConRanking) {
                         <div>
                             <p class="text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-0.5">Grupo privado</p>
                             <h3 class="title-font text-lg font-bold uppercase">${grupo.grupoNombre}</h3>
+                            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-gray-500 bg-[#05AC2E14] border border-[#05AC2E33] rounded-[3px] px-2 py-1 tracking-wide">
+                            ${grupo.codigoInvitacion}
+                        </span>
                         </div>
                         <span class="section-badge">${cantidadMiembros} ${pluralizar(cantidadMiembros, "miembro", "miembros")}</span>
+                    </div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-[10px] text-gray-600">
+                            Fecha de ingreso: ${new Date(grupo.fechaIngreso).toLocaleDateString("es-AR")}
+                        </span>
                     </div>
                     <ul class="space-y-2">
                         ${filasRanking}
@@ -503,6 +567,107 @@ function renderMisGrupos(gruposConRanking) {
             </div>
         `;
     }).join("");
+}
+
+const cachePronosticosPorUsuario = {};
+
+async function toggleApuestasMiembro(filaId, usuarioId) {
+    const panel = document.getElementById(`apuestas-miembro-${filaId}`);
+    const chevron = document.getElementById(`chevron-${filaId}`);
+
+    const estaAbierto = !panel.classList.contains("hidden");
+
+    if (estaAbierto) {
+        panel.classList.add("hidden");
+        chevron.style.transform = "";
+        return;
+    }
+
+    chevron.style.transform = "rotate(180deg)";
+    panel.classList.remove("hidden");
+    panel.innerHTML = `
+        <p class="text-xs text-gray-600 text-center py-2">Cargando apuestas...</p>
+    `;
+
+    try {
+        let pronosticos = cachePronosticosPorUsuario[usuarioId];
+
+        if (!pronosticos) {
+            const token = localStorage.getItem("accessToken");
+
+            const res = await fetch(`${API_URL}/api/pronosticos/usuario/${usuarioId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (!res.ok) throw new Error();
+
+            pronosticos = await res.json();
+            cachePronosticosPorUsuario[usuarioId] = pronosticos;
+        }
+
+        panel.innerHTML = renderApuestasMiembro(pronosticos);
+
+    } catch (e) {
+        console.error(e);
+        panel.innerHTML = `
+            <p class="text-xs text-red-400 text-center py-2">
+                No se pudieron cargar las apuestas.
+            </p>
+        `;
+    }
+}
+
+function renderApuestasMiembro(pronosticos) {
+    const jugados = pronosticos.filter(p => {
+        const partido = todosLosPartidos.find(x => x.id === p.partidoId);
+        return partido && partido.estado === "FINALIZADO";
+    });
+
+    if (!jugados.length) {
+        return `
+            <p class="text-xs text-gray-600 text-center py-2">
+                Todavía no tiene apuestas con resultado.
+            </p>
+        `;
+    }
+
+    const filas = jugados.map(p => {
+
+        const partido = todosLosPartidos.find(x => x.id === p.partidoId);
+
+        const exacto = p.puntosObtenidos === 3;
+        const tendencia = p.puntosObtenidos === 1;
+
+        let badge = `<span class="badge-result">✖ Falló</span>`;
+        if (exacto) badge = `<span class="badge-result badge-win">✔ Exac. (+3)</span>`;
+        else if (tendencia) badge = `<span class="badge-result badge-win">✔ Tenden. (+1)</span>`;
+
+        return `
+            <div class="flex items-center justify-between gap-3 px-3 py-1.5 bg-[#0d0d0d] border border-[#1e1e1e] rounded-[3px]">
+                <span class="text-xs text-gray-400 truncate">
+                    ${partido.equipoLocal} vs ${partido.equipoVisitante}
+                </span>
+
+                <div class="flex items-center gap-3 shrink-0">
+                    <span class="text-xs text-gray-500">
+                        Predijo ${p.golesLocalPronosticados}-${p.golesVisitantePronosticados}
+                    </span>
+                    <span class="text-xs text-gray-600">
+                        (${partido.golesLocal}-${partido.golesVisitante})
+                    </span>
+                    ${badge}
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    return `
+        <div class="flex flex-col gap-1.5 mt-1">
+            ${filas}
+        </div>
+    `;
 }
 
 async function salirDelGrupo(grupoId) {
@@ -544,7 +709,134 @@ async function salirDelGrupo(grupoId) {
     }
 }
 
-// datos
+async function abrirModalCrearGrupo() {
+    const { value: nombre } = await Swal.fire({
+        icon: "question",
+        title: "Crear grupo",
+        input: "text",
+        inputLabel: "Nombre del grupo",
+        inputPlaceholder: "Ej: Los Cracks",
+        inputAttributes: {
+            maxlength: 100
+        },
+        showCancelButton: true,
+        confirmButtonText: "Crear",
+        cancelButtonText: "Cancelar",
+        inputValidator: (valor) => {
+            if (!valor || valor.trim().length < 3) {
+                return "El nombre debe tener al menos 3 caracteres";
+            }
+        }
+    });
+
+    if (!nombre) return;
+
+    await crearGrupo(nombre.trim());
+}
+
+async function crearGrupo(nombre) {
+    const token = localStorage.getItem("accessToken");
+
+    try {
+        const res = await fetch(`${API_URL}/api/grupos`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ nombre })
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok) {
+            throw new Error(data?.message || "Error al crear el grupo");
+        }
+
+        const grupoCreado = data?.data ?? data;
+
+        await Swal.fire({
+            icon: "success",
+            title: "¡Grupo creado!",
+            html: `
+                Compartí este código con tus amigos para que se unan:
+                <p class="title-font text-2xl font-bold mt-3" style="color:#05AC2E;">
+                    ${grupoCreado.codigoInvitacion}
+                </p>
+            `,
+            confirmButtonText: "Listo"
+        });
+
+        cargarMisGrupos();
+
+    } catch (err) {
+        Swal.fire({
+            icon: "error",
+            title: "Error al crear el grupo",
+            text: err.message
+        });
+    }
+}
+
+async function abrirModalUnirseGrupo() {
+    const { value: codigo } = await Swal.fire({
+        icon: "question",
+        title: "Unirme a un grupo",
+        input: "text",
+        inputLabel: "Código de invitación",
+        inputPlaceholder: "Ej: ABC123",
+        showCancelButton: true,
+        confirmButtonText: "Unirme",
+        cancelButtonText: "Cancelar",
+        inputValidator: (valor) => {
+            if (!valor || valor.trim().length === 0) {
+                return "El código de invitación es obligatorio";
+            }
+        }
+    });
+
+    if (!codigo) return;
+
+    await unirseAGrupo(codigo.trim());
+}
+
+async function unirseAGrupo(codigoInvitacion) {
+    const token = localStorage.getItem("accessToken");
+
+    try {
+        const res = await fetch(`${API_URL}/api/grupos/unirse`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ codigoInvitacion })
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok) {
+            throw new Error(data?.message || "Código de invitación inválido");
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "Te uniste al grupo correctamente"
+        });
+
+        cargarMisGrupos();
+
+    } catch (err) {
+        Swal.fire({
+            icon: "error",
+            title: "No se pudo unir al grupo",
+            text: err.message
+        });
+    }
+}
+
+// mis datos
+
 let editandoDatos = false;
 
 function actualizarFormularioDatos(usuario) {

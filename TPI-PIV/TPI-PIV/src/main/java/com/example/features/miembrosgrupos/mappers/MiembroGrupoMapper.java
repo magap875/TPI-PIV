@@ -11,6 +11,7 @@ public class MiembroGrupoMapper {
                 miembro.getUsuario().getNombre(),
                 miembro.getGrupo().getId(),
                 miembro.getGrupo().getNombre(),
-                miembro.getFechaIngreso());
+                miembro.getFechaIngreso(),
+                miembro.getGrupo().getCodigoInvitacion());
     }
 }

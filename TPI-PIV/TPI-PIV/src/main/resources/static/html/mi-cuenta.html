@@ -231,12 +231,26 @@
         <hr class="section-divider">
 
         <section class="mb-8">
-            <div class="flex items-center gap-3 mb-4">
+            <div class="flex items-center justify-between gap-3 mb-4">
                 <h2 class="section-title">Grupos a los que pertenezco</h2>
+
+                <div class="flex gap-2">
+                    <button
+                        onclick="abrirModalCrearGrupo()"
+                        class="text-xs font-semibold text-white bg-[#05AC2E] px-4 py-1.5 rounded-[3px] hover:bg-white hover:text-[#111] transition"
+                    >
+                        + Crear grupo
+                    </button>
+                    <button
+                        onclick="abrirModalUnirseGrupo()"
+                        class="text-xs font-semibold text-gray-300 border border-[#333] px-4 py-1.5 rounded-[3px] hover:border-[#05AC2E] hover:text-[#05AC2E] transition"
+                    >
+                        Unirme con código
+                    </button>
+                </div>
             </div>
 
             <div id="contenedor-grupos" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Las cards de cada grupo se inyectan acá dinámicamente vía renderMisGrupos() -->
             </div>
         </section>
 

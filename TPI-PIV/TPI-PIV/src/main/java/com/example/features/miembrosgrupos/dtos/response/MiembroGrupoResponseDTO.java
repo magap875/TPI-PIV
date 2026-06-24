@@ -8,6 +8,7 @@ public record MiembroGrupoResponseDTO(
                 String usuarioNombre,
                 Long grupoId,
                 String grupoNombre,
-                LocalDateTime fechaIngreso
+                LocalDateTime fechaIngreso,
+                String codigoInvitacion
 ){
 }

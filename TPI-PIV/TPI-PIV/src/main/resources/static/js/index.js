@@ -55,7 +55,7 @@ function mostrarNavbarPublico() {
 function mostrarNavbarAutenticado(usuario) {
     navbar.innerHTML = `
         ${usuario.rol === "ADMIN" ? `
-            <a href="./html/dashboard.html" class="text-[#05AC2E] font-semibold">
+            <a href="./html/panel-admin.html" class="text-[#05AC2E] font-semibold">
                 Dashboard
             </a>
         ` : ""}
