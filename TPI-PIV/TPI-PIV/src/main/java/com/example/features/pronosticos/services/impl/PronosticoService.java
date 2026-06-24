@@ -1,6 +1,7 @@
 package com.example.features.pronosticos.services.impl;
 
 import com.example.features.partidos.models.Partido;
+import com.example.features.partidos.models.ResultadoTendencia;
 import com.example.config.exceptions.BadRequestException;
 import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.partidos.models.EstadoPartido;
@@ -9,7 +10,6 @@ import com.example.features.pronosticos.dtos.request.PronosticoRequestDTO;
 import com.example.features.pronosticos.dtos.response.PronosticoResponseDTO;
 import com.example.features.pronosticos.mappers.PronosticoMapper;
 import com.example.features.pronosticos.models.Pronostico;
-import com.example.features.pronosticos.models.ResultadoTendencia;
 import com.example.features.pronosticos.repositories.PronosticoRepository;
 import com.example.features.pronosticos.services.interfaces.IPronosticoService;
 import com.example.features.users.models.Usuario;
@@ -59,9 +59,9 @@ public class PronosticoService implements IPronosticoService {
             pronostico.setFechaCreacion(LocalDateTime.now());
         }
 
-        if (dto.golesLocalPronosticados() > dto.golesVisitantePronosticados()) {
+        if (dto.golesLocalPronosticados() > dto.golesVisitantePronosticados()){
             pronostico.setResultadoTendencia(ResultadoTendencia.LOCAL);
-        } else if (dto.golesLocalPronosticados() < dto.golesVisitantePronosticados()) {
+        } else if (dto.golesLocalPronosticados() < dto.golesVisitantePronosticados()){
             pronostico.setResultadoTendencia(ResultadoTendencia.VISITANTE);
         } else {
             pronostico.setResultadoTendencia(ResultadoTendencia.EMPATE);

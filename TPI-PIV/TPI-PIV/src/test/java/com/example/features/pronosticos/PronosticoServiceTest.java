@@ -10,7 +10,6 @@ import com.example.features.partidos.models.Partido;
 import com.example.features.partidos.repositories.PartidoRepository;
 import com.example.features.pronosticos.dtos.request.PronosticoRequestDTO;
 import com.example.features.pronosticos.models.Pronostico;
-import com.example.features.pronosticos.models.ResultadoTendencia;
 import com.example.features.pronosticos.repositories.PronosticoRepository;
 import com.example.features.pronosticos.services.impl.PronosticoService;
 import com.example.features.users.models.Rol;
@@ -66,7 +65,6 @@ class PronosticoServiceTest {
         assertEquals(10L, response.partidoId());
         assertEquals(2, response.golesLocalPronosticados());
         assertEquals(1, response.golesVisitantePronosticados());
-        assertEquals(ResultadoTendencia.LOCAL, response.resultadoTendencia());
         assertEquals(0, response.puntosObtenidos());
         assertNotNull(response.fechaCreacion());
     }
@@ -93,7 +91,6 @@ class PronosticoServiceTest {
         assertEquals(100L, response.id());
         assertEquals(1, response.golesLocalPronosticados());
         assertEquals(3, response.golesVisitantePronosticados());
-        assertEquals(ResultadoTendencia.VISITANTE, response.resultadoTendencia());
         assertEquals(0, response.puntosObtenidos());
         assertEquals(fechaOriginal, response.fechaCreacion());
     }
@@ -130,24 +127,6 @@ class PronosticoServiceTest {
         verify(pronosticoRepository, never()).save(any());
     }
 
-    @Test
-    void crearOActualizar_deberiaCalcularTendenciaEmpate() {
-        Usuario usuario = usuario(1L, "Mariano", "m@test.com");
-        Partido partido = partido(10L, EstadoPartido.POR_JUGARSE, LocalDateTime.now().plusHours(2));
-
-        when(partidoRepository.findById(10L)).thenReturn(Optional.of(partido));
-        when(usuarioRepository.findByEmail("m@test.com")).thenReturn(Optional.of(usuario));
-        when(pronosticoRepository.findByUsuarioIdAndPartidoId(1L, 10L)).thenReturn(Optional.empty());
-        when(pronosticoRepository.save(any(Pronostico.class))).thenAnswer(invocation -> {
-            Pronostico p = invocation.getArgument(0);
-            p.setId(100L);
-            return p;
-        });
-
-        var response = pronosticoService.crearOActualizar("m@test.com", 10L, new PronosticoRequestDTO(2, 2));
-
-        assertEquals(ResultadoTendencia.EMPATE, response.resultadoTendencia());
-    }
 
     @Test
     void listarPorUsuarioEmail_siUsuarioNoExiste_deberiaLanzarResourceNotFound() {

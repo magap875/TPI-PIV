@@ -1,7 +1,7 @@
 package com.example.features.pronosticos.dtos.response;
 
 import java.time.LocalDateTime;
-import com.example.features.pronosticos.models.ResultadoTendencia;
+import com.example.features.partidos.models.ResultadoTendencia;
 
 public record PronosticoResponseDTO(
         Long id,
@@ -10,7 +10,7 @@ public record PronosticoResponseDTO(
         Long partidoId,
         Integer golesLocalPronosticados,
         Integer golesVisitantePronosticados,
-        ResultadoTendencia resultadoTendencia,
         Integer puntosObtenidos,
+        ResultadoTendencia resultadoTendencia,
         LocalDateTime fechaCreacion
 ){}

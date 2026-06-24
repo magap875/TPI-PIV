@@ -1,4 +1,4 @@
-package com.example.features.pronosticos.models;
+package com.example.features.partidos.models;
 
 public enum ResultadoTendencia {
     LOCAL,

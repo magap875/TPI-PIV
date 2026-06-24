@@ -1,10 +1,8 @@
 package com.example.features.rankings.dtos;
 
 public record RankingResponseDTO(
-        Long usuarioId,
+        Long id,
         String nombre,
         Integer puntosTotales,
         Integer cantidadResultadosExactos
-
-){
-}
+){}
