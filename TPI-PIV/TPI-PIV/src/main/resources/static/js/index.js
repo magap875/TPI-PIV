@@ -53,11 +53,15 @@ function ocultarSeccionesPrivadas() {
             </p>
         `;
     }
+
+    document.querySelectorAll(".solo-autenticado").forEach(el => {
+        el.classList.add("hidden");
+    });
 }
 
 // navbar
 async function cargarNavbar() {
-    const token = localStorage.getItem("accessToken");
+    const token = getAccessToken();
 
     if (!token) {
         mostrarNavbarPublico();
@@ -65,9 +69,9 @@ async function cargarNavbar() {
     }
 
     try {
-        const res = await fetch(`${API_URL}/api/usuarios/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const res = await fetchConToken(
+            `${API_URL}/api/usuarios/me`
+        );
 
         if (!res.ok) throw new Error();
 
@@ -78,15 +82,10 @@ async function cargarNavbar() {
 
         mostrarNavbarAutenticado(usuario);
 
-    } catch {
+    } catch (e) {
+        console.error(e);
         cerrarSesion();
     }
-}
-
-function cerrarSesion() {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    location.reload();
 }
 
 function mostrarNavbarPublico() {
@@ -366,21 +365,21 @@ async function renderPartidos(partidos=[]) {
 
 // obtener pronosticos del partido
 async function obtenerMiPronostico(partidoId) {
-    const token = localStorage.getItem("accessToken");
+    const token = getAccessToken();
 
     if (!token) return null;
 
     try {
-        const res = await fetch(`${API_URL}/api/pronosticos/mi-pronostico/${partidoId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await fetchConToken(
+            `${API_URL}/api/pronosticos/mi-pronostico/${partidoId}`
+        );
 
         if (!res.ok) return null;
+
         return await res.json();
 
-    } catch {
+    } catch (e) {
+        console.error(e);
         return null;
     }
 }
@@ -398,7 +397,7 @@ function changeGoal(btn, delta) {
 
 // apuesta
 function enviarApuesta(btn, partidoId) {
-    const token = localStorage.getItem("accessToken");
+    const token = getAccessToken();
 
     if (!token) {
         Swal.fire({
@@ -422,23 +421,25 @@ function enviarApuesta(btn, partidoId) {
         golesVisitantePronosticados: Number(goles[1]?.textContent || 0)
     };
 
-    fetch(`${API_URL}/api/pronosticos/${partidoId}`, {
+    fetchConToken(`${API_URL}/api/pronosticos/${partidoId}`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
     })
     .then(async res => {
         const data = await res.json().catch(() => null);
 
-        if (!res.ok) throw new Error(data?.message || "Error");
+        if (!res.ok) {
+            throw new Error(data?.message || "Error");
+        }
 
         Swal.fire({
             icon: "success",
             title: "Apuesta registrada correctamente."
         });
+
         cargarPreviewApuestas();
         cargarPartidos();
     })
@@ -453,7 +454,7 @@ function enviarApuesta(btn, partidoId) {
 
 // grupos
 async function cargarPreviewGrupo() {
-    const token = localStorage.getItem("accessToken");
+    const token = getAccessToken();
 
     if (!token) {
         document.getElementById("preview-grupo").innerHTML = `
@@ -467,11 +468,9 @@ async function cargarPreviewGrupo() {
     mostrarSpinner("preview-grupo");
 
     try {
-        const res = await fetch(`${API_URL}/api/grupos/mis-grupos`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await fetchConToken(
+            `${API_URL}/api/grupos/mis-grupos`
+        );
 
         const misGrupos = await res.json();
 
@@ -486,16 +485,14 @@ async function cargarPreviewGrupo() {
 
         const grupo = misGrupos[0];
 
-        const rankingRes = await fetch(
-            `${API_URL}/api/grupos/${grupo.grupoId}/ranking`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
+        const rankingRes = await fetchConToken(
+            `${API_URL}/api/grupos/${grupo.grupoId}/ranking`
         );
+
         const ranking = await rankingRes.json();
+
         renderPreviewGrupo(grupo, ranking);
+
     } catch (e) {
         console.error(e);
     }
@@ -530,7 +527,7 @@ function renderPreviewGrupo(grupo, ranking) {
 
 // apuestas sidebar
 async function cargarPreviewApuestas() {
-    const token = localStorage.getItem("accessToken");
+    const token = getAccessToken();
 
     if (!token) {
         document.getElementById("preview-apuestas").innerHTML = `
@@ -544,15 +541,16 @@ async function cargarPreviewApuestas() {
     mostrarSpinner("preview-apuestas");
 
     try {
-        const res = await fetch(`${API_URL}/api/pronosticos/mis-pronosticos`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const res = await fetchConToken(
+            `${API_URL}/api/pronosticos/mis-pronosticos`
+        );
 
         if (!res.ok) return;
+
         const pronosticos = await res.json();
+
         renderPreviewApuestas(pronosticos);
+
     } catch (e) {
         console.error(e);
     }
