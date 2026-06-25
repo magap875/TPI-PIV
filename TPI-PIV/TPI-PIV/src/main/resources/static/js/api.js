@@ -5,8 +5,7 @@ const API_URL =
         ? "http://localhost:8080"
         : window.location.origin;
 
-// ===== MANEJO DE TOKENS =====
-
+// manejo de tokens
 function getAccessToken() {
     return localStorage.getItem("accessToken");
 }
@@ -25,10 +24,6 @@ function limpiarTokens() {
     localStorage.removeItem("refreshToken");
 }
 
-// Llama a /api/auth/refresh con el refreshToken guardado.
-// Si el backend responde OK, guarda el par nuevo (accessToken + refreshToken,
-// porque el backend rota ambos) y devuelve el accessToken nuevo.
-// Si falla, limpia los tokens y devuelve null.
 async function refrescarToken() {
     const refreshToken = getRefreshToken();
 
@@ -65,18 +60,6 @@ async function refrescarToken() {
     }
 }
 
-// ===== FETCH CON MANEJO AUTOMÁTICO DE TOKEN VENCIDO =====
-
-// Envoltorio de fetch que:
-// 1. Agrega el header Authorization automáticamente (si hay token).
-// 2. Si la respuesta es 401 (token vencido), intenta refrescar el token
-//    una sola vez y reintenta la request original con el token nuevo.
-// 3. Si el refresh también falla, cierra la sesión (sesión realmente vencida).
-//
-// Uso: en vez de fetch(`${API_URL}/api/...`, opciones)
-//      usar fetchConToken(`${API_URL}/api/...`, opciones)
-//
-// No hace falta poner el header Authorization a mano: fetchConToken lo agrega solo.
 async function fetchConToken(url, opciones = {}, reintentando = false) {
     const token = getAccessToken();
 
@@ -86,28 +69,22 @@ async function fetchConToken(url, opciones = {}, reintentando = false) {
     };
 
     const res = await fetch(url, { ...opciones, headers });
+    console.log("STATUS:", res.status);
 
-    // Si no es 401, o ya reintentamos una vez, devolvemos la respuesta tal cual
-    // (sea éxito o cualquier otro error que no sea de autenticación).
     if (res.status !== 401 || reintentando) {
         return res;
     }
 
-    // Token vencido: intentamos refrescar una sola vez.
     const nuevoAccessToken = await refrescarToken();
 
     if (!nuevoAccessToken) {
-        // El refresh token también venció o es inválido: sesión muerta de verdad.
         cerrarSesion();
         return res;
     }
 
-    // Reintentamos la request original, ahora con el token nuevo.
     return fetchConToken(url, opciones, true);
 }
 
-// Cierra la sesión y recarga la página (ya la tenías en home.js;
-// la dejamos también acá para que cualquier página con api.js pueda usarla).
 function cerrarSesion() {
     limpiarTokens();
     location.reload();

@@ -16,7 +16,8 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter{
+
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
 
@@ -28,21 +29,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     ) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        // si no hay token, seguimos
+        // si no hay token, seguimos sin autenticar
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        // extraer token
+
         String token = authHeader.substring(7);
-        // extraer email desde JWT
-        String email = jwtService.extraerEmail(token);
-        // validaciones básicas
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtService.esValido(token)) {
-                // cargamos el usu de la bbdd
+
+        try {
+            // validamos ANTES de extraer cualquier claim
+            if (jwtService.esValido(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                String email = jwtService.extraerEmail(token);
+
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-                // crear autenticación
+
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
@@ -52,11 +53,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
-                // se guarda en securityContext
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+        } catch (Exception e) {
+            // token inválido, vencido, o usuario no encontrado:
+            // no autenticamos y dejamos que el entry point responda 401
+            SecurityContextHolder.clearContext();
         }
-        // continuacion del filtrp
+
         filterChain.doFilter(request, response);
     }
 }
