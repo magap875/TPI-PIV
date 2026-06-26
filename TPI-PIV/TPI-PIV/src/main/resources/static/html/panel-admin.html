@@ -445,22 +445,25 @@
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Equipos</p>
-                        <p class="title-font text-4xl font-bold">24</p>
+                        <p id="stat-equipos" class="title-font text-4xl font-bold">0</p>
                         <p class="text-xs text-gray-600 mt-1">cargados</p>
                     </div>
+
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Fechas</p>
-                        <p class="title-font text-4xl font-bold text-[#05AC2E]">3</p>
-                        <p class="text-xs text-gray-600 mt-1">1 en juego</p>
+                        <p id="stat-fechas" class="title-font text-4xl font-bold text-[#05AC2E]">0</p>
+                        <p id="stat-fechas-detalle" class="text-xs text-gray-600 mt-1">0 en juego</p>
                     </div>
+
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Partidos</p>
-                        <p class="title-font text-4xl font-bold">18</p>
-                        <p class="text-xs text-gray-600 mt-1">6 por jugarse</p>
+                        <p id="stat-partidos" class="title-font text-4xl font-bold">0</p>
+                        <p id="stat-partidos-detalle" class="text-xs text-gray-600 mt-1">0 por jugarse</p>
                     </div>
+
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Usuarios</p>
-                        <p class="title-font text-4xl font-bold">312</p>
+                        <p id="stat-usuarios" class="title-font text-4xl font-bold">0</p>
                         <p class="text-xs text-gray-600 mt-1">registrados</p>
                     </div>
                 </div>
@@ -472,7 +475,7 @@
                             <span class="dot-live"></span>
                             <h2 class="title-font text-lg font-bold uppercase">Partidos activos</h2>
                         </div>
-                        <button class="btn-ghost">Ver todos</button>
+                        <button id="btn-dashboard-ver-partidos" class="btn-ghost">Ver todos</button>
                     </div>
                     <table class="w-full">
                         <thead class="tbl-head">
@@ -484,39 +487,7 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇦🇷 Argentina <span
-                                        class="text-gray-600 font-normal text-xs">vs</span> Algeria 🇩🇿</td>
-                                <td class="text-gray-500">Fecha 3</td>
-                                <td><span class="badge badge-en-juego"><span class="dot-live"
-                                            style="width:5px;height:5px;"></span> EN JUEGO</span></td>
-                                <td class="title-font font-bold">2 — 0</td>
-                                <td class="flex gap-2 items-center">
-                                    <button class="btn-edit">Resultado</button>
-                                    <button class="btn-ghost" style="height:30px;font-size:11px;">Estado</button>
-                                </td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇫🇷 Francia <span
-                                        class="text-gray-600 font-normal text-xs">vs</span> Senegal 🇸🇳</td>
-                                <td class="text-gray-500">Fecha 3</td>
-                                <td><span class="badge badge-por-jugarse">Por jugarse</span></td>
-                                <td class="text-gray-600">—</td>
-                                <td class="flex gap-2 items-center">
-                                    <button class="btn-edit">Resultado</button>
-                                    <button class="btn-ghost" style="height:30px;font-size:11px;">Estado</button>
-                                </td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇧🇷 Brasil <span
-                                        class="text-gray-600 font-normal text-xs">vs</span> Marruecos 🇲🇦</td>
-                                <td class="text-gray-500">Fecha 3</td>
-                                <td><span class="badge badge-finalizada">Finalizado</span></td>
-                                <td class="title-font font-bold text-gray-500">1 — 1</td>
-                                <td><span class="text-gray-700 text-xs">Cerrado</span></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="tabla-dashboard-partidos"></tbody>
                     </table>
                     <div class="green-bar"></div>
                 </div>
@@ -657,19 +628,29 @@
                     <p class="text-gray-500 text-sm mt-1">Pronósticos realizados por partido</p>
                 </div>
 
-                <!-- Filtro partido -->
-                <div class="flex gap-3 items-center">
-                    <label class="text-xs text-gray-500 uppercase tracking-wider whitespace-nowrap">Filtrar por
-                        partido:</label>
-                    <select class="inp" style="max-width:300px;">
+                <div class="flex gap-3 items-center flex-wrap">
+                    <label class="text-xs text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Filtrar por fecha:
+                    </label>
 
-                    </select>
+                    <select id="select-fecha-pronosticos" class="inp" style="max-width:260px;"></select>
+
+                    <label class="text-xs text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Filtrar por partido:
+                    </label>
+
+                    <select id="select-partido-pronosticos" class="inp" style="max-width:300px;"></select>
                 </div>
 
                 <div class="card overflow-hidden">
                     <div class="flex items-center justify-between px-5 py-3 border-b border-[#1e1e1e]">
-                        <span class="title-font font-bold uppercase text-base">🇦🇷 Argentina vs Algeria 🇩🇿</span>
-                        <span class="text-xs text-gray-500">312 pronósticos</span>
+                        <span id="titulo-pronosticos-partido" class="title-font font-bold uppercase text-base">
+                            Seleccioná un partido
+                        </span>
+
+                        <span id="cantidad-pronosticos" class="text-xs text-gray-500">
+                            0 pronósticos
+                        </span>
                     </div>
                     <table class="w-full">
                         <thead class="tbl-head">

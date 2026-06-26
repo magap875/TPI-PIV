@@ -5,6 +5,7 @@ const API_EQUIPOS = `${API_URL}/api/equipos`;
 const API_FECHAS = `${API_URL}/api/fechas`;
 const API_PARTIDOS = `${API_URL}/api/partidos`;
 const API_USUARIOS = `${API_URL}/api/usuarios`;
+const API_PRONOSTICOS = `${API_URL}/api/pronosticos`;
 
 /******************************
  * DOM - EQUIPOS
@@ -87,6 +88,26 @@ const btnCerrarModalEstado = document.getElementById("btn-cerrar-modal-estado");
 const tablaUsuariosBody = document.getElementById("tabla-usuarios");
 const buscarUsuario = document.getElementById("buscar-usuario");
 /******************************
+ * DOM - PRONÓSTICOS
+ ******************************/
+const selectPartidoPronosticos = document.getElementById("select-partido-pronosticos");
+const selectFechaPronosticos = document.getElementById("select-fecha-pronosticos");
+const tituloPronosticosPartido = document.getElementById("titulo-pronosticos-partido");
+const cantidadPronosticos = document.getElementById("cantidad-pronosticos");
+const tablaPronosticosBody = document.getElementById("tabla-pronosticos");
+/******************************
+ * DOM - DASHBOARD
+ ******************************/
+const statEquipos = document.getElementById("stat-equipos");
+const statFechas = document.getElementById("stat-fechas");
+const statFechasDetalle = document.getElementById("stat-fechas-detalle");
+const statPartidos = document.getElementById("stat-partidos");
+const statPartidosDetalle = document.getElementById("stat-partidos-detalle");
+const statUsuarios = document.getElementById("stat-usuarios");
+
+const tablaDashboardPartidos = document.getElementById("tabla-dashboard-partidos");
+const btnDashboardVerPartidos = document.getElementById("btn-dashboard-ver-partidos");
+/******************************
  * ESTADO
  ******************************/
 let equiposCache = [];
@@ -97,6 +118,9 @@ let partidosCache = [];
 let fechaPartidosSeleccionadaId = null;
 let partidoEditId = null;
 let usuariosCache = [];
+let pronosticosCache = [];
+let partidoPronosticosSeleccionadoId = null;
+let fechaPronosticosSeleccionadaId = null;
 /******************************
  * HELPERS
  ******************************/
@@ -1269,6 +1293,320 @@ async function cambiarRolUsuario(id) {
 }
 
 /******************************
+ * PRONÓSTICOS - SELECT
+ ******************************/
+function cargarSelectFechasPronosticos() {
+  if (!selectFechaPronosticos) return;
+
+  selectFechaPronosticos.innerHTML = `<option value="">Todas las fechas</option>`;
+
+  fechasCache.forEach(fecha => {
+    selectFechaPronosticos.innerHTML += `
+      <option value="${fecha.id}">
+        ${fecha.nombre}
+      </option>
+    `;
+  });
+}
+
+function cargarSelectPartidosPronosticos() {
+  if (!selectPartidoPronosticos) return;
+
+  selectPartidoPronosticos.innerHTML = `<option value="">Seleccioná un partido</option>`;
+
+  let partidos = partidosCache;
+
+  if (fechaPronosticosSeleccionadaId) {
+    partidos = partidosCache.filter(p =>
+      Number(p.fechaId) === Number(fechaPronosticosSeleccionadaId)
+    );
+  }
+
+  partidos.forEach(partido => {
+    selectPartidoPronosticos.innerHTML += `
+      <option value="${partido.id}">
+        ${partido.equipoLocal} vs ${partido.equipoVisitante}
+      </option>
+    `;
+  });
+}
+
+function seleccionarFechaPronosticos() {
+  fechaPronosticosSeleccionadaId = selectFechaPronosticos?.value || null;
+
+  partidoPronosticosSeleccionadoId = null;
+  pronosticosCache = [];
+
+  if (selectPartidoPronosticos) {
+    selectPartidoPronosticos.value = "";
+  }
+
+  cargarSelectPartidosPronosticos();
+  renderPronosticos();
+}
+
+async function seleccionarPartidoPronosticos() {
+  const partidoId = selectPartidoPronosticos?.value;
+
+  if (!partidoId) {
+    partidoPronosticosSeleccionadoId = null;
+    pronosticosCache = [];
+    renderPronosticos();
+    return;
+  }
+
+  partidoPronosticosSeleccionadoId = partidoId;
+
+  await cargarPronosticosPorPartido(partidoId);
+}
+
+/******************************
+ * PRONÓSTICOS - DATA
+ ******************************/
+async function cargarPronosticosPorPartido(partidoId) {
+  try {
+    const res = await fetch(`${API_PRONOSTICOS}/partido/${partidoId}`, {
+      method: "GET",
+      headers: authHeaders()
+    });
+
+    if (!res.ok) {
+      const msg = await leerErrorResponse(res);
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+
+    pronosticosCache = Array.isArray(data) ? data : data.data;
+    console.log("Pronósticos:", pronosticosCache);
+    if (!Array.isArray(pronosticosCache)) {
+      pronosticosCache = [];
+    }
+
+    renderPronosticos();
+
+  } catch (e) {
+    console.error(e);
+    mostrarError("Error cargando pronósticos", e.message);
+  }
+}
+
+/******************************
+ * PRONÓSTICOS - RENDER
+ ******************************/
+function renderPronosticos() {
+  if (!tablaPronosticosBody) return;
+
+  const partido = partidosCache.find(
+    p => Number(p.id) === Number(partidoPronosticosSeleccionadoId)
+  );
+
+  if (tituloPronosticosPartido) {
+    tituloPronosticosPartido.textContent = partido
+      ? `${partido.equipoLocal} vs ${partido.equipoVisitante}`
+      : "Seleccioná un partido";
+  }
+
+  if (cantidadPronosticos) {
+    cantidadPronosticos.textContent = `${pronosticosCache.length} pronósticos`;
+  }
+
+  tablaPronosticosBody.innerHTML = "";
+
+  if (!partidoPronosticosSeleccionadoId) {
+    tablaPronosticosBody.innerHTML = `
+      <tr class="tbl-row">
+        <td colspan="5" class="text-center text-gray-500 py-4">
+          Seleccioná un partido para ver los pronósticos
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  if (!pronosticosCache || pronosticosCache.length === 0) {
+    tablaPronosticosBody.innerHTML = `
+      <tr class="tbl-row">
+        <td colspan="5" class="text-center text-gray-500 py-4">
+          No hay pronósticos cargados para este partido
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  pronosticosCache.forEach(pronostico => {
+    tablaPronosticosBody.innerHTML += crearFilaPronostico(pronostico, partido);
+  });
+}
+
+function crearFilaPronostico(pronostico, partido) {
+  const prediccion = `${pronostico.golesLocalPronosticados} — ${pronostico.golesVisitantePronosticados}`;
+
+  const resultadoReal = obtenerResultadoPartido(partido);
+
+  const puntos = pronostico.puntosObtenidos ?? 0;
+
+  return `
+    <tr class="tbl-row">
+      <td class="font-semibold">
+        ${pronostico.nombreUsuario ?? "-"}
+      </td>
+
+      <td class="title-font font-bold">
+        ${prediccion}
+      </td>
+
+      <td class="title-font font-bold text-[#05AC2E]">
+        ${resultadoReal}
+      </td>
+
+      <td class="${puntos > 0 ? "text-[#05AC2E]" : "text-gray-600"} font-bold">
+        ${puntos > 0 ? "+" + puntos : puntos}
+      </td>
+
+      <td>
+        ${obtenerTipoPronostico(pronostico, partido)}
+      </td>
+    </tr>
+  `;
+}
+
+function obtenerTipoPronostico(pronostico, partido) {
+  if (!partido || partido.estado !== "FINALIZADO") {
+    return `<span class="badge badge-por-jugarse">Pendiente</span>`;
+  }
+
+  const puntos = pronostico.puntosObtenidos ?? 0;
+
+  if (puntos === 3) {
+    return `<span class="badge badge-en-juego">Exacto</span>`;
+  }
+
+  if (puntos === 1) {
+    return `<span class="badge badge-por-jugarse">Ganador</span>`;
+  }
+
+  return `<span class="badge badge-finalizada">Errado</span>`;
+}
+
+/******************************
+ * DASHBOARD
+ ******************************/
+function renderDashboard() {
+  renderDashboardStats();
+  renderDashboardPartidos();
+}
+
+function renderDashboardStats() {
+  if (statEquipos) {
+    statEquipos.textContent = equiposCache.length;
+  }
+
+  if (statFechas) {
+    statFechas.textContent = fechasCache.length;
+  }
+
+  if (statFechasDetalle) {
+    const fechasEnJuego = fechasCache.filter(f => f.estado === "EN_JUEGO").length;
+    statFechasDetalle.textContent = `${fechasEnJuego} en juego`;
+  }
+
+  if (statPartidos) {
+    statPartidos.textContent = partidosCache.length;
+  }
+
+  if (statPartidosDetalle) {
+    const porJugarse = partidosCache.filter(p => p.estado === "POR_JUGARSE").length;
+    statPartidosDetalle.textContent = `${porJugarse} por jugarse`;
+  }
+
+  if (statUsuarios) {
+    statUsuarios.textContent = usuariosCache.length;
+  }
+}
+
+function renderDashboardPartidos() {
+  if (!tablaDashboardPartidos) return;
+
+  tablaDashboardPartidos.innerHTML = "";
+
+  const partidosDashboard = partidosCache
+    .filter(p => p.estado === "EN_JUEGO" || p.estado === "POR_JUGARSE")
+    .sort((a, b) => {
+      if (a.estado === "EN_JUEGO" && b.estado !== "EN_JUEGO") return -1;
+      if (a.estado !== "EN_JUEGO" && b.estado === "EN_JUEGO") return 1;
+
+      return new Date(a.fechaHorarioInicio) - new Date(b.fechaHorarioInicio);
+    })
+    .slice(0, 5);
+
+  if (partidosDashboard.length === 0) {
+    tablaDashboardPartidos.innerHTML = `
+      <tr class="tbl-row">
+        <td colspan="5" class="text-center text-gray-500 py-4">
+          No hay partidos activos o próximos
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  partidosDashboard.forEach(partido => {
+    tablaDashboardPartidos.innerHTML += crearFilaDashboardPartido(partido);
+  });
+}
+
+function crearFilaDashboardPartido(partido) {
+  return `
+    <tr class="tbl-row">
+      <td class="title-font font-bold">
+        ${partido.equipoLocal ?? "-"}
+        <span class="text-gray-600 font-normal text-xs">vs</span>
+        ${partido.equipoVisitante ?? "-"}
+      </td>
+
+      <td class="text-gray-500">
+        ${partido.fechaNombre ?? "-"}
+      </td>
+
+      <td>
+        ${obtenerBadgePartido(partido.estado)}
+      </td>
+
+      <td class="title-font font-bold">
+        ${obtenerResultadoPartido(partido)}
+      </td>
+
+      <td class="flex gap-2 items-center">
+        ${obtenerAccionesDashboardPartido(partido)}
+      </td>
+    </tr>
+  `;
+}
+
+function obtenerAccionesDashboardPartido(partido) {
+  if (partido.estado === "FINALIZADO") {
+    return `<span class="text-gray-700 text-xs">Cerrado</span>`;
+  }
+
+  return `
+    <button class="btn-edit" onclick="abrirModalResultado(${partido.id})">
+      Resultado
+    </button>
+
+    <button 
+      class="btn-ghost" 
+      style="height:30px;font-size:11px;" 
+      onclick="abrirModalEstado(${partido.id})"
+      ${partido.estado !== "POR_JUGARSE" ? "disabled" : ""}
+    >
+      Estado
+    </button>
+  `;
+}
+
+/******************************
  * INIT
  ******************************/
 document.addEventListener("DOMContentLoaded", async () => {
@@ -1276,31 +1614,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarFechas();
   await cargarPartidos();
   await cargarUsuarios();
+  renderDashboard();
 
+  cargarSelectFechasPronosticos();
+  cargarSelectPartidosPronosticos();
+  renderPronosticos();
+  selectFechaPronosticos?.addEventListener("change", seleccionarFechaPronosticos);
+  selectPartidoPronosticos?.addEventListener("change", seleccionarPartidoPronosticos);
+
+  //listeners equipos
   btnNuevoEquipo?.addEventListener("click", abrirModalNuevoEquipo);
   btnGuardarEquipo?.addEventListener("click", guardarEquipo);
   btnCancelarEquipo?.addEventListener("click", cerrarModalEquipo);
   btnCerrarModalEquipo?.addEventListener("click", cerrarModalEquipo);
-
-  btnNuevaFecha?.addEventListener("click", abrirModalNuevaFecha);
-  btnGuardarFecha?.addEventListener("click", guardarFecha);
-  btnCancelarFecha?.addEventListener("click", cerrarModalFecha);
-  btnCerrarModalFecha?.addEventListener("click", cerrarModalFecha);
-
-  btnNuevoPartido?.addEventListener("click", abrirModalNuevoPartido);
-  btnGuardarPartido?.addEventListener("click", guardarPartido);
-  btnCancelarPartido?.addEventListener("click", cerrarModalPartido);
-  btnCerrarModalPartido?.addEventListener("click", cerrarModalPartido);
-
-  btnGuardarResultado?.addEventListener("click", guardarResultado);
-  btnCancelarResultado?.addEventListener("click", cerrarModalResultado);
-  btnCerrarModalResultado?.addEventListener("click", cerrarModalResultado);
-
-  btnConfirmarEstado?.addEventListener("click", confirmarEstadoEnJuego);
-  btnCancelarEstado?.addEventListener("click", cerrarModalEstado);
-  btnCerrarModalEstado?.addEventListener("click", cerrarModalEstado);
-
-  buscarUsuario?.addEventListener("input", filtrarUsuarios);
+  buscarEquipo?.addEventListener("input", filtrarEquipos);
 
   modalEquipoEl?.addEventListener("click", (e) => {
     if (e.target === modalEquipoEl) {
@@ -1308,23 +1635,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  //listeners fechas
+  btnNuevaFecha?.addEventListener("click", abrirModalNuevaFecha);
+  btnGuardarFecha?.addEventListener("click", guardarFecha);
+  btnCancelarFecha?.addEventListener("click", cerrarModalFecha);
+  btnCerrarModalFecha?.addEventListener("click", cerrarModalFecha);
+
   modalFechaEl?.addEventListener("click", (e) => {
     if (e.target === modalFechaEl) {
       cerrarModalFecha();
     }
   });
 
+  //listeners partidos
+  btnNuevoPartido?.addEventListener("click", abrirModalNuevoPartido);
+  btnGuardarPartido?.addEventListener("click", guardarPartido);
+  btnCancelarPartido?.addEventListener("click", cerrarModalPartido);
+  btnCerrarModalPartido?.addEventListener("click", cerrarModalPartido);
+
   modalPartidoEl?.addEventListener("click", (e) => {
     if (e.target === modalPartidoEl) cerrarModalPartido();
   });
+
+  //listeners resultado
+  btnGuardarResultado?.addEventListener("click", guardarResultado);
+  btnCancelarResultado?.addEventListener("click", cerrarModalResultado);
+  btnCerrarModalResultado?.addEventListener("click", cerrarModalResultado);
 
   modalResultadoEl?.addEventListener("click", (e) => {
     if (e.target === modalResultadoEl) cerrarModalResultado();
   });
 
+
+  //listeners estado
+  btnConfirmarEstado?.addEventListener("click", confirmarEstadoEnJuego);
+  btnCancelarEstado?.addEventListener("click", cerrarModalEstado);
+  btnCerrarModalEstado?.addEventListener("click", cerrarModalEstado);
+
   modalEstadoEl?.addEventListener("click", (e) => {
     if (e.target === modalEstadoEl) cerrarModalEstado();
   });
 
-  buscarEquipo?.addEventListener("input", filtrarEquipos);
+  //listeners usuarios
+  buscarUsuario?.addEventListener("input", filtrarUsuarios);
+
+  //listeners dashboard
+  btnDashboardVerPartidos?.addEventListener("click", () => {
+  showSection("partidos", document.querySelector('[href="#partidos"]'));
+});
 });
