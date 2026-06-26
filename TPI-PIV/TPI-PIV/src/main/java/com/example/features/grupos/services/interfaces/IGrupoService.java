@@ -5,7 +5,7 @@ import com.example.features.grupos.dtos.request.GrupoRequestDTO;
 import com.example.features.grupos.dtos.response.GrupoResponseDTO;
 import com.example.features.miembrosgrupos.dtos.request.UnirseGrupoRequestDTO;
 import com.example.features.miembrosgrupos.dtos.response.MiembroGrupoResponseDTO;
-import com.example.features.users.dtos.response.UsuarioResponseDTO;
+import com.example.features.rankings.dtos.RankingResponseDTO;
 
 public interface IGrupoService {
     GrupoResponseDTO crearGrupo(GrupoRequestDTO dto,String emailUsuarioAutenticado);
@@ -14,6 +14,6 @@ public interface IGrupoService {
     GrupoResponseDTO obtenerGrupoPorId(Long id);
     List<MiembroGrupoResponseDTO> listarMiembrosDelGrupo(Long grupoId);
     List<MiembroGrupoResponseDTO> listarGruposDelUsuario(String emailUsuarioAutenticado);
-    List<UsuarioResponseDTO> rankingGrupo(Long grupoId);
+    List<RankingResponseDTO> rankingGrupo(Long grupoId);
     void salirDelGrupo(Long grupoId,String emailUsuarioAutenticado);
 }
