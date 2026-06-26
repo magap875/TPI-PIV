@@ -570,73 +570,11 @@
                         <h1 id="fechas" class="title-font text-3xl font-bold uppercase">Fechas</h1>
                         <p class="text-gray-500 text-sm mt-1">Gestioná las fechas del torneo y sus estados</p>
                     </div>
-                    <button class="btn-primary" onclick="openModal('modal-fecha')">+ Nueva fecha</button>
+                    <button class="btn-primary" id="btn-nueva-fecha">+ Nueva fecha</button>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <!-- Fecha 1 -->
-                    <div class="card overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="title-font text-xl font-bold uppercase">Fecha 1</h3>
-                                <span class="badge badge-finalizada">Finalizada</span>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-4">Mundial 2026 · 6 partidos</p>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-[10px] text-gray-600 uppercase tracking-wider">Cambiar estado</label>
-                                <select class="inp" style="height:34px;font-size:12px;" disabled>
-                                    <option>PROGRAMADA</option>
-                                    <option>EN_JUEGO</option>
-                                    <option>FINALIZADA</option>
-                                </select>
-                                <button class="btn-ghost" style="font-size:11px;" disabled>Cerrada</button>
-                            </div>
-                        </div>
-                        <div class="green-bar" style="background:#333;"></div>
-                    </div>
+                <div id="contenedor-fechas" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-                    <!-- Fecha 2 -->
-                    <div class="card overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="title-font text-xl font-bold uppercase">Fecha 2</h3>
-                                <span class="badge badge-finalizada">Finalizada</span>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-4">Mundial 2026 · 6 partidos</p>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-[10px] text-gray-600 uppercase tracking-wider">Cambiar estado</label>
-                                <select class="inp" style="height:34px;font-size:12px;" disabled>
-                                    <option>PROGRAMADA</option>
-                                    <option>EN_JUEGO</option>
-                                    <option>FINALIZADA</option>
-                                </select>
-                                <button class="btn-ghost" style="font-size:11px;" disabled>Cerrada</button>
-                            </div>
-                        </div>
-                        <div class="green-bar" style="background:#333;"></div>
-                    </div>
-
-                    <!-- Fecha 3 — ACTIVA -->
-                    <div class="card overflow-hidden" style="border-color:#05AC2E44;">
-                        <div class="p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="title-font text-xl font-bold uppercase">Fecha 3</h3>
-                                <span class="badge badge-en-juego"><span class="dot-live"
-                                        style="width:5px;height:5px;"></span> En juego</span>
-                            </div>
-                            <p class="text-xs text-gray-500 mb-4">Mundial 2026 · 6 partidos</p>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-[10px] text-gray-600 uppercase tracking-wider">Cambiar estado</label>
-                                <select class="inp" style="height:34px;font-size:12px;">
-                                    <option>PROGRAMADA</option>
-                                    <option>EN_JUEGO</option>
-                                    <option>FINALIZADA</option>
-                                </select>
-                                <button class="btn-primary" style="height:34px;font-size:11px;">Guardar estado</button>
-                            </div>
-                        </div>
-                        <div class="green-bar"></div>
-                    </div>
                 </div>
             </div>
 
@@ -647,15 +585,10 @@
                         <h1 id="partidos" class="title-font text-3xl font-bold uppercase">Partidos</h1>
                         <p class="text-gray-500 text-sm mt-1">Creá partidos, cambiá estados y cargá resultados</p>
                     </div>
-                    <button class="btn-primary">+ Nuevo partido</button>
+                    <button id="btn-nuevo-partido" class="btn-primary">+ Nuevo partido</button>
                 </div>
 
-                <!-- Filtro por fecha -->
-                <div class="flex gap-2 flex-wrap">
-                    <button class="tab active">Fecha 3</button>
-                    <button class="tab">Fecha 2</button>
-                    <button class="tab">Fecha 1</button>
-                </div>
+                <div id="tabs-fechas-partidos" class="flex gap-2 flex-wrap"></div>
 
                 <div class="card overflow-hidden">
                     <table class="w-full">
@@ -669,9 +602,7 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="tabla-partidos">
-
-                        </tbody>
+                        <tbody id="tabla-partidos"></tbody>
                     </table>
                     <div class="green-bar"></div>
                 </div>
@@ -686,7 +617,8 @@
                     </div>
                     <div class="flex gap-2">
                         <div class="relative">
-                            <input type="text" placeholder="Buscar usuario..." class="inp" style="width:220px;" />
+                            <input id="buscar-usuario" type="text" placeholder="Buscar usuario..." class="inp"
+                                style="width:220px;" />
                             <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -707,6 +639,7 @@
                                 <th>Puntos</th>
                                 <th>Pronósticos</th>
                                 <th>Exactos</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-usuarios">
@@ -766,13 +699,14 @@
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
                 <h3 class="title-font text-xl font-bold uppercase">Equipo</h3>
-                <button class="text-gray-600 hover:text-white text-xl leading-none" id="btn-cerrar-modal-equipo">&times;</button>
+                <button class="text-gray-600 hover:text-white text-xl leading-none"
+                    id="btn-cerrar-modal-equipo">&times;</button>
             </div>
             <div class="p-6 flex flex-col gap-4">
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Nombre del
                         equipo</label>
-                    <input type="text" placeholder="Ej: Argentina" class="inp" />
+                    <input id="equipo-nombre" type="text" placeholder="Ej: Argentina" class="inp" />
                 </div>
             </div>
             <div class="flex justify-end gap-3 px-6 pb-5">
@@ -782,108 +716,164 @@
         </div>
     </div>
 
-    <!-- Modal: Nueva Fecha -->
+    <!-- Modal: Nueva/Editar Fecha -->
     <div id="modal-fecha" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
-                <h3 class="title-font text-xl font-bold uppercase">Nueva fecha</h3>
-                <button class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
-            </div>
-            <div class="p-6 flex flex-col gap-4">
-                <div>
-                    <label
-                        class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Nombre</label>
-                    <input type="text" placeholder="Ej: Fecha 4" class="inp" />
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Estado
-                        inicial</label>
-                    <select class="inp">
-                        <option>PROGRAMADA</option>
-                        <option>EN_JUEGO</option>
-                        <option>FINALIZADA</option>
-                    </select>
-                </div>
-            </div>
-            <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost" id="btn-cerrar-modal-fecha">Cancelar</button>
-                <button class="btn-primary">Crear fecha</button>
-            </div>
-            <div class="green-bar"></div>
-        </div>
-    </div>
-
-    <!-- Modal: Nuevo/Editar Equipo -->
-    <div id="modal-equipo" class="modal-overlay hidden">
-        <div class="modal-box">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
-                <h3 id="modal-equipo-titulo" class="title-font text-xl font-bold uppercase">
-                    Equipo
+                <h3 id="modal-fecha-titulo" class="title-font text-xl font-bold uppercase">
+                    Nueva fecha
                 </h3>
 
-                <button id="btn-cerrar-modal-equipo" class="text-gray-600 hover:text-white text-xl leading-none">
+                <button id="btn-cerrar-modal-fecha" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
                     &times;
                 </button>
             </div>
 
             <div class="p-6 flex flex-col gap-4">
-                <input id="equipo-id" type="hidden">
+                <input id="fecha-id" type="hidden">
 
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
-                        Nombre del equipo
+                        Nombre
                     </label>
 
-                    <input id="equipo-nombre" type="text" placeholder="Ej: Argentina" class="inp" />
+                    <input id="fecha-nombre" type="text" placeholder="Ej: Fecha 4" class="inp" />
                 </div>
             </div>
 
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button id="btn-cancelar-equipo" class="btn-ghost">
+                <button id="btn-cancelar-fecha" type="button" class="btn-ghost">
                     Cancelar
                 </button>
 
-                <button id="btn-guardar-equipo" class="btn-primary">
-                    Guardar equipo
+                <button id="btn-guardar-fecha" type="button" class="btn-primary">
+                    Guardar fecha
                 </button>
             </div>
 
             <div class="green-bar"></div>
         </div>
     </div>
+
+    <!-- Modal: Nuevo/Editar Partido -->
+    <div id="modal-partido" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
+                <h3 id="modal-partido-titulo" class="title-font text-xl font-bold uppercase">
+                    Nuevo partido
+                </h3>
+
+                <button id="btn-cerrar-modal-partido" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
+                    &times;
+                </button>
+            </div>
+
+            <div class="p-6 flex flex-col gap-4">
+                <input id="partido-id" type="hidden">
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                        Fecha
+                    </label>
+                    <select id="partido-fecha" class="inp"></select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Equipo local
+                        </label>
+                        <select id="partido-equipo-local" class="inp"></select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Equipo visitante
+                        </label>
+                        <select id="partido-equipo-visitante" class="inp"></select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                        Horario
+                    </label>
+                    <input id="partido-horario" type="datetime-local" class="inp">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 px-6 pb-5">
+                <button id="btn-cancelar-partido" type="button" class="btn-ghost">
+                    Cancelar
+                </button>
+
+                <button id="btn-guardar-partido" type="button" class="btn-primary">
+                    Guardar partido
+                </button>
+            </div>
+
+            <div class="green-bar"></div>
+        </div>
+    </div>
+
 
     <!-- Modal: Cargar Resultado -->
     <div id="modal-resultado" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
                 <h3 class="title-font text-xl font-bold uppercase">Cargar resultado</h3>
-                <button  class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
+
+                <button id="btn-cerrar-modal-resultado" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
+                    &times;
+                </button>
             </div>
+
             <div class="p-6">
+                <input id="resultado-partido-id" type="hidden">
+
                 <p id="modal-resultado-titulo"
                     class="title-font text-lg font-bold uppercase text-center mb-6 text-[#05AC2E]"></p>
+
                 <div class="grid grid-cols-3 gap-4 items-center">
                     <div class="text-center">
                         <label id="label-local"
-                            class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Local</label>
-                        <input type="number" min="0" max="20" value="0"
-                            class="inp text-center text-2xl font-bold title-font" style="text-align:center;" />
+                            class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Local
+                        </label>
+                        <input id="resultado-goles-local" type="number" min="0" max="20" value="0"
+                            class="inp text-center text-2xl font-bold title-font" style="text-align:center;">
                     </div>
+
                     <div class="text-center title-font text-2xl text-gray-600 font-bold">—</div>
+
                     <div class="text-center">
                         <label id="label-visitante"
-                            class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Visitante</label>
-                        <input type="number" min="0" max="20" value="0"
-                            class="inp text-center text-2xl font-bold title-font" style="text-align:center;" />
+                            class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Visitante
+                        </label>
+                        <input id="resultado-goles-visitante" type="number" min="0" max="20" value="0"
+                            class="inp text-center text-2xl font-bold title-font" style="text-align:center;">
                     </div>
                 </div>
-                <p class="text-xs text-gray-600 text-center mt-4">Al guardar se calculan automáticamente los puntos de
-                    todos los pronósticos.</p>
+
+                <p class="text-xs text-gray-600 text-center mt-4">
+                    Al guardar se calculan automáticamente los puntos de todos los pronósticos.
+                </p>
             </div>
+
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost">Cancelar</button>
-                <button class="btn-primary">Guardar resultado</button>
+                <button id="btn-cancelar-resultado" type="button" class="btn-ghost">
+                    Cancelar
+                </button>
+
+                <button id="btn-guardar-resultado" type="button" class="btn-primary">
+                    Guardar resultado
+                </button>
             </div>
+
             <div class="green-bar"></div>
         </div>
     </div>
@@ -893,28 +883,37 @@
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
                 <h3 class="title-font text-xl font-bold uppercase">Cambiar estado</h3>
-                <button class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
+
+                <button id="btn-cerrar-modal-estado" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
+                    &times;
+                </button>
             </div>
+
             <div class="p-6 flex flex-col gap-4">
+                <input id="estado-partido-id" type="hidden">
+
                 <p id="modal-estado-titulo" class="title-font text-base font-bold uppercase text-[#05AC2E]"></p>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Nuevo
-                        estado</label>
-                    <select class="inp">
-                        <option>POR_JUGARSE</option>
-                        <option>EN_JUEGO</option>
-                        <option>FINALIZADO</option>
-                    </select>
-                </div>
-                <p class="text-xs text-gray-600">Una vez en EN_JUEGO los pronósticos quedarán bloqueados.</p>
+
+                <p class="text-xs text-gray-500">
+                    Este botón pasa el partido de POR_JUGARSE a EN_JUEGO.
+                </p>
             </div>
+
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost">Cancelar</button>
-                <button class="btn-primary">Confirmar</button>
+                <button id="btn-cancelar-estado" type="button" class="btn-ghost">
+                    Cancelar
+                </button>
+
+                <button id="btn-confirmar-estado" type="button" class="btn-primary">
+                    Pasar a EN JUEGO
+                </button>
             </div>
+
             <div class="green-bar"></div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/api.js"></script>
     <script src="../js/panel-admin.js" defer></script>

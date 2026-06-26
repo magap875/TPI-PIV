@@ -23,6 +23,10 @@ form.addEventListener("submit", async (event) => {
             });
             return;
         }
+        
+        // guardar tokens
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
 
         Swal.fire({
             icon: "success",

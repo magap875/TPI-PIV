@@ -1,4 +1,4 @@
-// package com.example.features.rankings.controllers;
+package com.example.features.rankings.controllers;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
