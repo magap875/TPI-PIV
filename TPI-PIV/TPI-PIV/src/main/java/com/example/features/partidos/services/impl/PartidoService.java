@@ -34,7 +34,7 @@ public class PartidoService implements IPartidoService {
     private final FechaRepository fechaRepository;
 
     @Override
-    public PartidoResponseDTO crearPartido(PartidoCreateDTO dto){
+    public PartidoResponseDTO crearPartido(PartidoCreateDTO dto) {
         if (dto.equipoLocalId().equals(dto.equipoVisitanteId())) {
             throw new BadRequestException("Los equipos no pueden ser iguales");
         }
@@ -59,7 +59,7 @@ public class PartidoService implements IPartidoService {
     }
 
     @Override
-    public List<PartidoResponseDTO> listarPartidos(){
+    public List<PartidoResponseDTO> listarPartidos() {
         return partidoRepository.findAll()
                 .stream()
                 .map(PartidoMapper::toResponseDTO)
@@ -67,15 +67,23 @@ public class PartidoService implements IPartidoService {
     }
 
     @Override
-    public List<PartidoResponseDTO> listarPorFecha(Long fechaId){
-        return partidoRepository.findByFechaId(fechaId)
-                .stream()
+    public List<PartidoResponseDTO> listarPorFecha(Long fechaId) {
+
+        List<Partido> partidos;
+
+        if (fechaId != null) {
+            partidos = partidoRepository.findByFechaIdOrderByFechaHorarioInicioAsc(fechaId);
+        } else {
+            partidos = partidoRepository.findAllByOrderByFechaHorarioInicioAsc();
+        }
+
+        return partidos.stream()
                 .map(PartidoMapper::toResponseDTO)
                 .toList();
     }
 
     @Override
-    public List<PartidoResponseDTO> listarPorEstado(EstadoPartido estado){
+    public List<PartidoResponseDTO> listarPorEstado(EstadoPartido estado) {
         List<Partido> partidos = partidoRepository.findByEstado(estado);
         return partidos.stream()
                 .map(PartidoMapper::toResponseDTO)
@@ -83,7 +91,7 @@ public class PartidoService implements IPartidoService {
     }
 
     @Override
-    public PartidoResponseDTO actualizarPartido(Long id, PartidoUpdateDTO dto){
+    public PartidoResponseDTO actualizarPartido(Long id, PartidoUpdateDTO dto) {
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
 
@@ -108,9 +116,8 @@ public class PartidoService implements IPartidoService {
         return PartidoMapper.toResponseDTO(partidoRepository.save(partido));
     }
 
-
     @Override
-    public PartidoResponseDTO cambiarEstadoEnJuego(Long id){
+    public PartidoResponseDTO cambiarEstadoEnJuego(Long id) {
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
 
@@ -119,7 +126,7 @@ public class PartidoService implements IPartidoService {
         }
 
         partido.setEstado(EstadoPartido.EN_JUEGO);
-    
+
         Partido saved = partidoRepository.save(partido);
         Fecha fecha = saved.getFecha();
         actualizarEstadoFecha(fecha);
@@ -129,7 +136,7 @@ public class PartidoService implements IPartidoService {
     }
 
     @Override
-    public PartidoResponseDTO cargarResultado(Long id, PartidoResultadoDTO dto){
+    public PartidoResponseDTO cargarResultado(Long id, PartidoResultadoDTO dto) {
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
 
@@ -161,14 +168,14 @@ public class PartidoService implements IPartidoService {
     }
 
     @Override
-    public PartidoResponseDTO buscarPorId(Long id){
+    public PartidoResponseDTO buscarPorId(Long id) {
         return partidoRepository.findById(id)
                 .map(PartidoMapper::toResponseDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
     }
 
     @Override
-    public void eliminarPartido(Long id){
+    public void eliminarPartido(Long id) {
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
 
@@ -182,7 +189,7 @@ public class PartidoService implements IPartidoService {
     }
 
     // metodos helpers
-    private void actualizarEstadoFecha(Fecha fecha){
+    private void actualizarEstadoFecha(Fecha fecha) {
         List<Partido> partidos = fecha.getPartidos();
 
         boolean todosFinalizados = partidos.stream().allMatch(p -> p.getEstado() == EstadoPartido.FINALIZADO);
@@ -190,37 +197,36 @@ public class PartidoService implements IPartidoService {
         boolean todosPorJugar = partidos.stream().allMatch(p -> p.getEstado() == EstadoPartido.POR_JUGARSE);
 
         if (todosFinalizados) {
-                fecha.setEstado(EstadoFecha.FINALIZADA);
-            } else if (algunoEnJuego) {
-                fecha.setEstado(EstadoFecha.EN_JUEGO);
-            } else if (todosPorJugar) {
-                fecha.setEstado(EstadoFecha.PROGRAMADA);
-            }
+            fecha.setEstado(EstadoFecha.FINALIZADA);
+        } else if (algunoEnJuego) {
+            fecha.setEstado(EstadoFecha.EN_JUEGO);
+        } else if (todosPorJugar) {
+            fecha.setEstado(EstadoFecha.PROGRAMADA);
+        }
     }
 
     private void calcularPuntos(Partido partido) {
         List<Pronostico> pronosticos = partido.getPronosticos();
 
-            for (Pronostico p : pronosticos) {
-                Usuario usuario = p.getUsuario();
-                int puntos = 0;
-                boolean exacto =
-                        p.getGolesLocalPronosticados().equals(partido.getGolesLocal()) &&
-                        p.getGolesVisitantePronosticados().equals(partido.getGolesVisitante());
+        for (Pronostico p : pronosticos) {
+            Usuario usuario = p.getUsuario();
+            int puntos = 0;
+            boolean exacto = p.getGolesLocalPronosticados().equals(partido.getGolesLocal()) &&
+                    p.getGolesVisitantePronosticados().equals(partido.getGolesVisitante());
 
-                if (exacto) { 
-                    puntos = 3;
-                    usuario.setCantidadResultadosExactos(usuario.getCantidadResultadosExactos() + 1);
-                } else if (mismaTendencia(p, partido)) {
-                    puntos = 1;
-                }
+            if (exacto) {
+                puntos = 3;
+                usuario.setCantidadResultadosExactos(usuario.getCantidadResultadosExactos() + 1);
+            } else if (mismaTendencia(p, partido)) {
+                puntos = 1;
+            }
 
-                p.setPuntosObtenidos(puntos);
-                usuario.setPuntosTotales(usuario.getPuntosTotales() + puntos);
-                }
+            p.setPuntosObtenidos(puntos);
+            usuario.setPuntosTotales(usuario.getPuntosTotales() + puntos);
+        }
     }
 
-    private boolean mismaTendencia(Pronostico p, Partido partido){
+    private boolean mismaTendencia(Pronostico p, Partido partido) {
         ResultadoTendencia predicho;
 
         if (p.getGolesLocalPronosticados() > p.getGolesVisitantePronosticados()) {
@@ -229,7 +235,7 @@ public class PartidoService implements IPartidoService {
             predicho = ResultadoTendencia.VISITANTE;
         } else {
             predicho = ResultadoTendencia.EMPATE;
-        }                
+        }
 
         return predicho == partido.getResultadoTendencia();
     }

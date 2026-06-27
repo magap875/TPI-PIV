@@ -10,6 +10,7 @@ import com.example.features.fechas.repositories.FechaRepository;
 import com.example.features.partidos.dtos.request.PartidoCreateDTO;
 import com.example.features.partidos.dtos.request.PartidoResultadoDTO;
 import com.example.features.partidos.dtos.request.PartidoUpdateDTO;
+import com.example.features.partidos.dtos.response.PartidoResponseDTO;
 import com.example.features.partidos.models.EstadoPartido;
 import com.example.features.partidos.models.Partido;
 import com.example.features.partidos.repositories.PartidoRepository;
@@ -234,5 +235,60 @@ class PartidoServiceTest {
         pronostico.setGolesVisitantePronosticados(golesVisitante);
         pronostico.setPuntosObtenidos(0);
         return pronostico;
+    }
+
+    @Test
+    void listarPorFecha_deberiaRetornarPartidosOrdenadosCronologicamente() {
+        Long fechaId = 1L;
+
+        Fecha fecha = new Fecha();
+        fecha.setId(fechaId);
+        fecha.setNombre("Fecha 1");
+
+        Equipo argentina = new Equipo();
+        argentina.setId(1L);
+        argentina.setNombre("Argentina");
+
+        Equipo brasil = new Equipo();
+        brasil.setId(2L);
+        brasil.setNombre("Brasil");
+
+        Equipo francia = new Equipo();
+        francia.setId(3L);
+        francia.setNombre("Francia");
+
+        Equipo alemania = new Equipo();
+        alemania.setId(4L);
+        alemania.setNombre("Alemania");
+
+        Partido partidoTemprano = new Partido();
+        partidoTemprano.setId(1L);
+        partidoTemprano.setFecha(fecha);
+        partidoTemprano.setEquipoLocal(argentina);
+        partidoTemprano.setEquipoVisitante(brasil);
+        partidoTemprano.setEstado(EstadoPartido.POR_JUGARSE);
+        partidoTemprano.setFechaHorarioInicio(
+                LocalDateTime.of(2026, 6, 20, 16, 0));
+
+        Partido partidoTarde = new Partido();
+        partidoTarde.setId(2L);
+        partidoTarde.setFecha(fecha);
+        partidoTarde.setEquipoLocal(francia);
+        partidoTarde.setEquipoVisitante(alemania);
+        partidoTarde.setEstado(EstadoPartido.POR_JUGARSE);
+        partidoTarde.setFechaHorarioInicio(
+                LocalDateTime.of(2026, 6, 20, 20, 0));
+
+        when(partidoRepository.findByFechaIdOrderByFechaHorarioInicioAsc(fechaId))
+                .thenReturn(List.of(partidoTemprano, partidoTarde));
+
+        List<PartidoResponseDTO> resultado = partidoService.listarPorFecha(fechaId);
+
+        assertEquals(2, resultado.size());
+        assertEquals(1L, resultado.get(0).id());
+        assertEquals(2L, resultado.get(1).id());
+
+        verify(partidoRepository)
+                .findByFechaIdOrderByFechaHorarioInicioAsc(fechaId);
     }
 }
