@@ -10,7 +10,7 @@ import com.example.features.grupos.dtos.response.GrupoResponseDTO;
 import com.example.features.grupos.services.interfaces.IGrupoService;
 import com.example.features.miembrosgrupos.dtos.request.UnirseGrupoRequestDTO;
 import com.example.features.miembrosgrupos.dtos.response.MiembroGrupoResponseDTO;
-import com.example.features.users.dtos.response.UsuarioResponseDTO;
+import com.example.features.rankings.dtos.RankingResponseDTO;
 import java.util.List;
 
 @RestController
@@ -56,7 +56,7 @@ public class GrupoController {
         }
 
         @GetMapping("/{grupoId}/ranking")
-        public ResponseEntity<List<UsuarioResponseDTO>> rankingGrupo(@PathVariable Long grupoId){
+        public ResponseEntity<List<RankingResponseDTO>> rankingGrupo(@PathVariable Long grupoId){
                 return ResponseEntity.ok(grupoService.rankingGrupo(grupoId));
         }
 
