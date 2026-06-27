@@ -22,56 +22,56 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthService implements IAuthService{
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder encoder;
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
+        private final UsuarioRepository usuarioRepository;
+        private final PasswordEncoder encoder;
+        private final AuthenticationManager authenticationManager;
+        private final JwtService jwtService;
 
-    public void register(UsuarioRegisterDTO dto){
-        if (usuarioRepository.existsByEmail(dto.email())) {
-            throw new BadRequestException("Email ya registrado");
+        public void register(UsuarioRegisterDTO dto){
+                if (usuarioRepository.existsByEmail(dto.email())) {
+                throw new BadRequestException("Email ya registrado");
+                }
+
+                Usuario usuario = new Usuario();
+                usuario.setNombre(dto.nombre());
+                usuario.setEmail(dto.email());
+                usuario.setContraseña(encoder.encode(dto.contraseña()));
+                usuario.setRol(Rol.USER);
+
+                usuarioRepository.save(usuario);
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setNombre(dto.nombre());
-        usuario.setEmail(dto.email());
-        usuario.setContraseña(encoder.encode(dto.contraseña()));
-        usuario.setRol(Rol.USER);
+        public AuthResponseDTO login(LoginRequestDTO dto){
+        try {
+                Authentication authentication = authenticationManager.authenticate(
+                                UsernamePasswordAuthenticationToken.unauthenticated(
+                                        dto.email(),
+                                        dto.contraseña()
+                                )
+                        );
 
-        usuarioRepository.save(usuario);
-    }
-
-    public AuthResponseDTO login(LoginRequestDTO dto){
-    try {
-        Authentication authentication = authenticationManager.authenticate(
-                        UsernamePasswordAuthenticationToken.unauthenticated(
-                                dto.email(),
-                                dto.contraseña()
-                        )
-                );
-
-        String email = authentication.getName();
-        String accessToken = jwtService.generarToken(email);
-        String refreshToken = jwtService.generarRefreshToken(email);
-        return new AuthResponseDTO(accessToken, refreshToken);
-    } catch (BadCredentialsException e) {
-        throw new BadRequestException("Credenciales inválidas");
-        }
-    }
-
-    @Override
-    public AuthResponseDTO refresh(String refreshToken) {
-        if (!jwtService.esValido(refreshToken)) {
-            throw new BadRequestException("Refresh token inválido o expirado");
+                String email = authentication.getName();
+                String accessToken = jwtService.generarToken(email);
+                String refreshToken = jwtService.generarRefreshToken(email);
+                return new AuthResponseDTO(accessToken, refreshToken);
+        } catch (BadCredentialsException e) {
+                throw new BadRequestException("Credenciales inválidas");
+                }
         }
 
-        String email = jwtService.extraerEmail(refreshToken);
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        @Override
+        public AuthResponseDTO refresh(String refreshToken) {
+                if (!jwtService.esValido(refreshToken)) {
+                throw new BadRequestException("Refresh token inválido o expirado");
+                }
 
-        String newAccessToken = jwtService.generarToken(usuario.getEmail());
-        String newRefreshToken = jwtService.generarRefreshToken(usuario.getEmail());
-        
-        return new AuthResponseDTO(newAccessToken, newRefreshToken);
-    }
+                String email = jwtService.extraerEmail(refreshToken);
+                Usuario usuario = usuarioRepository.findByEmail(email)
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+                String newAccessToken = jwtService.generarToken(usuario.getEmail());
+                String newRefreshToken = jwtService.generarRefreshToken(usuario.getEmail());
+                
+                return new AuthResponseDTO(newAccessToken, newRefreshToken);
+        }
 }
