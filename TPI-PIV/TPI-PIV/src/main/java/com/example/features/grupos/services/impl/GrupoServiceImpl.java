@@ -2,6 +2,8 @@ package com.example.features.grupos.services.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.example.config.exceptions.BadRequestException;
 import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.grupos.dtos.request.GrupoRequestDTO;
 import com.example.features.grupos.dtos.response.GrupoResponseDTO;
@@ -62,7 +64,7 @@ public class GrupoServiceImpl implements IGrupoService {
                 grupo.getId());
 
         if (yaEsMiembro) {
-            throw new ResourceNotFoundException("El usuario ya pertenece a este grupo");
+            throw new BadRequestException("El usuario ya pertenece a este grupo");
         }
 
         MiembroGrupo miembro = new MiembroGrupo();

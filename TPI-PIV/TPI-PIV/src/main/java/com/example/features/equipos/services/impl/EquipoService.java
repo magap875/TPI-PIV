@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EquipoService implements IEquipoService {
-
     private final EquipoRepository equipoRepository;
     private final PartidoRepository partidoRepository;
 

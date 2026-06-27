@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
         private final JwtAuthenticationFilter jwtFilter;
         private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -37,17 +36,19 @@ public class SecurityConfig {
                         )
                         .authorizeHttpRequests(auth -> auth
 
-                        // api
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/api/equipos/**",
-                                "/api/partidos/**",
-                                "/api/fechas/**",
-                                "/api/rankings/**"
-                        ).permitAll()
+                                // públicos (sin auth)
+                                .requestMatchers(
+                                        "/api/fechas/**",
+                                        "/api/partidos/**",
+                                        "/api/rankings/**",
+                                        "/api/auth/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
 
-                        // lo demás requiere autenticación
-                        .anyRequest().authenticated()
+                                // todo lo demás requiere autenticación
+                                .anyRequest().authenticated()
                         )
                         .addFilterBefore(
                                 jwtFilter,
