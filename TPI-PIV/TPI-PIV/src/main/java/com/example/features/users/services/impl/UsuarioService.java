@@ -4,10 +4,14 @@ import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.features.users.dtos.request.UsuarioUpdateDTO;
 import com.example.features.users.dtos.response.UsuarioResponseDTO;
 import com.example.features.users.mappers.UsuarioMapper;
+import com.example.features.users.models.Rol;
 import com.example.features.users.models.Usuario;
 import com.example.features.users.repositories.UsuarioRepository;
 import com.example.features.users.services.interfaces.IUsuarioService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +23,7 @@ public class UsuarioService implements IUsuarioService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UsuarioResponseDTO getPerfil(String email){
+    public UsuarioResponseDTO getPerfil(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
@@ -27,7 +31,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO actualizarPerfil(String email, UsuarioUpdateDTO dto){
+    public UsuarioResponseDTO actualizarPerfil(String email, UsuarioUpdateDTO dto) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
@@ -44,10 +48,36 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public void eliminarCuenta(String email){
+    public void eliminarCuenta(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         usuarioRepository.delete(usuario);
     }
+
+    @Override
+    public List<UsuarioResponseDTO> listarUsuarios() {
+        return usuarioRepository.findAll()
+                .stream()
+                .map(UsuarioMapper::toResponseDTO)
+                .toList();
+    }
+
+    @Override
+    public UsuarioResponseDTO cambiarRol(Long usuarioId) {
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        if (usuario.getRol() == Rol.ADMIN) {
+            usuario.setRol(Rol.USER);
+        } else {
+            usuario.setRol(Rol.ADMIN);
+        }
+
+        Usuario actualizado = usuarioRepository.save(usuario);
+
+        return UsuarioMapper.toResponseDTO(actualizado);
+    }
+
 }

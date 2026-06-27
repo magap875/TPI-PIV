@@ -16,13 +16,18 @@ import com.example.features.miembrosgrupos.dtos.response.MiembroGrupoResponseDTO
 import com.example.features.miembrosgrupos.mappers.MiembroGrupoMapper;
 import com.example.features.miembrosgrupos.models.MiembroGrupo;
 import com.example.features.miembrosgrupos.repositories.MiembroGrupoRepository;
-import com.example.features.users.dtos.response.UsuarioResponseDTO;
-import com.example.features.users.mappers.UsuarioMapper;
+import com.example.features.pronosticos.repositories.PronosticoRepository;
+import com.example.features.pronosticos.models.Pronostico;
+import com.example.features.rankings.dtos.RankingResponseDTO;
 import com.example.features.users.models.Usuario;
 import com.example.features.users.repositories.UsuarioRepository;
+
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +35,7 @@ public class GrupoServiceImpl implements IGrupoService {
     private final GrupoRepository grupoRepository;
     private final UsuarioRepository usuarioRepository;
     private final MiembroGrupoRepository miembroGrupoRepository;
-
+    private final PronosticoRepository pronosticoRepository;
     @Override
     public GrupoResponseDTO crearGrupo(GrupoRequestDTO dto, String emailUsuarioAutenticado) {
         Usuario usuarioCreador = usuarioRepository.findByEmail(emailUsuarioAutenticado)
@@ -117,30 +122,47 @@ public class GrupoServiceImpl implements IGrupoService {
     }
 
     @Override
-    public List<UsuarioResponseDTO> rankingGrupo(Long grupoId) {
+    public List<RankingResponseDTO> obtenerRankingGrupo(Long grupoId) {
+
         if (!grupoRepository.existsById(grupoId)) {
             throw new ResourceNotFoundException("Grupo no encontrado");
         }
 
+        Map<Long, LocalDateTime> primeraFechaPorUsuario = pronosticoRepository.findAll()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        p -> p.getUsuario().getId(),
+                        Collectors.mapping(
+                                Pronostico::getFechaCreacion,
+                                Collectors.minBy(LocalDateTime::compareTo))))
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().orElse(LocalDateTime.MAX)));
+
         return miembroGrupoRepository.findByGrupoId(grupoId)
                 .stream()
                 .map(MiembroGrupo::getUsuario)
-                .sorted((u1, u2) -> {
-                    int puntos = u2.getPuntosTotales().compareTo(u1.getPuntosTotales());
-
-                    if (puntos != 0) {
-                        return puntos;
-                    }
-
-                    return u2.getCantidadResultadosExactos()
-                            .compareTo(u1.getCantidadResultadosExactos());
-                })
-                .map(UsuarioMapper::toResponseDTO)
+                .sorted(
+                        Comparator
+                                .comparing(Usuario::getPuntosTotales).reversed()
+                                .thenComparing(
+                                        Usuario::getCantidadResultadosExactos,
+                                        Comparator.reverseOrder())
+                                .thenComparing(u -> primeraFechaPorUsuario.getOrDefault(
+                                        u.getId(),
+                                        LocalDateTime.MAX)))
+                .map(u -> new RankingResponseDTO(
+                        u.getId(),
+                        u.getNombre(),
+                        u.getPuntosTotales(),
+                        u.getCantidadResultadosExactos()))
                 .toList();
     }
 
     @Override
-    public void salirDelGrupo(Long grupoId,String emailUsuarioAutenticado) {
+    public void salirDelGrupo(Long grupoId, String emailUsuarioAutenticado) {
         Usuario usuario = usuarioRepository.findByEmail(emailUsuarioAutenticado)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 

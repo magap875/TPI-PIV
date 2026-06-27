@@ -1,4 +1,4 @@
-package com.example.features.rankings.services.impl;
+ package com.example.features.rankings.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;

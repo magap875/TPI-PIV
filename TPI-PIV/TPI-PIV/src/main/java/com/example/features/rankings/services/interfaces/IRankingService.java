@@ -1,4 +1,4 @@
-package com.example.features.rankings.services.interfaces;
+ package com.example.features.rankings.services.interfaces;
 
 import java.util.List;
 import com.example.features.rankings.dtos.RankingResponseDTO;

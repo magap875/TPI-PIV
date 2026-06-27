@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,13 +8,22 @@
     <link rel="icon" type="image/png" href="../images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap"
+        rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: "Inter", sans-serif; }
-        .title-font { font-family: "Rajdhani", sans-serif; }
+        body {
+            font-family: "Inter", sans-serif;
+        }
 
-        .logo { width: 90px; }
+        .title-font {
+            font-family: "Rajdhani", sans-serif;
+        }
+
+        .logo {
+            width: 90px;
+        }
 
         /* Sidebar nav */
         .side-link {
@@ -29,14 +39,24 @@
             transition: background 0.15s, color 0.15s;
             border: 1px solid transparent;
         }
-        .side-link:hover { background: #1e1e1e; color: #fff; }
+
+        .side-link:hover {
+            background: #1e1e1e;
+            color: #fff;
+        }
+
         .side-link.active {
             background: #05AC2E18;
             color: #05AC2E;
             border-color: #05AC2E22;
             font-weight: 600;
         }
-        .side-link .icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+        .side-link .icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
 
         /* Cards */
         .card {
@@ -44,6 +64,7 @@
             border: 1px solid #222;
             border-radius: 3px;
         }
+
         .green-bar {
             height: 3px;
             background: linear-gradient(90deg, #05AC2E 0%, #0AB52933 100%);
@@ -62,12 +83,42 @@
             border-radius: 2px;
             text-transform: uppercase;
         }
-        .badge-programada { background: #ffffff0f; color: #9ca3af; border: 1px solid #333; }
-        .badge-en-juego   { background: #05AC2E22; color: #05AC2E; border: 1px solid #05AC2E44; }
-        .badge-finalizada { background: #ffffff08; color: #555; border: 1px solid #222; }
-        .badge-por-jugarse{ background: #3b82f622; color: #60a5fa; border: 1px solid #3b82f633; }
-        .badge-admin      { background: #a855f722; color: #c084fc; border: 1px solid #a855f733; }
-        .badge-user       { background: #ffffff0a; color: #888; border: 1px solid #2a2a2a; }
+
+        .badge-programada {
+            background: #ffffff0f;
+            color: #9ca3af;
+            border: 1px solid #333;
+        }
+
+        .badge-en-juego {
+            background: #05AC2E22;
+            color: #05AC2E;
+            border: 1px solid #05AC2E44;
+        }
+
+        .badge-finalizada {
+            background: #ffffff08;
+            color: #555;
+            border: 1px solid #222;
+        }
+
+        .badge-por-jugarse {
+            background: #3b82f622;
+            color: #60a5fa;
+            border: 1px solid #3b82f633;
+        }
+
+        .badge-admin {
+            background: #a855f722;
+            color: #c084fc;
+            border: 1px solid #a855f733;
+        }
+
+        .badge-user {
+            background: #ffffff0a;
+            color: #888;
+            border: 1px solid #2a2a2a;
+        }
 
         /* Inputs */
         .inp {
@@ -82,10 +133,18 @@
             transition: border-color 0.2s;
             width: 100%;
         }
-        .inp:focus { border-color: #05AC2E; }
-        .inp::placeholder { color: #555; }
 
-        select.inp option { background: #1a1a1a; }
+        .inp:focus {
+            border-color: #05AC2E;
+        }
+
+        .inp::placeholder {
+            color: #555;
+        }
+
+        select.inp option {
+            background: #1a1a1a;
+        }
 
         /* Botones */
         .btn-primary {
@@ -104,7 +163,11 @@
             border: none;
             white-space: nowrap;
         }
-        .btn-primary:hover { background: #fff; color: #111; }
+
+        .btn-primary:hover {
+            background: #fff;
+            color: #111;
+        }
 
         .btn-ghost {
             background: transparent;
@@ -119,7 +182,11 @@
             transition: border-color 0.15s, color 0.15s;
             white-space: nowrap;
         }
-        .btn-ghost:hover { border-color: #05AC2E44; color: #fff; }
+
+        .btn-ghost:hover {
+            border-color: #05AC2E44;
+            color: #fff;
+        }
 
         .btn-danger {
             background: transparent;
@@ -133,7 +200,10 @@
             cursor: pointer;
             transition: background 0.15s;
         }
-        .btn-danger:hover { background: #7f1d1d33; }
+
+        .btn-danger:hover {
+            background: #7f1d1d33;
+        }
 
         .btn-edit {
             background: transparent;
@@ -147,10 +217,16 @@
             cursor: pointer;
             transition: background 0.15s;
         }
-        .btn-edit:hover { background: #1d4ed833; }
+
+        .btn-edit:hover {
+            background: #1d4ed833;
+        }
 
         /* Tabla */
-        .tbl-head { background: #111; }
+        .tbl-head {
+            background: #111;
+        }
+
         .tbl-head th {
             padding: 10px 16px;
             text-align: left;
@@ -161,14 +237,21 @@
             color: #555;
             border-bottom: 1px solid #1e1e1e;
         }
+
         .tbl-row td {
             padding: 12px 16px;
             font-size: 13px;
             color: #ccc;
             border-bottom: 1px solid #1a1a1a;
         }
-        .tbl-row:last-child td { border-bottom: none; }
-        .tbl-row:hover td { background: #1a1a1a; }
+
+        .tbl-row:last-child td {
+            border-bottom: none;
+        }
+
+        .tbl-row:hover td {
+            background: #1a1a1a;
+        }
 
         /* Section badge */
         .sec-badge {
@@ -192,23 +275,54 @@
         }
 
         /* Tabs */
-        .tab { padding: 7px 18px; font-size: 12px; font-weight: 600; border-radius: 3px; cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.5px; }
-        .tab.active { background: #05AC2E; color: #fff; }
-        .tab:not(.active) { background: #1e1e1e; color: #666; border: 1px solid #2a2a2a; }
-        .tab:not(.active):hover { color: #ccc; border-color: #444; }
+        .tab {
+            padding: 7px 18px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab.active {
+            background: #05AC2E;
+            color: #fff;
+        }
+
+        .tab:not(.active) {
+            background: #1e1e1e;
+            color: #666;
+            border: 1px solid #2a2a2a;
+        }
+
+        .tab:not(.active):hover {
+            color: #ccc;
+            border-color: #444;
+        }
 
         /* Panel sections */
-        .panel-section { display: none; }
-        .panel-section.active { display: block; }
+        .panel-section {
+            display: none;
+        }
+
+        .panel-section.active {
+            display: block;
+        }
 
         /* Modal */
         .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.75);
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
             z-index: 50;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
         }
+
         .modal-box {
             background: #161616;
             border: 1px solid #2a2a2a;
@@ -218,8 +332,26 @@
             overflow: hidden;
         }
 
-        .dot-live { width: 7px; height: 7px; border-radius: 50%; background: #05AC2E; display: inline-block; animation: blink 1.2s ease-in-out infinite; }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .dot-live {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #05AC2E;
+            display: inline-block;
+            animation: blink 1.2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
     </style>
 </head>
 
@@ -229,13 +361,15 @@
     <nav class="bg-[#111111] border-b border-[#222] z-40 relative">
         <div class="max-w-[1500px] mx-auto h-16 flex items-center justify-between px-6">
             <div class="flex items-center gap-4">
-                <img class="logo" src="../images/logo.png" alt="Logo"/>
+                <img class="logo" src="../images/logo.png" alt="Logo" />
                 <div class="h-5 w-px bg-[#2a2a2a]"></div>
                 <span class="sec-badge">Panel Admin</span>
             </div>
             <div class="flex items-center gap-4 text-sm">
                 <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-full bg-purple-900/50 border border-purple-700/50 flex items-center justify-center text-xs font-bold text-purple-300 title-font">AD</div>
+                    <div
+                        class="w-7 h-7 rounded-full bg-purple-900/50 border border-purple-700/50 flex items-center justify-center text-xs font-bold text-purple-300 title-font">
+                        AD</div>
                     <span class="text-gray-300 text-sm font-medium">Admin</span>
                 </div>
                 <a href="../index.html" class="btn-ghost">← Volver al sitio</a>
@@ -250,19 +384,31 @@
             <p class="text-[9px] font-bold uppercase tracking-[2px] text-[#333] px-3 mb-2">Gestión</p>
 
             <a href="#" class="side-link active" onclick="showSection('dashboard', this)">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
                 Dashboard
             </a>
             <a href="#equipos" class="side-link" onclick="showSection('equipos', this)">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2h5M12 12a4 4 0 100-8 4 4 0 000 8z"/></svg>
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 20h5v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2h5M12 12a4 4 0 100-8 4 4 0 000 8z" />
+                </svg>
                 Equipos
             </a>
             <a href="#fechas" class="side-link" onclick="showSection('fechas', this)">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
                 Fechas
             </a>
             <a href="#partidos" class="side-link" onclick="showSection('partidos', this)">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg>
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke-width="2" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
+                </svg>
                 Partidos
             </a>
 
@@ -270,11 +416,17 @@
             <p class="text-[9px] font-bold uppercase tracking-[2px] text-[#333] px-3 mb-2">Usuarios</p>
 
             <a href="#usuarios" class="side-link" onclick="showSection('usuarios', this)">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
                 Usuarios
             </a>
             <a href="#pronosticos" class="side-link" onclick="showSection('pronosticos', this)">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
                 Pronósticos
             </a>
         </aside>
@@ -292,23 +444,26 @@
                 <!-- Stats -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="stat-card">
-                        <p  class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Equipos</p>
-                        <p class="title-font text-4xl font-bold">24</p>
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Equipos</p>
+                        <p id="stat-equipos" class="title-font text-4xl font-bold">0</p>
                         <p class="text-xs text-gray-600 mt-1">cargados</p>
                     </div>
+
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Fechas</p>
-                        <p class="title-font text-4xl font-bold text-[#05AC2E]">3</p>
-                        <p class="text-xs text-gray-600 mt-1">1 en juego</p>
+                        <p id="stat-fechas" class="title-font text-4xl font-bold text-[#05AC2E]">0</p>
+                        <p id="stat-fechas-detalle" class="text-xs text-gray-600 mt-1">0 en juego</p>
                     </div>
+
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Partidos</p>
-                        <p class="title-font text-4xl font-bold">18</p>
-                        <p class="text-xs text-gray-600 mt-1">6 por jugarse</p>
+                        <p id="stat-partidos" class="title-font text-4xl font-bold">0</p>
+                        <p id="stat-partidos-detalle" class="text-xs text-gray-600 mt-1">0 por jugarse</p>
                     </div>
+
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Usuarios</p>
-                        <p class="title-font text-4xl font-bold">312</p>
+                        <p id="stat-usuarios" class="title-font text-4xl font-bold">0</p>
                         <p class="text-xs text-gray-600 mt-1">registrados</p>
                     </div>
                 </div>
@@ -320,7 +475,7 @@
                             <span class="dot-live"></span>
                             <h2 class="title-font text-lg font-bold uppercase">Partidos activos</h2>
                         </div>
-                        <button class="btn-ghost" onclick="showSection('partidos', document.querySelector('[onclick*=partidos]'))">Ver todos</button>
+                        <button id="btn-dashboard-ver-partidos" class="btn-ghost">Ver todos</button>
                     </div>
                     <table class="w-full">
                         <thead class="tbl-head">
@@ -332,35 +487,7 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇦🇷 Argentina <span class="text-gray-600 font-normal text-xs">vs</span> Algeria 🇩🇿</td>
-                                <td class="text-gray-500">Fecha 3</td>
-                                <td><span class="badge badge-en-juego"><span class="dot-live" style="width:5px;height:5px;"></span> EN JUEGO</span></td>
-                                <td class="title-font font-bold">2 — 0</td>
-                                <td class="flex gap-2 items-center">
-                                    <button class="btn-edit" onclick="openResultModal('Argentina','Algeria')">Resultado</button>
-                                    <button class="btn-ghost" style="height:30px;font-size:11px;">Estado</button>
-                                </td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇫🇷 Francia <span class="text-gray-600 font-normal text-xs">vs</span> Senegal 🇸🇳</td>
-                                <td class="text-gray-500">Fecha 3</td>
-                                <td><span class="badge badge-por-jugarse">Por jugarse</span></td>
-                                <td class="text-gray-600">—</td>
-                                <td class="flex gap-2 items-center">
-                                    <button class="btn-edit" onclick="openResultModal('Francia','Senegal')">Resultado</button>
-                                    <button class="btn-ghost" style="height:30px;font-size:11px;">Estado</button>
-                                </td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇧🇷 Brasil <span class="text-gray-600 font-normal text-xs">vs</span> Marruecos 🇲🇦</td>
-                                <td class="text-gray-500">Fecha 3</td>
-                                <td><span class="badge badge-finalizada">Finalizado</span></td>
-                                <td class="title-font font-bold text-gray-500">1 — 1</td>
-                                <td><span class="text-gray-700 text-xs">Cerrado</span></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="tabla-dashboard-partidos"></tbody>
                     </table>
                     <div class="green-bar"></div>
                 </div>
@@ -373,14 +500,18 @@
                         <h1 id="equipos" class="title-font text-3xl font-bold uppercase">Equipos</h1>
                         <p class="text-gray-500 text-sm mt-1">Creá, editá y eliminá equipos</p>
                     </div>
-                    <button class="btn-primary" onclick="openModal('modal-equipo')">+ Nuevo equipo</button>
+                    <button id="btn-nuevo-equipo" class="btn-primary">+ Nuevo equipo</button>
                 </div>
 
                 <!-- Buscador -->
                 <div class="flex gap-3">
                     <div class="relative flex-1 max-w-xs">
-                        <input type="text" placeholder="Buscar equipo..." class="inp pr-10" />
-                        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+                        <input id="buscar-equipo" type="text" placeholder="Buscar equipo..." class="inp pr-10" />
+                        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                        </svg>
                     </div>
                 </div>
 
@@ -395,15 +526,8 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="tbl-row"><td class="text-gray-600">1</td><td class="font-semibold">Argentina</td><td>🇦🇷</td><td class="text-gray-500">6</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
-                            <tr class="tbl-row"><td class="text-gray-600">2</td><td class="font-semibold">Francia</td><td>🇫🇷</td><td class="text-gray-500">6</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
-                            <tr class="tbl-row"><td class="text-gray-600">3</td><td class="font-semibold">Brasil</td><td>🇧🇷</td><td class="text-gray-500">5</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
-                            <tr class="tbl-row"><td class="text-gray-600">4</td><td class="font-semibold">España</td><td>🇪🇸</td><td class="text-gray-500">4</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
-                            <tr class="tbl-row"><td class="text-gray-600">5</td><td class="font-semibold">Alemania</td><td>🇩🇪</td><td class="text-gray-500">4</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
-                            <tr class="tbl-row"><td class="text-gray-600">6</td><td class="font-semibold">Senegal</td><td>🇸🇳</td><td class="text-gray-500">3</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
-                            <tr class="tbl-row"><td class="text-gray-600">7</td><td class="font-semibold">Marruecos</td><td>🇲🇦</td><td class="text-gray-500">3</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
-                            <tr class="tbl-row"><td class="text-gray-600">8</td><td class="font-semibold">Suiza</td><td>🇨🇭</td><td class="text-gray-500">2</td><td class="flex gap-2"><button class="btn-edit" onclick="openModal('modal-equipo')">Editar</button><button class="btn-danger">Eliminar</button></td></tr>
+                        <tbody id="tabla-equipos">
+
                         </tbody>
                     </table>
                     <div class="green-bar"></div>
@@ -417,72 +541,11 @@
                         <h1 id="fechas" class="title-font text-3xl font-bold uppercase">Fechas</h1>
                         <p class="text-gray-500 text-sm mt-1">Gestioná las fechas del torneo y sus estados</p>
                     </div>
-                    <button class="btn-primary" onclick="openModal('modal-fecha')">+ Nueva fecha</button>
+                    <button class="btn-primary" id="btn-nueva-fecha">+ Nueva fecha</button>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <!-- Fecha 1 -->
-                    <div class="card overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="title-font text-xl font-bold uppercase">Fecha 1</h3>
-                                <span class="badge badge-finalizada">Finalizada</span>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-4">Mundial 2026 · 6 partidos</p>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-[10px] text-gray-600 uppercase tracking-wider">Cambiar estado</label>
-                                <select class="inp" style="height:34px;font-size:12px;" disabled>
-                                    <option>PROGRAMADA</option>
-                                    <option>EN_JUEGO</option>
-                                    <option selected>FINALIZADA</option>
-                                </select>
-                                <button class="btn-ghost" style="font-size:11px;" disabled>Cerrada</button>
-                            </div>
-                        </div>
-                        <div class="green-bar" style="background:#333;"></div>
-                    </div>
+                <div id="contenedor-fechas" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-                    <!-- Fecha 2 -->
-                    <div class="card overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="title-font text-xl font-bold uppercase">Fecha 2</h3>
-                                <span class="badge badge-finalizada">Finalizada</span>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-4">Mundial 2026 · 6 partidos</p>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-[10px] text-gray-600 uppercase tracking-wider">Cambiar estado</label>
-                                <select class="inp" style="height:34px;font-size:12px;" disabled>
-                                    <option>PROGRAMADA</option>
-                                    <option>EN_JUEGO</option>
-                                    <option selected>FINALIZADA</option>
-                                </select>
-                                <button class="btn-ghost" style="font-size:11px;" disabled>Cerrada</button>
-                            </div>
-                        </div>
-                        <div class="green-bar" style="background:#333;"></div>
-                    </div>
-
-                    <!-- Fecha 3 — ACTIVA -->
-                    <div class="card overflow-hidden" style="border-color:#05AC2E44;">
-                        <div class="p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <h3 class="title-font text-xl font-bold uppercase">Fecha 3</h3>
-                                <span class="badge badge-en-juego"><span class="dot-live" style="width:5px;height:5px;"></span> En juego</span>
-                            </div>
-                            <p class="text-xs text-gray-500 mb-4">Mundial 2026 · 6 partidos</p>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-[10px] text-gray-600 uppercase tracking-wider">Cambiar estado</label>
-                                <select class="inp" style="height:34px;font-size:12px;">
-                                    <option>PROGRAMADA</option>
-                                    <option selected>EN_JUEGO</option>
-                                    <option>FINALIZADA</option>
-                                </select>
-                                <button class="btn-primary" style="height:34px;font-size:11px;">Guardar estado</button>
-                            </div>
-                        </div>
-                        <div class="green-bar"></div>
-                    </div>
                 </div>
             </div>
 
@@ -493,15 +556,10 @@
                         <h1 id="partidos" class="title-font text-3xl font-bold uppercase">Partidos</h1>
                         <p class="text-gray-500 text-sm mt-1">Creá partidos, cambiá estados y cargá resultados</p>
                     </div>
-                    <button class="btn-primary" onclick="openModal('modal-partido')">+ Nuevo partido</button>
+                    <button id="btn-nuevo-partido" class="btn-primary">+ Nuevo partido</button>
                 </div>
 
-                <!-- Filtro por fecha -->
-                <div class="flex gap-2 flex-wrap">
-                    <button class="tab active">Fecha 3</button>
-                    <button class="tab">Fecha 2</button>
-                    <button class="tab">Fecha 1</button>
-                </div>
+                <div id="tabs-fechas-partidos" class="flex gap-2 flex-wrap"></div>
 
                 <div class="card overflow-hidden">
                     <table class="w-full">
@@ -515,74 +573,7 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇦🇷 Argentina</td>
-                                <td class="title-font font-bold">🇩🇿 Algeria</td>
-                                <td class="text-gray-500 text-xs">mar. 16/06 22:00</td>
-                                <td><span class="badge badge-en-juego"><span class="dot-live" style="width:5px;height:5px;"></span> En juego</span></td>
-                                <td class="title-font font-bold">2 — 0</td>
-                                <td>
-                                    <div class="flex gap-2">
-                                        <button class="btn-edit" onclick="openResultModal('Argentina','Algeria')">Resultado</button>
-                                        <button class="btn-ghost" style="height:30px;font-size:11px;" onclick="openEstadoModal('Argentina vs Algeria')">Estado</button>
-                                        <button class="btn-edit" style="height:30px;font-size:11px;" onclick="openModal('modal-partido')">Editar</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇫🇷 Francia</td>
-                                <td class="title-font font-bold">🇸🇳 Senegal</td>
-                                <td class="text-gray-500 text-xs">mar. 16/06 16:00</td>
-                                <td><span class="badge badge-por-jugarse">Por jugarse</span></td>
-                                <td class="text-gray-600">—</td>
-                                <td>
-                                    <div class="flex gap-2">
-                                        <button class="btn-edit" onclick="openResultModal('Francia','Senegal')">Resultado</button>
-                                        <button class="btn-ghost" style="height:30px;font-size:11px;" onclick="openEstadoModal('Francia vs Senegal')">Estado</button>
-                                        <button class="btn-edit" style="height:30px;font-size:11px;" onclick="openModal('modal-partido')">Editar</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇪🇸 España</td>
-                                <td class="title-font font-bold">🇨🇻 Cabo Verde</td>
-                                <td class="text-gray-500 text-xs">lun. 15/06 13:00</td>
-                                <td><span class="badge badge-por-jugarse">Por jugarse</span></td>
-                                <td class="text-gray-600">—</td>
-                                <td>
-                                    <div class="flex gap-2">
-                                        <button class="btn-edit" onclick="openResultModal('España','Cabo Verde')">Resultado</button>
-                                        <button class="btn-ghost" style="height:30px;font-size:11px;" onclick="openEstadoModal('España vs Cabo Verde')">Estado</button>
-                                        <button class="btn-edit" style="height:30px;font-size:11px;" onclick="openModal('modal-partido')">Editar</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇧🇷 Brasil</td>
-                                <td class="title-font font-bold">🇲🇦 Marruecos</td>
-                                <td class="text-gray-500 text-xs">sáb. 13/06 19:00</td>
-                                <td><span class="badge badge-finalizada">Finalizado</span></td>
-                                <td class="title-font font-bold text-gray-500">1 — 1</td>
-                                <td><span class="text-gray-700 text-xs">Cerrado</span></td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇩🇪 Alemania</td>
-                                <td class="title-font font-bold">🇨🇼 Curazao</td>
-                                <td class="text-gray-500 text-xs">dom. 14/06 14:00</td>
-                                <td><span class="badge badge-finalizada">Finalizado</span></td>
-                                <td class="title-font font-bold text-gray-500">3 — 0</td>
-                                <td><span class="text-gray-700 text-xs">Cerrado</span></td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="title-font font-bold">🇶🇦 Qatar</td>
-                                <td class="title-font font-bold">🇨🇭 Suiza</td>
-                                <td class="text-gray-500 text-xs">sáb. 13/06 16:00</td>
-                                <td><span class="badge badge-finalizada">Finalizado</span></td>
-                                <td class="title-font font-bold text-gray-500">0 — 2</td>
-                                <td><span class="text-gray-700 text-xs">Cerrado</span></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="tabla-partidos"></tbody>
                     </table>
                     <div class="green-bar"></div>
                 </div>
@@ -597,8 +588,13 @@
                     </div>
                     <div class="flex gap-2">
                         <div class="relative">
-                            <input type="text" placeholder="Buscar usuario..." class="inp" style="width:220px;" />
-                            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+                            <input id="buscar-usuario" type="text" placeholder="Buscar usuario..." class="inp"
+                                style="width:220px;" />
+                            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -614,54 +610,11 @@
                                 <th>Puntos</th>
                                 <th>Pronósticos</th>
                                 <th>Exactos</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="tbl-row">
-                                <td class="text-gray-600">1</td>
-                                <td class="font-semibold">NachoB</td>
-                                <td class="text-gray-500 text-xs">nacho@mail.com</td>
-                                <td><span class="badge badge-user">Usuario</span></td>
-                                <td class="text-[#05AC2E] font-bold">112</td>
-                                <td class="text-gray-400">14</td>
-                                <td class="text-gray-400">8</td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="text-gray-600">2</td>
-                                <td class="font-semibold">Tomi_10</td>
-                                <td class="text-gray-500 text-xs">tomi@mail.com</td>
-                                <td><span class="badge badge-user">Usuario</span></td>
-                                <td class="font-bold">108</td>
-                                <td class="text-gray-400">14</td>
-                                <td class="text-gray-400">7</td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="text-gray-600">3</td>
-                                <td class="font-semibold">LaGenia</td>
-                                <td class="text-gray-500 text-xs">genia@mail.com</td>
-                                <td><span class="badge badge-user">Usuario</span></td>
-                                <td class="font-bold">101</td>
-                                <td class="text-gray-400">13</td>
-                                <td class="text-gray-400">7</td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="text-gray-600">4</td>
-                                <td class="font-semibold">Juan Doe</td>
-                                <td class="text-gray-500 text-xs">juan@mail.com</td>
-                                <td><span class="badge badge-user">Usuario</span></td>
-                                <td class="font-bold">41</td>
-                                <td class="text-gray-400">14</td>
-                                <td class="text-gray-400">4</td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="text-gray-600">5</td>
-                                <td class="font-semibold text-purple-400">Admin</td>
-                                <td class="text-gray-500 text-xs">admin@sevenbets.com</td>
-                                <td><span class="badge badge-admin">Admin</span></td>
-                                <td class="text-gray-600">—</td>
-                                <td class="text-gray-600">—</td>
-                                <td class="text-gray-600">—</td>
-                            </tr>
+                        <tbody id="tabla-usuarios">
+
                         </tbody>
                     </table>
                     <div class="green-bar"></div>
@@ -675,21 +628,29 @@
                     <p class="text-gray-500 text-sm mt-1">Pronósticos realizados por partido</p>
                 </div>
 
-                <!-- Filtro partido -->
-                <div class="flex gap-3 items-center">
-                    <label class="text-xs text-gray-500 uppercase tracking-wider whitespace-nowrap">Filtrar por partido:</label>
-                    <select class="inp" style="max-width:300px;">
-                        <option>Argentina vs Algeria</option>
-                        <option>Francia vs Senegal</option>
-                        <option>Brasil vs Marruecos</option>
-                        <option>España vs Cabo Verde</option>
-                    </select>
+                <div class="flex gap-3 items-center flex-wrap">
+                    <label class="text-xs text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Filtrar por fecha:
+                    </label>
+
+                    <select id="select-fecha-pronosticos" class="inp" style="max-width:260px;"></select>
+
+                    <label class="text-xs text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Filtrar por partido:
+                    </label>
+
+                    <select id="select-partido-pronosticos" class="inp" style="max-width:300px;"></select>
                 </div>
 
                 <div class="card overflow-hidden">
                     <div class="flex items-center justify-between px-5 py-3 border-b border-[#1e1e1e]">
-                        <span class="title-font font-bold uppercase text-base">🇦🇷 Argentina vs Algeria 🇩🇿</span>
-                        <span class="text-xs text-gray-500">312 pronósticos</span>
+                        <span id="titulo-pronosticos-partido" class="title-font font-bold uppercase text-base">
+                            Seleccioná un partido
+                        </span>
+
+                        <span id="cantidad-pronosticos" class="text-xs text-gray-500">
+                            0 pronósticos
+                        </span>
                     </div>
                     <table class="w-full">
                         <thead class="tbl-head">
@@ -701,42 +662,8 @@
                                 <th>Tipo</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="tbl-row">
-                                <td class="font-semibold">NachoB</td>
-                                <td class="title-font font-bold">2 — 0</td>
-                                <td class="title-font font-bold text-[#05AC2E]">2 — 0</td>
-                                <td class="text-[#05AC2E] font-bold">+3</td>
-                                <td><span class="badge badge-en-juego">Exacto</span></td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="font-semibold">Tomi_10</td>
-                                <td class="title-font font-bold">3 — 1</td>
-                                <td class="title-font font-bold text-[#05AC2E]">2 — 0</td>
-                                <td class="text-gray-300 font-bold">+1</td>
-                                <td><span class="badge badge-por-jugarse">Ganador</span></td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="font-semibold">LaGenia</td>
-                                <td class="title-font font-bold">1 — 0</td>
-                                <td class="title-font font-bold text-[#05AC2E]">2 — 0</td>
-                                <td class="text-gray-300 font-bold">+1</td>
-                                <td><span class="badge badge-por-jugarse">Ganador</span></td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="font-semibold">Juan Doe</td>
-                                <td class="title-font font-bold">2 — 0</td>
-                                <td class="title-font font-bold text-[#05AC2E]">2 — 0</td>
-                                <td class="text-[#05AC2E] font-bold">+3</td>
-                                <td><span class="badge badge-en-juego">Exacto</span></td>
-                            </tr>
-                            <tr class="tbl-row">
-                                <td class="font-semibold">Carlos_R</td>
-                                <td class="title-font font-bold">0 — 1</td>
-                                <td class="title-font font-bold text-[#05AC2E]">2 — 0</td>
-                                <td class="text-gray-600 font-bold">0</td>
-                                <td><span class="badge badge-finalizada">Errado</span></td>
-                            </tr>
+                        <tbody id="tabla-pronosticos">
+
                         </tbody>
                     </table>
                     <div class="green-bar"></div>
@@ -749,210 +676,228 @@
     <!-- ========= MODALES ========= -->
 
     <!-- Modal: Nuevo/Editar Equipo -->
-    <div id="modal-equipo" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-equipo')">
+    <div id="modal-equipo" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
                 <h3 class="title-font text-xl font-bold uppercase">Equipo</h3>
-                <button onclick="closeModal('modal-equipo')" class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
+                <button class="text-gray-600 hover:text-white text-xl leading-none"
+                    id="btn-cerrar-modal-equipo">&times;</button>
             </div>
             <div class="p-6 flex flex-col gap-4">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Nombre del equipo</label>
-                    <input type="text" placeholder="Ej: Argentina" class="inp" />
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Emoji / bandera</label>
-                    <input type="text" placeholder="Ej: 🇦🇷" class="inp" />
+                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Nombre del
+                        equipo</label>
+                    <input id="equipo-nombre" type="text" placeholder="Ej: Argentina" class="inp" />
                 </div>
             </div>
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost" onclick="closeModal('modal-equipo')">Cancelar</button>
-                <button class="btn-primary">Guardar equipo</button>
+                <button class="btn-primary" id="btn-guardar-equipo">Guardar</button>
             </div>
             <div class="green-bar"></div>
         </div>
     </div>
 
-    <!-- Modal: Nueva Fecha -->
-    <div id="modal-fecha" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-fecha')">
+    <!-- Modal: Nueva/Editar Fecha -->
+    <div id="modal-fecha" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
-                <h3 class="title-font text-xl font-bold uppercase">Nueva fecha</h3>
-                <button onclick="closeModal('modal-fecha')" class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
+                <h3 id="modal-fecha-titulo" class="title-font text-xl font-bold uppercase">
+                    Nueva fecha
+                </h3>
+
+                <button id="btn-cerrar-modal-fecha" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
+                    &times;
+                </button>
             </div>
+
             <div class="p-6 flex flex-col gap-4">
+                <input id="fecha-id" type="hidden">
+
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Nombre</label>
-                    <input type="text" placeholder="Ej: Fecha 4" class="inp" />
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Estado inicial</label>
-                    <select class="inp">
-                        <option>PROGRAMADA</option>
-                        <option>EN_JUEGO</option>
-                        <option>FINALIZADA</option>
-                    </select>
+                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                        Nombre
+                    </label>
+
+                    <input id="fecha-nombre" type="text" placeholder="Ej: Fecha 4" class="inp" />
                 </div>
             </div>
+
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost" onclick="closeModal('modal-fecha')">Cancelar</button>
-                <button class="btn-primary">Crear fecha</button>
+                <button id="btn-cancelar-fecha" type="button" class="btn-ghost">
+                    Cancelar
+                </button>
+
+                <button id="btn-guardar-fecha" type="button" class="btn-primary">
+                    Guardar fecha
+                </button>
             </div>
+
             <div class="green-bar"></div>
         </div>
     </div>
 
     <!-- Modal: Nuevo/Editar Partido -->
-    <div id="modal-partido" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-partido')">
+    <div id="modal-partido" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
-                <h3 class="title-font text-xl font-bold uppercase">Partido</h3>
-                <button onclick="closeModal('modal-partido')" class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
+                <h3 id="modal-partido-titulo" class="title-font text-xl font-bold uppercase">
+                    Nuevo partido
+                </h3>
+
+                <button id="btn-cerrar-modal-partido" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
+                    &times;
+                </button>
             </div>
+
             <div class="p-6 flex flex-col gap-4">
+                <input id="partido-id" type="hidden">
+
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Fecha</label>
-                    <select class="inp">
-                        <option>Fecha 3</option>
-                        <option>Fecha 4</option>
-                    </select>
+                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                        Fecha
+                    </label>
+                    <select id="partido-fecha" class="inp"></select>
                 </div>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Equipo local</label>
-                        <select class="inp">
-                            <option>Argentina 🇦🇷</option>
-                            <option>Francia 🇫🇷</option>
-                            <option>Brasil 🇧🇷</option>
-                            <option>España 🇪🇸</option>
-                        </select>
+                        <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Equipo local
+                        </label>
+                        <select id="partido-equipo-local" class="inp"></select>
                     </div>
+
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Equipo visitante</label>
-                        <select class="inp">
-                            <option>Algeria 🇩🇿</option>
-                            <option>Senegal 🇸🇳</option>
-                            <option>Marruecos 🇲🇦</option>
-                            <option>Suiza 🇨🇭</option>
-                        </select>
+                        <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Equipo visitante
+                        </label>
+                        <select id="partido-equipo-visitante" class="inp"></select>
                     </div>
                 </div>
+
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Horario</label>
-                    <input type="datetime-local" class="inp" />
+                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                        Horario
+                    </label>
+                    <input id="partido-horario" type="datetime-local" class="inp">
                 </div>
             </div>
+
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost" onclick="closeModal('modal-partido')">Cancelar</button>
-                <button class="btn-primary">Guardar partido</button>
+                <button id="btn-cancelar-partido" type="button" class="btn-ghost">
+                    Cancelar
+                </button>
+
+                <button id="btn-guardar-partido" type="button" class="btn-primary">
+                    Guardar partido
+                </button>
             </div>
+
             <div class="green-bar"></div>
         </div>
     </div>
 
+
     <!-- Modal: Cargar Resultado -->
-    <div id="modal-resultado" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-resultado')">
+    <div id="modal-resultado" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
                 <h3 class="title-font text-xl font-bold uppercase">Cargar resultado</h3>
-                <button onclick="closeModal('modal-resultado')" class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
+
+                <button id="btn-cerrar-modal-resultado" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
+                    &times;
+                </button>
             </div>
+
             <div class="p-6">
-                <p id="modal-resultado-titulo" class="title-font text-lg font-bold uppercase text-center mb-6 text-[#05AC2E]"></p>
+                <input id="resultado-partido-id" type="hidden">
+
+                <p id="modal-resultado-titulo"
+                    class="title-font text-lg font-bold uppercase text-center mb-6 text-[#05AC2E]"></p>
+
                 <div class="grid grid-cols-3 gap-4 items-center">
                     <div class="text-center">
-                        <label id="label-local" class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Local</label>
-                        <input type="number" min="0" max="20" value="0" class="inp text-center text-2xl font-bold title-font" style="text-align:center;" />
+                        <label id="label-local"
+                            class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Local
+                        </label>
+                        <input id="resultado-goles-local" type="number" min="0" max="20" value="0"
+                            class="inp text-center text-2xl font-bold title-font" style="text-align:center;">
                     </div>
+
                     <div class="text-center title-font text-2xl text-gray-600 font-bold">—</div>
+
                     <div class="text-center">
-                        <label id="label-visitante" class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Visitante</label>
-                        <input type="number" min="0" max="20" value="0" class="inp text-center text-2xl font-bold title-font" style="text-align:center;" />
+                        <label id="label-visitante"
+                            class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">
+                            Visitante
+                        </label>
+                        <input id="resultado-goles-visitante" type="number" min="0" max="20" value="0"
+                            class="inp text-center text-2xl font-bold title-font" style="text-align:center;">
                     </div>
                 </div>
-                <p class="text-xs text-gray-600 text-center mt-4">Al guardar se calculan automáticamente los puntos de todos los pronósticos.</p>
+
+                <p class="text-xs text-gray-600 text-center mt-4">
+                    Al guardar se calculan automáticamente los puntos de todos los pronósticos.
+                </p>
             </div>
+
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost" onclick="closeModal('modal-resultado')">Cancelar</button>
-                <button class="btn-primary">Guardar resultado</button>
+                <button id="btn-cancelar-resultado" type="button" class="btn-ghost">
+                    Cancelar
+                </button>
+
+                <button id="btn-guardar-resultado" type="button" class="btn-primary">
+                    Guardar resultado
+                </button>
             </div>
+
             <div class="green-bar"></div>
         </div>
     </div>
 
     <!-- Modal: Cambiar Estado Partido -->
-    <div id="modal-estado" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-estado')">
+    <div id="modal-estado" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="flex items-center justify-between px-6 py-4 border-b border-[#222]">
                 <h3 class="title-font text-xl font-bold uppercase">Cambiar estado</h3>
-                <button onclick="closeModal('modal-estado')" class="text-gray-600 hover:text-white text-xl leading-none">&times;</button>
+
+                <button id="btn-cerrar-modal-estado" type="button"
+                    class="text-gray-600 hover:text-white text-xl leading-none">
+                    &times;
+                </button>
             </div>
+
             <div class="p-6 flex flex-col gap-4">
+                <input id="estado-partido-id" type="hidden">
+
                 <p id="modal-estado-titulo" class="title-font text-base font-bold uppercase text-[#05AC2E]"></p>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-[2px] text-gray-500 mb-2">Nuevo estado</label>
-                    <select class="inp">
-                        <option>POR_JUGARSE</option>
-                        <option>EN_JUEGO</option>
-                        <option>FINALIZADO</option>
-                    </select>
-                </div>
-                <p class="text-xs text-gray-600">Una vez en EN_JUEGO los pronósticos quedarán bloqueados.</p>
+
+                <p class="text-xs text-gray-500">
+                    Este botón pasa el partido de POR_JUGARSE a EN_JUEGO.
+                </p>
             </div>
+
             <div class="flex justify-end gap-3 px-6 pb-5">
-                <button class="btn-ghost" onclick="closeModal('modal-estado')">Cancelar</button>
-                <button class="btn-primary">Confirmar</button>
+                <button id="btn-cancelar-estado" type="button" class="btn-ghost">
+                    Cancelar
+                </button>
+
+                <button id="btn-confirmar-estado" type="button" class="btn-primary">
+                    Pasar a EN JUEGO
+                </button>
             </div>
+
             <div class="green-bar"></div>
         </div>
     </div>
 
-    <script>
-        // Navegación sidebar
-        function showSection(name, btn) {
-            document.querySelectorAll('.panel-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.side-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('section-' + name).classList.add('active');
-            if (btn) btn.classList.add('active');
-        }
-
-        // Modales genéricos
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-        function closeModalOutside(e, id) {
-            if (e.target === document.getElementById(id)) closeModal(id);
-        }
-
-        // Modal resultado con nombres dinámicos
-        function openResultModal(local, visitante) {
-            document.getElementById('modal-resultado-titulo').textContent = local + ' vs ' + visitante;
-            document.getElementById('label-local').textContent = local;
-            document.getElementById('label-visitante').textContent = visitante;
-            openModal('modal-resultado');
-        }
-
-        // Modal estado con nombre dinámico
-        function openEstadoModal(partido) {
-            document.getElementById('modal-estado-titulo').textContent = partido;
-            openModal('modal-estado');
-        }
-
-        // Tabs partidos
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                this.closest('.flex').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Cerrar modales con Escape
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(m => m.classList.add('hidden'));
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/panel-admin.js" defer></script>
 </body>
+
 </html>
