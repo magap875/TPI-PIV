@@ -7,6 +7,12 @@ import java.util.List;
 
 public interface PartidoRepository extends JpaRepository<Partido, Long> {
     List<Partido> findByFechaId(Long fechaId);
+
     boolean existsByEquipoLocalIdOrEquipoVisitanteId(Long equipoLocalId, Long equipoVisitanteId);
+
     List<Partido> findByEstado(EstadoPartido estado);
+
+    List<Partido> findByFechaIdOrderByFechaHorarioInicioAsc(Long fechaId);
+
+    List<Partido> findAllByOrderByFechaHorarioInicioAsc();
 }
