@@ -14,6 +14,6 @@ public interface IGrupoService {
     GrupoResponseDTO obtenerGrupoPorId(Long id);
     List<MiembroGrupoResponseDTO> listarMiembrosDelGrupo(Long grupoId);
     List<MiembroGrupoResponseDTO> listarGruposDelUsuario(String emailUsuarioAutenticado);
-    List<RankingResponseDTO> rankingGrupo(Long grupoId);
+    List<RankingResponseDTO> obtenerRankingGrupo(Long grupoId);
     void salirDelGrupo(Long grupoId,String emailUsuarioAutenticado);
 }

@@ -56,8 +56,8 @@ public class GrupoController {
         }
 
         @GetMapping("/{grupoId}/ranking")
-        public ResponseEntity<List<RankingResponseDTO>> rankingGrupo(@PathVariable Long grupoId){
-                return ResponseEntity.ok(grupoService.rankingGrupo(grupoId));
+        public ResponseEntity<List<RankingResponseDTO>> obtenerRankingGrupo(@PathVariable Long grupoId){
+                return ResponseEntity.ok(grupoService.obtenerRankingGrupo(grupoId));
         }
 
         @DeleteMapping("/{grupoId}/salir")

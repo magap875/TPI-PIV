@@ -131,7 +131,7 @@ class GrupoServiceImplTest {
     }
 
     @Test
-    void rankingGrupo_deberiaOrdenarPorPuntosYResultadosExactos() {
+    void obtenerRankingGrupo_deberiaOrdenarPorPuntosYResultadosExactos() {
         Grupo grupo = grupo(1L, "Grupo", "ABC12345");
         Usuario usuarioA = usuario(1L, "A", "a@test.com", 10, 1);
         Usuario usuarioB = usuario(2L, "B", "b@test.com", 15, 0);
@@ -144,7 +144,7 @@ class GrupoServiceImplTest {
                 miembro(3L, usuarioC, grupo)
         ));
 
-        var ranking = grupoService.rankingGrupo(1L);
+        var ranking = grupoService.obtenerRankingGrupo(1L);
 
         assertEquals(List.of("B", "C", "A"), ranking.stream().map(r -> r.nombre()).toList());
     }

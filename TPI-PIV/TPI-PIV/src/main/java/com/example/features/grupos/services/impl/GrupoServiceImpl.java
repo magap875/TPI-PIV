@@ -120,7 +120,7 @@ public class GrupoServiceImpl implements IGrupoService {
     }
 
     @Override
-    public List<RankingResponseDTO> rankingGrupo(Long grupoId) {
+    public List<RankingResponseDTO> obtenerRankingGrupo(Long grupoId) {
 
         if (!grupoRepository.existsById(grupoId)) {
             throw new ResourceNotFoundException("Grupo no encontrado");
