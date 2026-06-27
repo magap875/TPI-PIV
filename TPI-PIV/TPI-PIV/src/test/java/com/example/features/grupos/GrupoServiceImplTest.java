@@ -7,6 +7,7 @@ import com.example.features.grupos.services.impl.GrupoServiceImpl;
 import com.example.features.miembrosgrupos.dtos.request.UnirseGrupoRequestDTO;
 import com.example.features.miembrosgrupos.models.MiembroGrupo;
 import com.example.features.miembrosgrupos.repositories.MiembroGrupoRepository;
+import com.example.features.pronosticos.repositories.PronosticoRepository;
 import com.example.features.users.models.Rol;
 import com.example.features.users.models.Usuario;
 import com.example.features.users.repositories.UsuarioRepository;
@@ -35,6 +36,9 @@ class GrupoServiceImplTest {
 
     @Mock
     private MiembroGrupoRepository miembroGrupoRepository;
+    
+    @Mock
+    private PronosticoRepository pronosticoRepository;
 
     @InjectMocks
     private GrupoServiceImpl grupoService;
@@ -138,11 +142,11 @@ class GrupoServiceImplTest {
         Usuario usuarioC = usuario(3L, "C", "c@test.com", 10, 3);
 
         when(grupoRepository.existsById(1L)).thenReturn(true);
+        when(pronosticoRepository.findAll()).thenReturn(List.of());
         when(miembroGrupoRepository.findByGrupoId(1L)).thenReturn(List.of(
                 miembro(1L, usuarioA, grupo),
                 miembro(2L, usuarioB, grupo),
-                miembro(3L, usuarioC, grupo)
-        ));
+                miembro(3L, usuarioC, grupo)));
 
         var ranking = grupoService.obtenerRankingGrupo(1L);
 
