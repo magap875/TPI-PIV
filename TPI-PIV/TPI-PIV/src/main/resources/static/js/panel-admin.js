@@ -128,6 +128,33 @@ function getToken() {
   return localStorage.getItem("accessToken");
 }
 
+function showSection(name, btn = null) {
+  document.querySelectorAll(".panel-section").forEach(section => {
+    section.classList.add("hidden");
+    section.classList.remove("active");
+  });
+
+  document.querySelectorAll(".side-link").forEach(link => {
+    link.classList.remove("active");
+  });
+
+  const section = document.getElementById(`section-${name}`);
+
+  if (section) {
+    section.classList.remove("hidden");
+    section.classList.add("active");
+  }
+
+  if (btn) {
+    btn.classList.add("active");
+  }
+
+  const main = document.querySelector("main");
+  if (main) {
+    main.scrollTop = 0;
+  }
+}
+
 function authHeaders() {
   return {
     "Content-Type": "application/json",
@@ -1610,6 +1637,7 @@ function obtenerAccionesDashboardPartido(partido) {
  * INIT
  ******************************/
 document.addEventListener("DOMContentLoaded", async () => {
+  showSection("dashboard");
   await cargarEquipos();
   await cargarFechas();
   await cargarPartidos();
@@ -1681,6 +1709,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   //listeners dashboard
   btnDashboardVerPartidos?.addEventListener("click", () => {
-  showSection("partidos", document.querySelector('[href="#partidos"]'));
-});
+    showSection("partidos", document.querySelector('[href="#partidos"]'));
+  });
 });

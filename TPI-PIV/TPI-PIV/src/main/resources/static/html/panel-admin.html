@@ -355,7 +355,7 @@
     </style>
 </head>
 
-<body class="bg-[#0E0E0E] text-white min-h-screen flex flex-col">
+<body class="bg-[#0E0E0E] text-white h-screen overflow-hidden flex flex-col">
 
     <!-- NAV -->
     <nav class="bg-[#111111] border-b border-[#222] z-40 relative">
@@ -377,10 +377,10 @@
         </div>
     </nav>
 
-    <div class="flex flex-1 max-w-[1500px] mx-auto w-full">
+    <div class="flex flex-1 max-w-[1500px] mx-auto w-full min-h-0">
 
         <!-- SIDEBAR -->
-        <aside class="w-56 shrink-0 bg-[#111111] border-r border-[#1a1a1a] flex flex-col py-5 px-3 gap-1">
+        <aside class="w-56 shrink-0 bg-[#111111] border-r border-[#1a1a1a] flex flex-col py-5 px-3 gap-1 h-full sticky top-0">
             <p class="text-[9px] font-bold uppercase tracking-[2px] text-[#333] px-3 mb-2">Gestión</p>
 
             <a href="#" class="side-link active" onclick="showSection('dashboard', this)">
@@ -432,7 +432,7 @@
         </aside>
 
         <!-- CONTENT -->
-        <main class="flex-1 min-w-0 p-6 flex flex-col gap-6 overflow-x-auto">
+        <main class="flex-1 min-w-0 p-6 flex flex-col gap-6 overflow-y-auto overflow-x-hidden">
 
             <!-- ===== DASHBOARD ===== -->
             <div id="section-dashboard" class="panel-section active flex flex-col gap-6">
