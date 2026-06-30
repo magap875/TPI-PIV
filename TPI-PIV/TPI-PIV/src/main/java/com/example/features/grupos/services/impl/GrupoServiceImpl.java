@@ -128,13 +128,13 @@ public class GrupoServiceImpl implements IGrupoService {
             throw new ResourceNotFoundException("Grupo no encontrado");
         }
 
-        Map<Long, LocalDateTime> primeraFechaPorUsuario = pronosticoRepository.findAll()
+        Map<Long, LocalDateTime> ultimaFechaPorUsuario = pronosticoRepository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(
                         p -> p.getUsuario().getId(),
                         Collectors.mapping(
                                 Pronostico::getFechaCreacion,
-                                Collectors.minBy(LocalDateTime::compareTo))))
+                                Collectors.maxBy(LocalDateTime::compareTo))))
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(
@@ -150,7 +150,7 @@ public class GrupoServiceImpl implements IGrupoService {
                                 .thenComparing(
                                         Usuario::getCantidadResultadosExactos,
                                         Comparator.reverseOrder())
-                                .thenComparing(u -> primeraFechaPorUsuario.getOrDefault(
+                                .thenComparing(u -> ultimaFechaPorUsuario.getOrDefault(
                                         u.getId(),
                                         LocalDateTime.MAX)))
                 .map(u -> new RankingResponseDTO(

@@ -24,14 +24,14 @@ public class RankingService implements IRankingService {
     @Override
     public List<RankingResponseDTO> obtenerRankingGlobal() {
 
-        Map<Long, LocalDateTime> primeraFechaPorUsuario =
+        Map<Long, LocalDateTime> ultimaFechaPorUsuario =
                 pronosticoRepository.findAll()
                         .stream()
                         .collect(Collectors.groupingBy(
                                 p -> p.getUsuario().getId(),
                                 Collectors.mapping(
                                         Pronostico::getFechaCreacion,
-                                        Collectors.minBy(LocalDateTime::compareTo)
+                                        Collectors.maxBy(LocalDateTime::compareTo)
                                 )
                         ))
                         .entrySet()
@@ -48,7 +48,7 @@ public class RankingService implements IRankingService {
                                 .comparing(Usuario::getPuntosTotales).reversed()
                                 .thenComparing(Usuario::getCantidadResultadosExactos, Comparator.reverseOrder())
                                 .thenComparing(u ->
-                                        primeraFechaPorUsuario.getOrDefault(u.getId(), LocalDateTime.MAX)
+                                        ultimaFechaPorUsuario.getOrDefault(u.getId(), LocalDateTime.MAX)
                                 )
                 )
                 .map(u -> new RankingResponseDTO(
