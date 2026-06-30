@@ -32,7 +32,7 @@ form.addEventListener("submit", async (event) => {
             text:  "Tu cuenta fue creada correctamente.",
             confirmButtonText: "Iniciar sesión"
         }).then(() => {
-            window.location.href = "/html/login.html";
+            window.location.href = "./login.html";
         });
 
     } catch (error) {
