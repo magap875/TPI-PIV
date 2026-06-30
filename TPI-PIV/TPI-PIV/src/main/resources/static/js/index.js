@@ -1,4 +1,4 @@
-const navbar = document.getElementById("navbar-actions");
+const navbarLinks = document.getElementById("navbar-links");
 
 let todasLasFechas = [];
 let fechaSeleccionada = null;
@@ -89,25 +89,39 @@ async function cargarNavbar() {
 }
 
 function mostrarNavbarPublico() {
-    navbar.innerHTML = `
-        <a href="./html/login.html" class="text-gray-400">Iniciá sesión</a>
-        <a href="./html/register.html" class="bg-[#05AC2E] px-4 py-2 rounded text-white">Registrarme</a>
+    navbarLinks.innerHTML = `
+        <a href="./html/login.html"
+            class="nav-link text-gray-400 font-medium hover:text-white transition">
+            Iniciá sesión
+        </a>
+
+        <a href="./html/register.html"
+            class="bg-[#05AC2E] text-white text-sm font-semibold px-5 py-2 rounded-[3px] hover:bg-white hover:text-[#111] transition-all duration-300">
+            REGISTRARME
+        </a>
     `;
 }
 
 function mostrarNavbarAutenticado(usuario) {
-    navbar.innerHTML = `
-        ${usuario.rol === "ADMIN" ? `
-            <a href="./html/panel-admin.html" class="text-[#05AC2E] font-semibold">
-                Dashboard
-            </a>
-        ` : ""}
+    navbarLinks.innerHTML = `
+        ${
+            usuario.rol === "ADMIN"
+                ? `
+                    <a href="./html/panel-admin.html"
+                        class="nav-link text-[#05AC2E] font-medium">
+                        Dashboard
+                    </a>
+                `
+                : ""
+        }
 
-        <a href="./html/mi-cuenta.html" class="text-white">
+        <a href="./html/mi-cuenta.html"
+            class="nav-link text-gray-300 font-medium hover:text-white">
             Mi perfil
         </a>
 
-        <button id="logout-btn" class="text-red-400">
+        <button id="logout-btn"
+                class="text-red-400 hover:text-red-300 transition">
             Cerrar sesión
         </button>
     `;

@@ -12,6 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/alertas.css"/>
     <style>
         body {
             font-family: "Inter", sans-serif;
@@ -372,7 +373,7 @@
                         AD</div>
                     <span class="text-gray-300 text-sm font-medium">Admin</span>
                 </div>
-                <a href="../index.html" class="btn-ghost">← Volver al sitio</a>
+                <a href="../index.html" class="btn-ghost flex justify-center items-center">← Volver al sitio</a>
             </div>
         </div>
     </nav>
@@ -438,11 +439,11 @@
             <div id="section-dashboard" class="panel-section active flex flex-col gap-6">
                 <div>
                     <h1 class="title-font text-3xl font-bold uppercase">Dashboard</h1>
-                    <p class="text-gray-500 text-sm mt-1">Resumen general del sistema</p>
+                    <p class="text-gray-500 text-sm mb-1">Resumen general del sistema.</p>
                 </div>
 
                 <!-- Stats -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
                     <div class="stat-card">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Equipos</p>
                         <p id="stat-equipos" class="title-font text-4xl font-bold">0</p>
@@ -498,13 +499,13 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <h1 id="equipos" class="title-font text-3xl font-bold uppercase">Equipos</h1>
-                        <p class="text-gray-500 text-sm mt-1">Creá, editá y eliminá equipos</p>
+                        <p class="text-gray-500 text-sm mb-1">Creá, editá y eliminá equipos.</p>
                     </div>
                     <button id="btn-nuevo-equipo" class="btn-primary">+ Nuevo equipo</button>
                 </div>
 
                 <!-- Buscador -->
-                <div class="flex gap-3">
+                <div class="flex gap-3 mb-2">
                     <div class="relative flex-1 max-w-xs">
                         <input id="buscar-equipo" type="text" placeholder="Buscar equipo..." class="inp pr-10" />
                         <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none"
@@ -539,7 +540,7 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <h1 id="fechas" class="title-font text-3xl font-bold uppercase">Fechas</h1>
-                        <p class="text-gray-500 text-sm mt-1">Gestioná las fechas del torneo y sus estados</p>
+                        <p class="text-gray-500 text-sm mb-1">Gestioná las fechas del torneo y sus estados.</p>
                     </div>
                     <button class="btn-primary" id="btn-nueva-fecha">+ Nueva fecha</button>
                 </div>
@@ -554,12 +555,12 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <h1 id="partidos" class="title-font text-3xl font-bold uppercase">Partidos</h1>
-                        <p class="text-gray-500 text-sm mt-1">Creá partidos, cambiá estados y cargá resultados</p>
+                        <p class="text-gray-500 text-sm mb-1">Creá partidos, cambiá estados y cargá resultados.</p>
                     </div>
                     <button id="btn-nuevo-partido" class="btn-primary">+ Nuevo partido</button>
                 </div>
 
-                <div id="tabs-fechas-partidos" class="flex gap-2 flex-wrap"></div>
+                <div id="tabs-fechas-partidos" class="flex gap-2 flex-wrap mb-2"></div>
 
                 <div class="card overflow-hidden">
                     <table class="w-full">
@@ -584,7 +585,7 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <h1 id="usuarios" class="title-font text-3xl font-bold uppercase">Usuarios</h1>
-                        <p class="text-gray-500 text-sm mt-1">Visualizá usuarios y sus roles</p>
+                        <p class="text-gray-500 text-sm mb-1">Visualizá usuarios y sus roles.</p>
                     </div>
                     <div class="flex gap-2">
                         <div class="relative">
@@ -625,10 +626,10 @@
             <div id="section-pronosticos" class="panel-section flex flex-col gap-6">
                 <div>
                     <h1 id="pronosticos" class="title-font text-3xl font-bold uppercase">Pronósticos</h1>
-                    <p class="text-gray-500 text-sm mt-1">Pronósticos realizados por partido</p>
+                    <p class="text-gray-500 text-sm mb-1">Pronósticos realizados por partido.</p>
                 </div>
 
-                <div class="flex gap-3 items-center flex-wrap">
+                <div class="flex gap-3 items-center flex-wrap mb-2">
                     <label class="text-xs text-gray-500 uppercase tracking-wider whitespace-nowrap">
                         Filtrar por fecha:
                     </label>

@@ -5,15 +5,10 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.config.exceptions.ResourceNotFoundException;
 import com.example.config.response.BaseResponse;
 import com.example.config.exceptions.ErrorResponseDTO;
 import com.example.features.users.dtos.request.UsuarioUpdateDTO;
 import com.example.features.users.dtos.response.UsuarioResponseDTO;
-import com.example.features.users.mappers.UsuarioMapper;
-import com.example.features.users.models.Rol;
-import com.example.features.users.models.Usuario;
 import com.example.features.users.services.interfaces.IUsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
