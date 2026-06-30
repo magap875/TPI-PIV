@@ -11,7 +11,7 @@ import com.example.features.grupos.dtos.response.GrupoResponseDTO;
 import com.example.features.grupos.services.interfaces.IGrupoService;
 import com.example.features.miembrosgrupos.dtos.request.UnirseGrupoRequestDTO;
 import com.example.features.miembrosgrupos.dtos.response.MiembroGrupoResponseDTO;
-import com.example.features.users.dtos.response.UsuarioResponseDTO;
+import com.example.features.rankings.dtos.RankingResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -108,10 +108,10 @@ public class GrupoController {
                         content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
         })
         @GetMapping("/{grupoId}/ranking")
-        public ResponseEntity<List<UsuarioResponseDTO>> rankingGrupo(
+        public ResponseEntity<List<RankingResponseDTO>> obtenerRankingGrupo(
                 @Parameter(description = "ID del grupo", example = "1")
                 @PathVariable Long grupoId){
-                return ResponseEntity.ok(grupoService.rankingGrupo(grupoId));
+                return ResponseEntity.ok(grupoService.obtenerRankingGrupo(grupoId));
         }
 
         @Operation(summary = "Salir de un grupo")
