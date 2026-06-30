@@ -101,18 +101,8 @@ public class PronosticoService implements IPronosticoService {
                 .orElse(null);
     }
 
-    // no se pueden ver los pronósticos de un partido hasta 30 minutos antes del inicio del mismo
     @Override
     public List<PronosticoResponseDTO> listarPorPartido(Long partidoId) {
-        Partido partido = partidoRepository.findById(partidoId)
-                .orElseThrow(() -> new ResourceNotFoundException("Partido no encontrado"));
-
-        LocalDateTime limite = partido.getFechaHorarioInicio().minusMinutes(30);
-
-        if (LocalDateTime.now().isBefore(limite)) {
-            throw new BadRequestException("Todavía no se pueden ver los pronósticos de este partido");
-        }
-
         return pronosticoRepository.findByPartidoId(partidoId)
                 .stream()
                 .map(PronosticoMapper::toResponseDTO)

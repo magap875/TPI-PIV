@@ -378,7 +378,6 @@ function renderEquipos(equipos) {
       <tr class="tbl-row">
         <td class="text-gray-600">${index + 1}</td>
         <td class="font-semibold">${equipo.nombre ?? "-"}</td>
-        <td class="text-gray-500">—</td>
         <td class="flex gap-2">
           <button class="btn-edit" onclick="abrirModalEditarEquipo(${equipo.id})">
             Editar

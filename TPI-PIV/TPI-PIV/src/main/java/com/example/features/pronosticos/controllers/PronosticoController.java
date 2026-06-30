@@ -78,8 +78,6 @@ public class PronosticoController {
         @Operation(summary = "Listar los pronósticos de un partido (solo ADMIN)")
         @ApiResponses({
                 @ApiResponse(responseCode = "200", description = "Pronósticos obtenidos correctamente"),
-                @ApiResponse(responseCode = "400", description = "Todavía no se pueden ver los pronósticos de este partido",
-                        content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
                 @ApiResponse(responseCode = "403", description = "El usuario autenticado no tiene rol ADMIN",
                         content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
                 @ApiResponse(responseCode = "404", description = "Partido no encontrado",
