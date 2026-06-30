@@ -694,11 +694,24 @@ function abrirModalNuevoPartido() {
   limpiarModalPartido();
   cargarSelectsPartido();
 
+  
+   if (partidoFecha) {
+        partidoFecha.disabled = false;
+        partidoFecha.value = "";
+    }
+
   abrirModal("modal-partido");
 }
 
 function abrirModalEditarPartido(id) {
+
   const partido = partidosCache.find(p => Number(p.id) === Number(id));
+
+
+  if (partidoFecha) {
+    partidoFecha.value = partido.fechaId;
+    partidoFecha.disabled = true;
+}
 
   if (!partido) {
     mostrarError("Partido no encontrado");
@@ -800,10 +813,18 @@ async function guardarPartido() {
     equipoVisitanteId: Number(equipoVisitanteId),
     fechaHorarioInicio
   };
+  
 
   const editando = partidoEditId !== null && partidoEditId !== undefined;
+
+  if (!editando) {
+    body.fechaId = Number(fechaId);
+}
+
   const url = editando ? `${API_PARTIDOS}/${partidoEditId}` : API_PARTIDOS;
   const method = editando ? "PUT" : "POST";
+
+
 
   try {
     const res = await fetch(url, {
@@ -1089,10 +1110,12 @@ async function guardarResultado() {
       throw new Error(msg);
     }
 
+
     cerrarModalResultado();
 
     mostrarExito("Resultado cargado", "Se calcularon los puntos automáticamente");
 
+    renderDashboardPartidos();
     await cargarFechas();
     await cargarPartidos();
 
@@ -1558,7 +1581,7 @@ function renderDashboardPartidos() {
   tablaDashboardPartidos.innerHTML = "";
 
   const partidosDashboard = partidosCache
-    .filter(p => p.estado === "EN_JUEGO" || p.estado === "POR_JUGARSE")
+    .filter(p => p.estado === "EN_JUEGO")
     .sort((a, b) => {
       if (a.estado === "EN_JUEGO" && b.estado !== "EN_JUEGO") return -1;
       if (a.estado !== "EN_JUEGO" && b.estado === "EN_JUEGO") return 1;
@@ -1571,7 +1594,7 @@ function renderDashboardPartidos() {
     tablaDashboardPartidos.innerHTML = `
       <tr class="tbl-row">
         <td colspan="5" class="text-center text-gray-500 py-4">
-          No hay partidos activos o próximos
+          No hay partidos en juego.
         </td>
       </tr>
     `;
@@ -1600,9 +1623,6 @@ function crearFilaDashboardPartido(partido) {
         ${obtenerBadgePartido(partido.estado)}
       </td>
 
-      <td class="title-font font-bold">
-        ${obtenerResultadoPartido(partido)}
-      </td>
 
       <td class="flex gap-2 items-center">
         ${obtenerAccionesDashboardPartido(partido)}
